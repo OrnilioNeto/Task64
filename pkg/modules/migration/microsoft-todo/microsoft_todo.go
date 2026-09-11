@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,12 +26,12 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 )
 
 const apiScopes = `tasks.read tasks.read.shared`
@@ -127,7 +127,7 @@ func (dtt *dateTimeTimeZone) toTime() (t time.Time, err error) {
 
 // AuthURL returns the url users need to authenticate against
 // @Summary Get the auth url from Microsoft Todo
-// @Description Returns the auth url where the user needs to get its auth code. This code can then be used to migrate everything from Microsoft Todo to Vikunja.
+// @Description Returns the auth url where the user needs to get its auth code. This code can then be used to migrate everything from Microsoft Todo to Task64.
 // @tags migration
 // @Produce json
 // @Security JWTKeyAuth
@@ -378,9 +378,9 @@ func convertMicrosoftTodoData(todoData []*project) (vikunjsStructure []*models.P
 	return
 }
 
-// Migrate gets all tasks from Microsoft Todo for a user and puts them into vikunja
+// Migrate gets all tasks from Microsoft Todo for a user and puts them into task64
 // @Summary Migrate all projects, tasks etc. from Microsoft Todo
-// @Description Migrates all tasklinsts, tasks, notes and reminders from Microsoft Todo to Vikunja.
+// @Description Migrates all tasklinsts, tasks, notes and reminders from Microsoft Todo to Task64.
 // @tags migration
 // @Accept json
 // @Produce json
@@ -412,7 +412,7 @@ func (m *Migration) Migrate(user *user.User) (err error) {
 	log.Debugf("[Microsoft Todo Migration] Got Microsoft Todo data")
 	log.Debugf("[Microsoft Todo Migration] Start converting Microsoft Todo data")
 
-	vikunjaStructure, err := convertMicrosoftTodoData(todoData)
+	task64Structure, err := convertMicrosoftTodoData(todoData)
 	if err != nil {
 		log.Debugf("[Microsoft Todo Migration] Error converting Microsoft Todo data: %s", err)
 		return
@@ -421,7 +421,7 @@ func (m *Migration) Migrate(user *user.User) (err error) {
 	log.Debugf("[Microsoft Todo Migration] Done converting Microsoft Todo data")
 	log.Debugf("[Microsoft Todo Migration] Creating new structure")
 
-	err = migration.InsertFromStructure(vikunjaStructure, user)
+	err = migration.InsertFromStructure(task64Structure, user)
 	if err != nil {
 		log.Debugf("[Microsoft Todo Migration] Error while creating new structure: %s", err)
 		return

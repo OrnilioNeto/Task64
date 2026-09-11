@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
-	"code.vikunja.io/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
 )
 
 const maxVisibleRows = 12
@@ -201,7 +201,7 @@ func (m *model) renderRow(i int) string {
 }
 
 // projectSuffix is the dimmed metadata appended to a project row. Titles aren't
-// unique in Vikunja, so the id (and identifier when set) keeps duplicate-titled
+// unique in Task64, so the id (and identifier when set) keeps duplicate-titled
 // projects distinguishable during init.
 func projectSuffix(p *client.Project) string {
 	s := fmt.Sprintf("  #%d", p.ID)

@@ -26,10 +26,10 @@
   "overrideCommand": false,
   "portsAttributes": {
     "3456": {
-      "label": "Vikunja API"
+      "label": "Task64 API"
     },
     "4173": {
-      "label": "Vikunja Frontend dev server"
+      "label": "Task64 Frontend dev server"
     }
   },
   "updateContentCommand": "devenv test"

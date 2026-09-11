@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 package version
 
-import "code.vikunja.io/api/pkg/swagger"
+import "github.com/OrnilioNeto/Task64/pkg/swagger"
 
 // This package holds the version info
 // It is an own package to avoid import cycles

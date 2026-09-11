@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,11 +26,11 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // Migrator is the CSV migrator
@@ -511,7 +511,7 @@ func parseBool(value string) bool {
 func parsePriority(value string) int {
 	// Try to parse as number
 	if p, err := strconv.Atoi(strings.TrimSpace(value)); err == nil {
-		// Vikunja uses 0-5 priority (0=unset, 1=low, 5=urgent)
+		// Task64 uses 0-5 priority (0=unset, 1=low, 5=urgent)
 		if p < 0 {
 			return 0
 		}
@@ -576,9 +576,9 @@ func parseDate(value, format string) time.Time {
 	return time.Time{}
 }
 
-// Migrate imports CSV data into Vikunja
+// Migrate imports CSV data into Task64
 // @Summary Import all tasks from a CSV file
-// @Description Imports tasks from a CSV file into Vikunja. Requires a mapping configuration.
+// @Description Imports tasks from a CSV file into Task64. Requires a mapping configuration.
 // @tags migration
 // @Accept multipart/form-data
 // @Produce json
@@ -610,7 +610,7 @@ func RunMigration(u *user.User, file io.ReaderAt, size int64, config *ImportConf
 	return migration.FinishMigration(status)
 }
 
-// MigrateWithConfig imports CSV data into Vikunja with the provided configuration
+// MigrateWithConfig imports CSV data into Task64 with the provided configuration
 func MigrateWithConfig(u *user.User, file io.ReaderAt, size int64, config *ImportConfig) error {
 	if size == 0 {
 		return &migration.ErrFileIsEmpty{}
@@ -651,10 +651,10 @@ func MigrateWithConfig(u *user.User, file io.ReaderAt, size int64, config *Impor
 		return &migration.ErrFileIsEmpty{}
 	}
 
-	// Convert rows to Vikunja structure
-	vikunjaTasks := convertToVikunja(rows, config)
+	// Convert rows to Task64 structure
+	task64Tasks := convertToTask64(rows, config)
 
-	return migration.InsertFromStructure(vikunjaTasks, u)
+	return migration.InsertFromStructure(task64Tasks, u)
 }
 
 // hasProjectMapping returns true if any column is mapped to the project attribute
@@ -667,8 +667,8 @@ func hasProjectMapping(config *ImportConfig) bool {
 	return false
 }
 
-// convertToVikunja converts CSV rows to Vikunja project/task structure
-func convertToVikunja(rows [][]string, config *ImportConfig) []*models.ProjectWithTasksAndBuckets {
+// convertToTask64 converts CSV rows to Task64 project/task structure
+func convertToTask64(rows [][]string, config *ImportConfig) []*models.ProjectWithTasksAndBuckets {
 	var pseudoParentID int64 = 1
 	parentProject := &models.ProjectWithTasksAndBuckets{
 		Project: models.Project{
@@ -740,7 +740,7 @@ func convertToVikunja(rows [][]string, config *ImportConfig) []*models.ProjectWi
 	return result
 }
 
-// rowToTask converts a CSV row to a Vikunja task
+// rowToTask converts a CSV row to a Task64 task
 func rowToTask(row []string, config *ImportConfig, taskID int64) models.Task {
 	task := models.Task{
 		ID: taskID,

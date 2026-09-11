@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -425,7 +425,7 @@ Task 6,Description 6,0,low`
 	assert.Equal(t, 2, result.Tasks[1].Priority) // "low" -> 2
 }
 
-func TestConvertToVikunja(t *testing.T) {
+func TestConvertToTask64(t *testing.T) {
 	rows := [][]string{
 		{"Task 1", "Description 1", "Project A"},
 		{"Task 2", "Description 2", "Project A"},
@@ -444,7 +444,7 @@ func TestConvertToVikunja(t *testing.T) {
 		},
 	}
 
-	result := convertToVikunja(rows, &config)
+	result := convertToTask64(rows, &config)
 
 	// Should have parent project + child projects
 	require.GreaterOrEqual(t, len(result), 2)

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,10 @@ import (
 	"net/url"
 	"strings"
 
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
-// defaultAPIPort is what `VIKUNJA_SERVICE_INTERFACE` ships with — handy
+// defaultAPIPort is what `TASK64_SERVICE_INTERFACE` ships with — handy
 // when the user types just `myhost.example.com` for a default install
 // running on an unusual port.
 const defaultAPIPort = "3456"
@@ -35,10 +35,10 @@ const defaultAPIPort = "3456"
 // /api/v2 suffix — that's what client.New expects) and the parsed Info.
 //
 // Probing /api/v2/info doubles as the "is this server new enough" check: a
-// Vikunja without /api/v2 fails discovery cleanly rather than limping along
+// Task64 without /api/v2 fails discovery cleanly rather than limping along
 // against endpoints veans needs.
 //
-// Mirrors the discovery the Vikunja web frontend does in
+// Mirrors the discovery the Task64 web frontend does in
 // helpers/checkAndSetApiUrl.ts: try the URL as-given, with the API path
 // appended, and with the default :3456 port — across http / https. The
 // first response that parses as Info wins.
@@ -66,7 +66,7 @@ func DiscoverServer(ctx context.Context, input string) (string, *Info, error) {
 	}
 
 	return "", nil, output.New(output.CodeValidation,
-		"couldn't find a Vikunja instance reachable from %q — tried:\n  - %s\nlast error: %v",
+		"couldn't find a Task64 instance reachable from %q — tried:\n  - %s\nlast error: %v",
 		input, strings.Join(attempts, "\n  - "), lastErr)
 }
 

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"net/http"
 	"time"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/routes/api/shared"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/routes/api/shared"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/tkuchiki/go-timezone"
@@ -141,7 +141,7 @@ func RegisterUserSettingsRoutes(api huma.API) {
 	Register(api, huma.Operation{
 		OperationID: "user-timezones",
 		Summary:     "List available time zones",
-		Description: "Returns every time zone this Vikunja instance can handle. The list depends on the host system and is unsorted; sort it client-side.",
+		Description: "Returns every time zone this Task64 instance can handle. The list depends on the host system and is unsorted; sort it client-side.",
 		Method:      http.MethodGet,
 		Path:        "/user/timezones",
 		Tags:        tags,

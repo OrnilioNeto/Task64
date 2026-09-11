@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,9 @@ package caldav
 import (
 	"testing"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/samedi/caldav-go/data"
 	"github.com/samedi/caldav-go/errs"
@@ -55,7 +55,7 @@ func TestSubTask_Create(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_child1
 DTSTAMP:20230301T073337Z
@@ -66,7 +66,7 @@ RELATED-TO;RELTYPE=PARENT:uid-caldav-test-parent-task
 END:VTODO
 END:VCALENDAR`
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    &models.Task{UID: taskUID},
 			user:    u,
@@ -105,7 +105,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_child1
 DTSTAMP:20230301T073337Z
@@ -116,7 +116,7 @@ RELATED-TO;RELTYPE=PARENT:uid-caldav-test-parent-task
 END:VTODO
 END:VCALENDAR`
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    &models.Task{UID: taskUIDChild},
 			user:    u,
@@ -131,7 +131,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_grand_child1
 DTSTAMP:20230301T073337Z
@@ -142,7 +142,7 @@ RELATED-TO;RELTYPE=PARENT:uid_child1
 END:VTODO
 END:VCALENDAR`
 
-		storage = &VikunjaCaldavProjectStorage{
+		storage = &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    &models.Task{UID: taskUID},
 			user:    u,
@@ -194,7 +194,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_child1
 DTSTAMP:20230301T073337Z
@@ -205,7 +205,7 @@ RELATED-TO;RELTYPE=PARENT:uid-caldav-test-parent-doesnt-exist-yet
 END:VTODO
 END:VCALENDAR`
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    &models.Task{UID: taskUID},
 			user:    u,
@@ -258,7 +258,7 @@ func TestSubTask_Update(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test-child-task
 DTSTAMP:20230301T073337Z
@@ -277,7 +277,7 @@ END:VCALENDAR`
 		task := tasks[0]
 		s.Close()
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    task,
 			user:    u,
@@ -317,7 +317,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test-parent-task
 DTSTAMP:20230301T073337Z
@@ -335,7 +335,7 @@ END:VCALENDAR`
 		task := tasks[0]
 		s.Close()
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    task,
 			user:    u,
@@ -372,7 +372,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test-child-task
 DTSTAMP:20230301T073337Z
@@ -389,7 +389,7 @@ END:VCALENDAR`
 		task := tasks[0]
 		s.Close()
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    task,
 			user:    u,
@@ -438,7 +438,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test-child-task
 DTSTAMP:20230301T073337Z
@@ -454,7 +454,7 @@ END:VCALENDAR`
 		task := tasks[0]
 		s.Close()
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    task,
 			user:    u,
@@ -495,7 +495,7 @@ func TestUpdateResource_TaskIdentity(t *testing.T) {
 	const taskUID = "uid-caldav-test"
 	const taskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test
 DTSTAMP:20230301T073337Z
@@ -529,7 +529,7 @@ END:VCALENDAR`
 		require.NoError(t, s.Commit())
 		s.Close()
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 38}},
 			task:    &models.Task{ID: duplicate.ID, UID: taskUID, ProjectID: 38},
 			user:    u,
@@ -549,7 +549,7 @@ END:VCALENDAR`
 	t.Run("rejects when no stored task matches the checked id", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			// id of another task the user may write to, uid of the victim
 			task: &models.Task{ID: 41, UID: taskUID, ProjectID: 36},
@@ -564,7 +564,7 @@ END:VCALENDAR`
 	t.Run("rejects when the stored task is in another project than the url", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 38}},
 			task:    &models.Task{ID: victimID, UID: taskUID, ProjectID: 36},
 			user:    u,
@@ -586,7 +586,7 @@ func TestGetResourcesByList_URLProjectConsistency(t *testing.T) {
 	t.Run("drops task when href project does not match task project", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{user: u}
+		storage := &Task64CaldavProjectStorage{user: u}
 
 		// uid-caldav-test lives in project 36 (fixtures/tasks.yml id 40).
 		resources, err := storage.GetResourcesByList([]string{
@@ -599,7 +599,7 @@ func TestGetResourcesByList_URLProjectConsistency(t *testing.T) {
 	t.Run("returns task when href project matches task project", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{user: u}
+		storage := &Task64CaldavProjectStorage{user: u}
 
 		resources, err := storage.GetResourcesByList([]string{
 			"/dav/projects/36/uid-caldav-test.ics",
@@ -613,7 +613,7 @@ func TestGetResourcesByList_URLProjectConsistency(t *testing.T) {
 
 		// user 6 has no access to project 36
 		outsider := &user.User{ID: 6, Username: "user6"}
-		storage := &VikunjaCaldavProjectStorage{user: outsider}
+		storage := &Task64CaldavProjectStorage{user: outsider}
 
 		resources, err := storage.GetResourcesByList([]string{
 			"/dav/projects/36/uid-caldav-test.ics",
@@ -632,7 +632,7 @@ func TestCreateResource_ExistingUID(t *testing.T) {
 	const taskUID = "uid-caldav-test"
 	const taskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test
 DTSTAMP:20230301T073337Z
@@ -653,7 +653,7 @@ END:VCALENDAR`
 	t.Run("does not duplicate the task into another project", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 38}},
 			task:    &models.Task{UID: taskUID},
 			user:    u,
@@ -667,7 +667,7 @@ END:VCALENDAR`
 	t.Run("does not duplicate the task into its own project", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 36}},
 			task:    &models.Task{UID: taskUID},
 			user:    u,
@@ -681,7 +681,7 @@ END:VCALENDAR`
 	t.Run("creates a task when the uid is not taken", func(t *testing.T) {
 		db.LoadAndAssertFixtures(t)
 
-		storage := &VikunjaCaldavProjectStorage{
+		storage := &Task64CaldavProjectStorage{
 			project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: 38}},
 			task:    &models.Task{UID: "uid-caldav-test-fresh"},
 			user:    u,
@@ -689,7 +689,7 @@ END:VCALENDAR`
 
 		_, err := storage.CreateResource("/dav/projects/38/uid-caldav-test-fresh.ics", `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test-fresh
 DTSTAMP:20230301T073337Z

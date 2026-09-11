@@ -2,7 +2,7 @@ import wunderlistIcon from './icons/wunderlist.jpg'
 import todoistIcon from './icons/todoist.svg?url'
 import trelloIcon from './icons/trello.svg?url'
 import microsoftTodoIcon from './icons/microsoft-todo.svg?url'
-import vikunjaFileIcon from './icons/vikunja-file.png?url'
+import task64FileIcon from './icons/vikunja-file.png?url'
 import tickTickIcon from './icons/ticktick.svg?url'
 import wekanIcon from './icons/wekan.png?url'
 import csvIcon from './icons/csv.svg?url'
@@ -45,8 +45,8 @@ export const MIGRATORS = {
 	},
 	'vikunja-file': {
 		id: 'vikunja-file',
-		name: 'Vikunja Export',
-		icon: vikunjaFileIcon,
+		name: 'Task64 Export',
+		icon: task64FileIcon,
 		isFileMigrator: true,
 	},
 	ticktick: {

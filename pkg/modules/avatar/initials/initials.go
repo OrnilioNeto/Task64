@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // Provider represents the provider implementation of the initials provider

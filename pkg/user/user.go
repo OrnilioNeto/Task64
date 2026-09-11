@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,13 +26,13 @@ import (
 	"strconv"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
-	"code.vikunja.io/api/pkg/notifications"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v5"
@@ -211,7 +211,7 @@ func (u *User) GetName() string {
 func (u *User) GetNameAndFromEmail() string {
 	// Use RFC 5322 compliant address formatting to properly handle special characters like @ in names
 	addr := mail.Address{
-		Name:    u.GetName() + " via Vikunja",
+		Name:    u.GetName() + " via Task64",
 		Address: config.MailerFromEmail.GetString(),
 	}
 	return addr.String()
@@ -243,7 +243,7 @@ func GetFromAuth(a web.Auth) (*User, error) {
 type APIUserPassword struct {
 	// The user's username. Cannot contain anything that looks like an url or whitespaces.
 	Username string `json:"username" valid:"length(3|250),username" minLength:"3" maxLength:"250"`
-	// The user's password in clear text. Only used when registering the user. The maximum limi is 72 bytes, which may be less than 72 characters. This is due to the limit in the bcrypt hashing algorithm used to store passwords in Vikunja.
+	// The user's password in clear text. Only used when registering the user. The maximum limi is 72 bytes, which may be less than 72 characters. This is due to the limit in the bcrypt hashing algorithm used to store passwords in Task64.
 	Password string `json:"password" valid:"bcrypt_password" minLength:"8" maxLength:"72"`
 	// The user's email address
 	Email string `json:"email" valid:"email,length(0|250)" maxLength:"250"`

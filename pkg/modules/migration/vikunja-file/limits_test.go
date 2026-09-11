@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -30,10 +30,10 @@ import (
 	"os"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -87,8 +87,8 @@ const testLimitsDataJSON = `[{
 	"views": []
 }]`
 
-func TestErrVikunjaFileImportTooLargeHTTPErrorCode(t *testing.T) {
-	httpErr := (&ErrVikunjaFileImportTooLarge{Reason: "test"}).HTTPError()
+func TestErrTask64FileImportTooLargeHTTPErrorCode(t *testing.T) {
+	httpErr := (&ErrTask64FileImportTooLarge{Reason: "test"}).HTTPError()
 	assert.Equal(t, 14007, httpErr.Code)
 }
 
@@ -159,12 +159,12 @@ func runMigrate(t *testing.T, export []byte) error {
 func assertTooLarge(t *testing.T, err error) {
 	t.Helper()
 	require.Error(t, err)
-	var tooLarge *ErrVikunjaFileImportTooLarge
-	require.ErrorAs(t, err, &tooLarge, "expected ErrVikunjaFileImportTooLarge, got %v", err)
+	var tooLarge *ErrTask64FileImportTooLarge
+	require.ErrorAs(t, err, &tooLarge, "expected ErrTask64FileImportTooLarge, got %v", err)
 }
 
-// TestVikunjaFileLimits covers the import budgets from GHSA-w7jp-mf2v-8342.
-func TestVikunjaFileLimits(t *testing.T) {
+// TestTask64FileLimits covers the import budgets from GHSA-w7jp-mf2v-8342.
+func TestTask64FileLimits(t *testing.T) {
 	t.Run("compressed expansion is rejected by the preflight", func(t *testing.T) {
 		setLimits(t, "1MB", "1GB", 10000)
 

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"context"
 	"strings"
 
-	"code.vikunja.io/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
 )
 
 // labelNamespace is auto-prepended to label names that don't already have it,
@@ -41,7 +41,7 @@ func normalizeLabelTitle(raw string) string {
 
 // getOrCreateLabelByTitle returns the ID of the label with the given title,
 // creating it under the current user if it doesn't exist. Labels are global
-// per user in Vikunja, so this only finds labels visible to whoever the
+// per user in Task64, so this only finds labels visible to whoever the
 // `c` client is authenticated as (i.e. the bot when called from veans).
 func getOrCreateLabelByTitle(ctx context.Context, c *client.Client, title string) (*client.Label, error) {
 	existing, err := c.ListLabels(ctx, title)

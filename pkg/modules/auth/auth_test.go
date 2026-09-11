@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,9 @@ import (
 	"errors"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -44,8 +44,8 @@ func TestGetRefreshTokenCookiePaths(t *testing.T) {
 	}{
 		{"empty", "", ""},
 		{"root", "https://h/", ""},
-		{"subpath", "https://h/vikunja", "/vikunja"},
-		{"subpath with trailing slash", "https://h/vikunja/", "/vikunja"},
+		{"subpath", "https://h/task64", "/task64"},
+		{"subpath with trailing slash", "https://h/task64/", "/task64"},
 	}
 
 	for _, tt := range tests {

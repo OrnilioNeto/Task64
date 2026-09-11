@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,9 +25,9 @@ import (
 
 	petname "github.com/dustinkirkland/golang-petname"
 
-	"code.vikunja.io/veans/internal/auth"
-	"code.vikunja.io/veans/internal/client"
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/auth"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
 // resolveBotUser settles the bot identity for `veans init`:
@@ -132,14 +132,14 @@ func promptForReplacementName(p auth.Prompter, w io.Writer, previous string, own
 }
 
 // suggestPetname proposes a memorable bot- name like "bot-clever-otter".
-// Two words keeps the username short enough for Vikunja's 250-char limit
+// Two words keeps the username short enough for Task64's 250-char limit
 // while still giving plenty of namespace.
 func suggestPetname() string {
 	return "bot-" + petname.Generate(2, "-")
 }
 
 // isUsernameTakenErr returns true when the wrapped HTTP error from
-// CreateBotUser indicates a username collision. Vikunja replies 400 with
+// CreateBotUser indicates a username collision. Task64 replies 400 with
 // the canonical "user with this username already exists" message.
 func isUsernameTakenErr(e *output.Error) bool {
 	if e == nil {

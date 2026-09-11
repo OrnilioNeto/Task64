@@ -1,6 +1,6 @@
 name: Release binaries
 description: |
-  Build, sign, and publish release binaries for a Vikunja sub-project.
+  Build, sign, and publish release binaries for a Task64 sub-project.
 
   Derives every per-project path, cache key, artifact name, and S3 target
   from the `project` input. Callers only need to provide the project name,
@@ -9,7 +9,7 @@ description: |
 
 inputs:
   project:
-    description: 'Which project to build: "vikunja" or "veans".'
+    description: 'Which project to build: "task64" or "veans".'
     required: true
   release-version:
     description: |
@@ -48,15 +48,15 @@ runs:
         set -euo pipefail
 
         case "$PROJECT" in
-          vikunja|veans) ;;
+          task64|veans) ;;
           *)
-            echo "::error::Unknown project '$PROJECT'. Expected 'vikunja' or 'veans'." >&2
+            echo "::error::Unknown project '$PROJECT'. Expected 'task64' or 'veans'." >&2
             exit 1
             ;;
         esac
 
         case "$PROJECT" in
-          vikunja)
+          task64)
             output_dir="."
             dist_prefix="dist"
             ;;
@@ -87,15 +87,15 @@ runs:
       shell: bash
       run: chmod +x ./mage-static
 
-    - name: Download frontend dist (vikunja only)
-      if: inputs.project == 'vikunja'
+    - name: Download frontend dist (task64 only)
+      if: inputs.project == 'task64'
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
         name: frontend_dist
         path: frontend/dist
 
-    - name: Generate config.yml.sample (vikunja only)
-      if: inputs.project == 'vikunja'
+    - name: Generate config.yml.sample (task64 only)
+      if: inputs.project == 'task64'
       shell: bash
       run: ./mage-static generate:config-yaml 1
 

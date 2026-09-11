@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// Package richtext converts Vikunja's canonical rich-text HTML to and from
+// Package richtext converts Task64's canonical rich-text HTML to and from
 // Markdown at the API/CalDAV boundaries. Storage stays HTML; only the wire
 // representation changes.
 package richtext

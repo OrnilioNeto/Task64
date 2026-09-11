@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ import (
 	"strings"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -99,7 +99,7 @@ func setupMailerConfig(t *testing.T, host string, port int) {
 	config.MailerEnabled.Set(true)
 	config.MailerHost.Set(host)
 	config.MailerPort.Set(port)
-	config.MailerFromEmail.Set("mail@vikunja")
+	config.MailerFromEmail.Set("mail@task64")
 	config.MailerQueueTimeout.Set(2)
 
 	wasUnderTest := isUnderTest

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // Package humabridge mounts Huma's echo/v5 adapter (upstream humaecho) onto
-// an Echo group and adds the Vikunja-specific glue upstream doesn't provide:
+// an Echo group and adds the Task64-specific glue upstream doesn't provide:
 //
 //   - every request through the group stashes its *echo.Context on the
 //     request context under EchoContextKey, so handlers can reach the echo

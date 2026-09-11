@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"io"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/utils"
-	"code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/version"
 
 	"github.com/wneessen/go-mail"
 )
@@ -78,7 +78,7 @@ func SendTestMail(opts *Opts) error {
 
 func getMessage(opts *Opts) *mail.Msg {
 	m := mail.NewMsg()
-	m.SetUserAgent("Vikunja " + version.Version)
+	m.SetUserAgent("Task64 " + version.Version)
 
 	// Set an RFC 5322 compliant Message-ID using the public URL domain
 	// instead of relying on os.Hostname() which is unreliable in containers.
@@ -86,7 +86,7 @@ func getMessage(opts *Opts) *mail.Msg {
 	messageID := randPart + "@" + GetMailDomain()
 	m.SetMessageIDWithValue(messageID)
 	if opts.From == "" {
-		opts.From = "Vikunja <" + config.MailerFromEmail.GetString() + ">"
+		opts.From = "Task64 <" + config.MailerFromEmail.GetString() + ">"
 	}
 	_ = m.From(opts.From)
 	_ = m.To(opts.To)

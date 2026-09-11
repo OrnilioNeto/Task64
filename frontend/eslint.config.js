@@ -21,14 +21,14 @@ export default [
 	},
 	{
 		plugins: {
-			vikunja: {
+			task64: {
 				rules: {
 					'icon-button-accessible-name': iconButtonAccessibleName,
 				},
 			},
 		},
 		rules: {
-			'vikunja/icon-button-accessible-name': 'error',
+			'task64/icon-button-accessible-name': 'error',
 
 			'quotes': ['error', 'single'],
 			'comma-dangle': ['error', 'always-multiline'],

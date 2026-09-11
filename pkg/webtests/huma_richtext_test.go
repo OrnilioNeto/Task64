@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -89,9 +89,9 @@ func TestHumaRichText_FormatDocumented(t *testing.T) {
 	// it would be a trap (markdown stored as HTML). Stripped by stripPatchFormatQuery.
 	assert.False(t, hasParam("/labels/{id}", "patch", "format", "query"), "PATCH must not advertise ?format")
 
-	// The X-Vikunja-Format header is documented centrally, not as a per-op param.
-	assert.False(t, hasParam("/labels/{id}", "get", "X-Vikunja-Format", "header"))
-	assert.False(t, hasParam("/labels/{id}", "patch", "X-Vikunja-Format", "header"))
+	// The X-Task64-Format header is documented centrally, not as a per-op param.
+	assert.False(t, hasParam("/labels/{id}", "get", "X-Task64-Format", "header"))
+	assert.False(t, hasParam("/labels/{id}", "patch", "X-Task64-Format", "header"))
 
 	// Non-rich-text ops carry no format param.
 	assert.False(t, hasParam("/tasks/{task}/comments/{commentid}", "delete", "format", "query"))
@@ -99,7 +99,7 @@ func TestHumaRichText_FormatDocumented(t *testing.T) {
 	// The cross-cutting behavior, including the PATCH header, is in the API description.
 	assert.Contains(t, spec.Info.Description, "Rich-text fields")
 	assert.Contains(t, spec.Info.Description, "CalDAV always exchanges")
-	assert.Contains(t, spec.Info.Description, "X-Vikunja-Format")
+	assert.Contains(t, spec.Info.Description, "X-Task64-Format")
 }
 
 func TestHumaRichText_Read(t *testing.T) {
@@ -317,12 +317,12 @@ func TestHumaRichText_Write(t *testing.T) {
 		id, _ := decodeLabel(t, rec.Body.Bytes())
 
 		// AutoPatch strips the query string but forwards headers, so PATCH markdown
-		// support rides on X-Vikunja-Format.
+		// support rides on X-Task64-Format.
 		req := httptest.NewRequest(http.MethodPatch, fmt.Sprintf("/api/v2/labels/%d", id),
 			strings.NewReader(`{"description":"new **bold**"}`))
 		req.Header.Set("Content-Type", "application/merge-patch+json")
 		req.Header.Set("Authorization", "Bearer "+token)
-		req.Header.Set("X-Vikunja-Format", "markdown")
+		req.Header.Set("X-Task64-Format", "markdown")
 		rec = httptest.NewRecorder()
 		e.ServeHTTP(rec, req)
 		require.Equal(t, http.StatusOK, rec.Code, "body: %s", rec.Body.String())

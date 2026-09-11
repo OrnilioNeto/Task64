@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -35,17 +35,17 @@ import (
 	"strconv"
 	"strings"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	auth2 "code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/modules/background"
-	"code.vikunja.io/api/pkg/modules/background/unsplash"
-	"code.vikunja.io/api/pkg/modules/background/upload"
-	"code.vikunja.io/api/pkg/modules/imageutils"
-	"code.vikunja.io/api/pkg/web"
-	webfiles "code.vikunja.io/api/pkg/web/files"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	auth2 "github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background/unsplash"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background/upload"
+	"github.com/OrnilioNeto/Task64/pkg/modules/imageutils"
+	"github.com/OrnilioNeto/Task64/pkg/web"
+	webfiles "github.com/OrnilioNeto/Task64/pkg/web/files"
 
 	"github.com/bbrks/go-blurhash"
 	"github.com/gabriel-vasile/mimetype"

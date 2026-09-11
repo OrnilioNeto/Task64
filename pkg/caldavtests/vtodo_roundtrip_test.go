@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -95,9 +95,9 @@ func TestVTodoRoundTrip(t *testing.T) {
 
 	t.Run("PRIORITY round-trips", func(t *testing.T) {
 		// RFC 5545 §3.8.1.9 (rfc5545.txt line 4956)
-		// CalDAV priority 1 = Vikunja priority 5 (highest)
-		// The round-trip may map through Vikunja's priority system
-		// Vikunja maps: CalDAV 1→Vikunja 5→CalDAV 1
+		// CalDAV priority 1 = Task64 priority 5 (highest)
+		// The round-trip may map through Task64's priority system
+		// Task64 maps: CalDAV 1→Task64 5→CalDAV 1
 		vtodo := NewVTodo("rt-priority-1", "Priority 1 Test").Priority(1).Build()
 		result := putAndGet(t, "rt-priority-1", "/dav/projects/36/rt-priority-1.ics", vtodo)
 		assert.Equal(t, "1", getVTodoProperty(result, ics.ComponentPropertyPriority),
@@ -105,7 +105,7 @@ func TestVTodoRoundTrip(t *testing.T) {
 	})
 
 	t.Run("PRIORITY 5 round-trips as 5", func(t *testing.T) {
-		// CalDAV 5 = Vikunja 2 (medium) → CalDAV 5
+		// CalDAV 5 = Task64 2 (medium) → CalDAV 5
 		vtodo := NewVTodo("rt-priority-5", "Priority 5 Test").Priority(5).Build()
 		result := putAndGet(t, "rt-priority-5", "/dav/projects/36/rt-priority-5.ics", vtodo)
 		assert.Equal(t, "5", getVTodoProperty(result, ics.ComponentPropertyPriority),
@@ -113,7 +113,7 @@ func TestVTodoRoundTrip(t *testing.T) {
 	})
 
 	t.Run("PRIORITY 9 round-trips as 9", func(t *testing.T) {
-		// CalDAV 9 = Vikunja 1 (low) → CalDAV 9
+		// CalDAV 9 = Task64 1 (low) → CalDAV 9
 		vtodo := NewVTodo("rt-priority-9", "Priority 9 Test").Priority(9).Build()
 		result := putAndGet(t, "rt-priority-9", "/dav/projects/36/rt-priority-9.ics", vtodo)
 		assert.Equal(t, "9", getVTodoProperty(result, ics.ComponentPropertyPriority),
@@ -220,7 +220,7 @@ func TestVTodoRoundTrip(t *testing.T) {
 		result := putAndGet(t, "rt-color", "/dav/projects/36/rt-color.ics", vtodo)
 
 		body := result.Serialize(&ics.SerializationConfiguration{MaxLength: 75, PropertyMaxLength: 75, NewLine: "\r\n"})
-		// Vikunja should preserve the color in at least one of the color properties
+		// Task64 should preserve the color in at least one of the color properties
 		colorFound := strings.Contains(body, "ff0000") ||
 			strings.Contains(body, "FF0000") ||
 			strings.Contains(body, "#ff0000")
@@ -245,7 +245,7 @@ func TestVTodoRRuleRoundTrip(t *testing.T) {
 	}
 
 	t.Run("RRULE FREQ=DAILY round-trips", func(t *testing.T) {
-		t.Skip("Known limitation: Vikunja does not round-trip RRULE via CalDAV")
+		t.Skip("Known limitation: Task64 does not round-trip RRULE via CalDAV")
 		vtodo := NewVTodo("rt-rrule-daily", "Daily Repeat").
 			Due(time.Date(2024, 6, 1, 9, 0, 0, 0, time.UTC)).
 			Rrule("FREQ=DAILY;INTERVAL=1").
@@ -258,7 +258,7 @@ func TestVTodoRRuleRoundTrip(t *testing.T) {
 	})
 
 	t.Run("RRULE FREQ=WEEKLY round-trips", func(t *testing.T) {
-		t.Skip("Known limitation: Vikunja only supports DAILY repeat mode, WEEKLY is not round-tripped")
+		t.Skip("Known limitation: Task64 only supports DAILY repeat mode, WEEKLY is not round-tripped")
 		vtodo := NewVTodo("rt-rrule-weekly", "Weekly Repeat").
 			Due(time.Date(2024, 6, 1, 9, 0, 0, 0, time.UTC)).
 			Rrule("FREQ=WEEKLY;INTERVAL=2").
@@ -271,7 +271,7 @@ func TestVTodoRRuleRoundTrip(t *testing.T) {
 	})
 
 	t.Run("RRULE FREQ=MONTHLY round-trips", func(t *testing.T) {
-		t.Skip("Known limitation: Vikunja only supports DAILY repeat mode, MONTHLY is not round-tripped")
+		t.Skip("Known limitation: Task64 only supports DAILY repeat mode, MONTHLY is not round-tripped")
 		vtodo := NewVTodo("rt-rrule-monthly", "Monthly Repeat").
 			Due(time.Date(2024, 6, 15, 9, 0, 0, 0, time.UTC)).
 			Rrule("FREQ=MONTHLY;BYMONTHDAY=15").
@@ -289,14 +289,14 @@ func TestVTodoPriorityMapping(t *testing.T) {
 	// "A value of 0 specifies an undefined priority. A value of 1
 	//  is the highest priority. A value of 9 is the lowest priority."
 	//
-	// Vikunja mapping (pkg/caldav/priority.go):
-	// CalDAV 1 → Vikunja 5 → CalDAV 1 (DO NOW)
-	// CalDAV 2 → Vikunja 4 → CalDAV 2 (Urgent)
-	// CalDAV 3 → Vikunja 3 → CalDAV 3 (High)
-	// CalDAV 4 → Vikunja 3 → CalDAV 3 (maps to High, LOSSY)
-	// CalDAV 5 → Vikunja 2 → CalDAV 5 (Medium)
-	// CalDAV 6-8 → Vikunja 1 → CalDAV 9 (maps to Low, LOSSY)
-	// CalDAV 9 → Vikunja 1 → CalDAV 9 (Low)
+	// Task64 mapping (pkg/caldav/priority.go):
+	// CalDAV 1 → Task64 5 → CalDAV 1 (DO NOW)
+	// CalDAV 2 → Task64 4 → CalDAV 2 (Urgent)
+	// CalDAV 3 → Task64 3 → CalDAV 3 (High)
+	// CalDAV 4 → Task64 3 → CalDAV 3 (maps to High, LOSSY)
+	// CalDAV 5 → Task64 2 → CalDAV 5 (Medium)
+	// CalDAV 6-8 → Task64 1 → CalDAV 9 (maps to Low, LOSSY)
+	// CalDAV 9 → Task64 1 → CalDAV 9 (Low)
 
 	putAndGetPriority := func(t *testing.T, uid string, inputPriority int) string {
 		t.Helper()
@@ -332,12 +332,12 @@ func TestVTodoPriorityMapping(t *testing.T) {
 	t.Run("Priority 4 maps to 3 (lossy)", func(t *testing.T) {
 		result := putAndGetPriority(t, "p4", 4)
 		assert.Equal(t, "3", result,
-			"CalDAV priority 4 maps to Vikunja 3 (High), which exports as CalDAV 3")
+			"CalDAV priority 4 maps to Task64 3 (High), which exports as CalDAV 3")
 	})
 	t.Run("Priority 6 maps to 9 (lossy)", func(t *testing.T) {
 		result := putAndGetPriority(t, "p6", 6)
 		assert.Equal(t, "9", result,
-			"CalDAV priority 6 maps to Vikunja 1 (Low), which exports as CalDAV 9")
+			"CalDAV priority 6 maps to Task64 1 (Low), which exports as CalDAV 9")
 	})
 	t.Run("Priority 7 maps to 9 (lossy)", func(t *testing.T) {
 		result := putAndGetPriority(t, "p7", 7)
@@ -368,8 +368,8 @@ func TestVTodoDurationRoundTrip(t *testing.T) {
 	}
 
 	t.Run("DTSTART + DURATION computes end date", func(t *testing.T) {
-		t.Skip("Known limitation: Vikunja does not export DTEND or DURATION for VTODOs")
-		// When DTSTART and DURATION are specified, Vikunja should compute
+		t.Skip("Known limitation: Task64 does not export DTEND or DURATION for VTODOs")
+		// When DTSTART and DURATION are specified, Task64 should compute
 		// EndDate = DTSTART + DURATION (pkg/caldav/parsing.go:412-414)
 		vtodo := NewVTodo("rt-duration", "Duration Test").
 			DtStart(time.Date(2024, 6, 1, 9, 0, 0, 0, time.UTC)).
@@ -377,7 +377,7 @@ func TestVTodoDurationRoundTrip(t *testing.T) {
 			Build()
 		result := putAndGet(t, "rt-duration", vtodo)
 
-		// Vikunja stores DTSTART and EndDate (DTSTART+DURATION)
+		// Task64 stores DTSTART and EndDate (DTSTART+DURATION)
 		// On export, it may output DTSTART and DTEND, or DTSTART and DURATION
 		body := result.Serialize(&ics.SerializationConfiguration{MaxLength: 75, PropertyMaxLength: 75, NewLine: "\r\n"})
 		hasEnd := strings.Contains(body, "DTEND") || strings.Contains(body, "DURATION")

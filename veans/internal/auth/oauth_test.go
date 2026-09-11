@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -67,12 +67,12 @@ func TestGeneratePKCE_Unique(t *testing.T) {
 
 func TestBuildAuthorizeURL(t *testing.T) {
 	u := buildAuthorizeURL(
-		"https://vikunja.example.com",
+		"https://task64.example.com",
 		"http://127.0.0.1:54321/callback",
 		PKCEPair{Challenge: "CHL"},
 		"S",
 	)
-	if !strings.HasPrefix(u, "https://vikunja.example.com/oauth/authorize?") {
+	if !strings.HasPrefix(u, "https://task64.example.com/oauth/authorize?") {
 		t.Fatalf("unexpected prefix: %s", u)
 	}
 	for _, want := range []string{
@@ -90,7 +90,7 @@ func TestBuildAuthorizeURL(t *testing.T) {
 	}
 	// Server URL with trailing slash should still produce a single slash
 	// before the path.
-	u2 := buildAuthorizeURL("https://vikunja.example.com/", "", PKCEPair{}, "")
+	u2 := buildAuthorizeURL("https://task64.example.com/", "", PKCEPair{}, "")
 	if strings.Contains(u2, "//oauth") {
 		t.Errorf("trailing slash leaked into URL: %s", u2)
 	}

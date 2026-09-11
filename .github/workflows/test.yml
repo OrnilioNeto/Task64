@@ -56,11 +56,11 @@ jobs:
           touch frontend/dist/index.html
           chmod +x ./mage-static
           ./mage-static build
-      - name: Store Vikunja Binary
+      - name: Store Task64 Binary
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: vikunja_bin
-          path: ./vikunja
+          name: task64_bin
+          path: ./task64
 
   api-lint:
     runs-on: ubuntu-latest
@@ -144,22 +144,22 @@ jobs:
       migration-smoke-db-mariadb:
         image: ${{ matrix.db == 'mariadb' && 'mariadb:12@sha256:f54db0cb3ccfe9431aba6d08c65a1763c499789b116b4cb651dd7fcf325965b3' || '' }}
         env:
-          MYSQL_ROOT_PASSWORD: vikunjatest
-          MYSQL_DATABASE: vikunjatest
+          MYSQL_ROOT_PASSWORD: task64test
+          MYSQL_DATABASE: task64test
         ports:
           - 3306:3306
       migration-smoke-db-mysql:
         image: ${{ matrix.db == 'mysql' && 'mysql:8@sha256:da906917ca4ace3ba55538b7c2ee97a9bc865ef14a4b6920b021f0249d603f3d' || '' }}
         env:
-          MYSQL_ROOT_PASSWORD: vikunjatest
-          MYSQL_DATABASE: vikunjatest
+          MYSQL_ROOT_PASSWORD: task64test
+          MYSQL_DATABASE: task64test
         ports:
           - 3306:3306
       migration-smoke-db-postgres:
         image: postgres:18@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280
         env:
-          POSTGRES_PASSWORD: vikunjatest
-          POSTGRES_DB: vikunjatest
+          POSTGRES_PASSWORD: task64test
+          POSTGRES_DB: task64test
         ports:
           - 5432:5432
     steps:
@@ -167,26 +167,35 @@ jobs:
         run: |
           wget https://dl.vikunja.io/vikunja/unstable/vikunja-unstable-linux-amd64-full.zip -q -O vikunja-latest.zip
           unzip vikunja-latest.zip vikunja-unstable-linux-amd64
-      - name: Download Vikunja Binary
+      - name: Download Task64 Binary
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_bin
+          name: task64_bin
       - name: run migration
         env:
+          TASK64_DATABASE_TYPE: ${{ (matrix.db == 'mariadb' || matrix.db == 'mysql') && 'mysql' || matrix.db }}
+          TASK64_DATABASE_PATH: ./task64-migration-test.db
+          TASK64_DATABASE_USER: ${{ matrix.db == 'postgres' && 'postgres' || 'root' }}
+          TASK64_DATABASE_PASSWORD: task64test
+          TASK64_DATABASE_DATABASE: task64test
+          TASK64_DATABASE_SSLMODE: disable
+          TASK64_LOG_DATABASE: stdout
+          TASK64_LOG_DATABASELEVEL: debug
+          TASK64_SERVICE_PUBLICURL: http://127.0.0.1:3456
           VIKUNJA_DATABASE_TYPE: ${{ (matrix.db == 'mariadb' || matrix.db == 'mysql') && 'mysql' || matrix.db }}
-          VIKUNJA_DATABASE_PATH: ./vikunja-migration-test.db
+          VIKUNJA_DATABASE_PATH: ./task64-migration-test.db
           VIKUNJA_DATABASE_USER: ${{ matrix.db == 'postgres' && 'postgres' || 'root' }}
-          VIKUNJA_DATABASE_PASSWORD: vikunjatest
-          VIKUNJA_DATABASE_DATABASE: vikunjatest
+          VIKUNJA_DATABASE_PASSWORD: task64test
+          VIKUNJA_DATABASE_DATABASE: task64test
           VIKUNJA_DATABASE_SSLMODE: disable
           VIKUNJA_LOG_DATABASE: stdout
           VIKUNJA_LOG_DATABASELEVEL: debug
           VIKUNJA_SERVICE_PUBLICURL: http://127.0.0.1:3456
         run: |
           # Wait for MySQL to be ready if using MySQL
-          if [ "$VIKUNJA_DATABASE_TYPE" = "mysql" ]; then
+          if [ "$TASK64_DATABASE_TYPE" = "mysql" ]; then
             echo "Waiting for MySQL to be ready..."
-            until mysql -h 127.0.0.1 -u root -pvikunjatest -e "SELECT 1" &> /dev/null; do
+            until mysql -h 127.0.0.1 -u root -ptask64test -e "SELECT 1" &> /dev/null; do
               echo "MySQL not ready yet, waiting 2 seconds..."
               sleep 2
             done
@@ -194,9 +203,9 @@ jobs:
           fi
 
           # Wait for PostgreSQL to be ready if using PostgreSQL
-          if [ "$VIKUNJA_DATABASE_TYPE" = "postgres" ]; then
+          if [ "$TASK64_DATABASE_TYPE" = "postgres" ]; then
             echo "Waiting for PostgreSQL to be ready..."
-            until PGPASSWORD=vikunjatest psql -h 127.0.0.1 -U postgres -d vikunjatest -c "SELECT 1" &> /dev/null; do
+            until PGPASSWORD=task64test psql -h 127.0.0.1 -U postgres -d task64test -c "SELECT 1" &> /dev/null; do
               echo "PostgreSQL not ready yet, waiting 2 seconds..."
               sleep 2
             done
@@ -205,8 +214,8 @@ jobs:
 
           ./vikunja-unstable-linux-amd64 migrate
           # Run the migrations from the binary built in the step before
-          chmod +x vikunja
-          ./vikunja migrate
+          chmod +x task64
+          ./task64 migrate
 
   test-api:
     runs-on: ubuntu-latest
@@ -228,29 +237,29 @@ jobs:
       db-mariadb:
         image: ${{ matrix.db == 'mariadb' && 'mariadb:12@sha256:5b6a1eac15b85b981a61afb89aea2a22bf76b5f58809d05f0bcc13ab6ec44cb8' || '' }}
         env:
-          MYSQL_ROOT_PASSWORD: vikunjatest
-          MYSQL_DATABASE: vikunjatest
+          MYSQL_ROOT_PASSWORD: task64test
+          MYSQL_DATABASE: task64test
         ports:
           - 3306:3306
       db-mysql:
         image: ${{ matrix.db == 'mysql' && 'mysql:8@sha256:da906917ca4ace3ba55538b7c2ee97a9bc865ef14a4b6920b021f0249d603f3d' || '' }}
         env:
-          MYSQL_ROOT_PASSWORD: vikunjatest
-          MYSQL_DATABASE: vikunjatest
+          MYSQL_ROOT_PASSWORD: task64test
+          MYSQL_DATABASE: task64test
         ports:
           - 3306:3306
       db-postgres:
         image: ${{ matrix.db == 'postgres' && 'postgres:18@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8' || '' }}
         env:
-          POSTGRES_PASSWORD: vikunjatest
-          POSTGRES_DB: vikunjatest
+          POSTGRES_PASSWORD: task64test
+          POSTGRES_DB: task64test
         ports:
           - 5432:5432
       db-paradedb:
         image: ${{ matrix.db == 'paradedb' && 'paradedb/paradedb:latest-pg17@sha256:3f608f8a531e5552b2e546471271fa11e305a1261b9c4cccfb723b0fa4ad092a' || '' }}
         env:
-          POSTGRES_PASSWORD: vikunjatest
-          POSTGRES_DB: vikunjatest
+          POSTGRES_PASSWORD: task64test
+          POSTGRES_DB: task64test
         ports:
           - 5433:5432
       test-ldap:
@@ -271,28 +280,28 @@ jobs:
         if: matrix.db == 'postgres' || matrix.db == 'paradedb'
         run: |
           # Connect to Postgres and disable fsync, full_page_writes, and synchronous_commit for faster tests
-          PGPASSWORD=vikunjatest psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d vikunjatest -c "ALTER SYSTEM SET fsync = off;"
-          PGPASSWORD=vikunjatest psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d vikunjatest -c "ALTER SYSTEM SET full_page_writes = off;"
-          PGPASSWORD=vikunjatest psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d vikunjatest -c "ALTER SYSTEM SET synchronous_commit = off;"
+          PGPASSWORD=task64test psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d task64test -c "ALTER SYSTEM SET fsync = off;"
+          PGPASSWORD=task64test psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d task64test -c "ALTER SYSTEM SET full_page_writes = off;"
+          PGPASSWORD=task64test psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d task64test -c "ALTER SYSTEM SET synchronous_commit = off;"
           # Reload the configuration
-          PGPASSWORD=vikunjatest psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d vikunjatest -c "SELECT pg_reload_conf();"
+          PGPASSWORD=task64test psql -h localhost ${{ matrix.db == 'paradedb' && ' -p 5433' || '' }} -U postgres -d task64test -c "SELECT pg_reload_conf();"
       - name: test
         env:
-          VIKUNJA_TESTS_USE_CONFIG: ${{ matrix.db != 'sqlite-in-memory' && 1 || 0 }}
-          VIKUNJA_DATABASE_TYPE: ${{ (matrix.db == 'paradedb' && 'postgres') || ((matrix.db == 'mariadb' || matrix.db == 'mysql') && 'mysql') || matrix.db }}
-          VIKUNJA_DATABASE_USER: ${{ (matrix.db == 'mariadb' || matrix.db == 'mysql') && 'root' || 'postgres' }}
-          VIKUNJA_DATABASE_PASSWORD: vikunjatest
-          VIKUNJA_DATABASE_DATABASE: vikunjatest
-          VIKUNJA_DATABASE_SSLMODE: disable
-          VIKUNJA_DATABASE_HOST: localhost${{ matrix.db == 'paradedb' && ':5433' || '' }}
-          VIKUNJA_AUTH_LDAP_ENABLED: 1
-          VIKUNJA_AUTH_LDAP_HOST: localhost
-          VIKUNJA_AUTH_LDAP_USETLS: 0
-          VIKUNJA_AUTH_LDAP_BASEDN: dc=planetexpress,dc=com
-          VIKUNJA_AUTH_LDAP_BINDDN: uid=gitea,ou=service,dc=planetexpress,dc=com
-          VIKUNJA_AUTH_LDAP_BINDPASSWORD: password
-          VIKUNJA_AUTH_LDAP_USERFILTER: "(&(objectclass=inetorgperson)(uid=%s))"
-          VIKUNJA_SERVICE_PUBLICURL: http://127.0.0.1:3456
+          TASK64_TESTS_USE_CONFIG: ${{ matrix.db != 'sqlite-in-memory' && 1 || 0 }}
+          TASK64_DATABASE_TYPE: ${{ (matrix.db == 'paradedb' && 'postgres') || ((matrix.db == 'mariadb' || matrix.db == 'mysql') && 'mysql') || matrix.db }}
+          TASK64_DATABASE_USER: ${{ (matrix.db == 'mariadb' || matrix.db == 'mysql') && 'root' || 'postgres' }}
+          TASK64_DATABASE_PASSWORD: task64test
+          TASK64_DATABASE_DATABASE: task64test
+          TASK64_DATABASE_SSLMODE: disable
+          TASK64_DATABASE_HOST: localhost${{ matrix.db == 'paradedb' && ':5433' || '' }}
+          TASK64_AUTH_LDAP_ENABLED: 1
+          TASK64_AUTH_LDAP_HOST: localhost
+          TASK64_AUTH_LDAP_USETLS: 0
+          TASK64_AUTH_LDAP_BASEDN: dc=planetexpress,dc=com
+          TASK64_AUTH_LDAP_BINDDN: uid=gitea,ou=service,dc=planetexpress,dc=com
+          TASK64_AUTH_LDAP_BINDPASSWORD: password
+          TASK64_AUTH_LDAP_USERFILTER: "(&(objectclass=inetorgperson)(uid=%s))"
+          TASK64_SERVICE_PUBLICURL: http://127.0.0.1:3456
         run: |
           mkdir -p frontend/dist
           touch frontend/dist/index.html
@@ -349,9 +358,9 @@ jobs:
       test-minio:
         image: bitnamilegacy/minio:latest@sha256:451fe6858cb770cc9d0e77ba811ce287420f781c7c1b806a386f6896471a349c
         env:
-          MINIO_ROOT_USER: vikunja
-          MINIO_ROOT_PASSWORD: vikunjatest
-          MINIO_DEFAULT_BUCKETS: vikunja-test
+          MINIO_ROOT_USER: task64
+          MINIO_ROOT_PASSWORD: task64test
+          MINIO_DEFAULT_BUCKETS: task64-test
         ports:
           - 9000:9000
     steps:
@@ -366,16 +375,16 @@ jobs:
           go-version: stable
       - name: test S3 file storage integration
         env:
-          VIKUNJA_TESTS_USE_CONFIG: 1
-          VIKUNJA_DATABASE_TYPE: sqlite
-          VIKUNJA_FILES_TYPE: s3
-          VIKUNJA_FILES_S3_ENDPOINT: http://localhost:9000
-          VIKUNJA_FILES_S3_BUCKET: vikunja-test
-          VIKUNJA_FILES_S3_REGION: us-east-1
-          VIKUNJA_FILES_S3_ACCESSKEY: vikunja
-          VIKUNJA_FILES_S3_SECRETKEY: vikunjatest
-          VIKUNJA_FILES_S3_USEPATHSTYLE: true
-          VIKUNJA_SERVICE_PUBLICURL: http://127.0.0.1:3456
+          TASK64_TESTS_USE_CONFIG: 1
+          TASK64_DATABASE_TYPE: sqlite
+          TASK64_FILES_TYPE: s3
+          TASK64_FILES_S3_ENDPOINT: http://localhost:9000
+          TASK64_FILES_S3_BUCKET: task64-test
+          TASK64_FILES_S3_REGION: us-east-1
+          TASK64_FILES_S3_ACCESSKEY: task64
+          TASK64_FILES_S3_SECRETKEY: task64test
+          TASK64_FILES_S3_USEPATHSTYLE: true
+          TASK64_SERVICE_PUBLICURL: http://127.0.0.1:3456
         run: |
           mkdir -p frontend/dist
           touch frontend/dist/index.html
@@ -447,10 +456,10 @@ jobs:
       - api-build
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Download Vikunja Binary
+      - name: Download Task64 Binary
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_bin
+          name: task64_bin
       - name: Set up Go
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
@@ -459,31 +468,31 @@ jobs:
         # The cached mage-static artifact has the parent magefile compiled
         # in — we need a generic mage binary to pick up veans/magefile.go.
         run: go install github.com/magefile/mage@v1.17.2
-      - run: chmod +x ./vikunja
-      - name: Run veans e2e against ephemeral Vikunja
+      - run: chmod +x ./task64
+      - name: Run veans e2e against ephemeral Task64
         env:
-          VIKUNJA_SERVICE_INTERFACE: ":3456"
-          VIKUNJA_SERVICE_PUBLICURL: "http://127.0.0.1:3456/"
-          VIKUNJA_SERVICE_JWTSECRET: "veans-e2e-jwt-secret-do-not-use-in-production"
+          TASK64_SERVICE_INTERFACE: ":3456"
+          TASK64_SERVICE_PUBLICURL: "http://127.0.0.1:3456/"
+          TASK64_SERVICE_JWTSECRET: "veans-e2e-jwt-secret-do-not-use-in-production"
           # Enables PATCH /api/v1/test/{table} — the e2e suite seeds its
           # own admin via this endpoint (see veans/e2e/helpers.go), same
           # mechanism the playwright suite uses.
-          VIKUNJA_SERVICE_TESTINGTOKEN: averyLongSecretToSe33dtheDB
-          VIKUNJA_DATABASE_TYPE: sqlite
-          VIKUNJA_DATABASE_PATH: memory
-          VIKUNJA_LOG_LEVEL: WARNING
-          VIKUNJA_MAILER_ENABLED: "false"
-          VIKUNJA_REDIS_ENABLED: "false"
-          VIKUNJA_RATELIMIT_NOAUTHLIMIT: "1000"
+          TASK64_SERVICE_TESTINGTOKEN: averyLongSecretToSe33dtheDB
+          TASK64_DATABASE_TYPE: sqlite
+          TASK64_DATABASE_PATH: memory
+          TASK64_LOG_LEVEL: WARNING
+          TASK64_MAILER_ENABLED: "false"
+          TASK64_REDIS_ENABLED: "false"
+          TASK64_RATELIMIT_NOAUTHLIMIT: "1000"
           VEANS_E2E_API_URL: http://127.0.0.1:3456
-          # Same value as VIKUNJA_SERVICE_TESTINGTOKEN above — pass-through
+          # Same value as TASK64_SERVICE_TESTINGTOKEN above — pass-through
           # so the test harness can authenticate against /api/v1/test/.
           VEANS_E2E_TESTING_TOKEN: averyLongSecretToSe33dtheDB
         run: |
           set -e
           # Boot the prebuilt API and tests in one shell — backgrounded
           # processes don't survive step boundaries on GH runners.
-          nohup ./vikunja web > /tmp/vikunja.log 2>&1 &
+          nohup ./task64 web > /tmp/task64.log 2>&1 &
           API_PID=$!
           trap "kill $API_PID 2>/dev/null || true" EXIT
           for i in $(seq 1 60); do
@@ -495,7 +504,7 @@ jobs:
           done
           if ! curl -sf http://127.0.0.1:3456/api/v1/info >/dev/null; then
             echo "::error::API failed to start; log:"
-            cat /tmp/vikunja.log
+            cat /tmp/task64.log
             exit 1
           fi
           # `mage test:e2e` builds the binary once and exports VEANS_BINARY
@@ -507,8 +516,8 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: veans-e2e-vikunja-log
-          path: /tmp/vikunja.log
+          name: veans-e2e-task64-log
+          path: /tmp/task64.log
           retention-days: 7
 
   test-frontend-e2e-playwright:
@@ -531,10 +540,10 @@ jobs:
       options: --user 1001
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Download Vikunja Binary
+      - name: Download Task64 Binary
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_bin
+          name: task64_bin
       - uses: ./.github/actions/setup-frontend
         with:
           install-e2e-binaries: false # Playwright browsers already in container
@@ -546,12 +555,12 @@ jobs:
       - name: Inject testing flag into index.html
         run: |
           sed -i 's/<head>/<head><script>window.TESTING=true;<\/script>/' ./frontend/dist/index.html
-      - run: chmod +x ./vikunja
+      - run: chmod +x ./task64
       - name: Run Playwright tests
         timeout-minutes: 20
         working-directory: frontend
         run: |
-          pnpm run preview:vikunja &
+          pnpm run preview:task64 &
           pnpm run preview &
 
           # Wait for services to be ready (using GET method)
@@ -561,18 +570,18 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS: 1
           TEST_SECRET: averyLongSecretToSe33dtheDB
-          VIKUNJA_SERVICE_TESTINGTOKEN: averyLongSecretToSe33dtheDB
-          VIKUNJA_LOG_LEVEL: DEBUG
-          VIKUNJA_CORS_ENABLE: 1
-          VIKUNJA_SERVICE_PUBLICURL: http://127.0.0.1:3456
-          VIKUNJA_DATABASE_PATH: memory
-          VIKUNJA_DATABASE_TYPE: sqlite
-          VIKUNJA_RATELIMIT_NOAUTHLIMIT: 1000
-          VIKUNJA_AUTH_OPENID_ENABLED: 1
-          VIKUNJA_AUTH_OPENID_PROVIDERS_DEX_NAME: Dex
-          VIKUNJA_AUTH_OPENID_PROVIDERS_DEX_AUTHURL: http://dex:5556
-          VIKUNJA_AUTH_OPENID_PROVIDERS_DEX_CLIENTID: vikunja
-          VIKUNJA_AUTH_OPENID_PROVIDERS_DEX_CLIENTSECRET: secret
+          TASK64_SERVICE_TESTINGTOKEN: averyLongSecretToSe33dtheDB
+          TASK64_LOG_LEVEL: DEBUG
+          TASK64_CORS_ENABLE: 1
+          TASK64_SERVICE_PUBLICURL: http://127.0.0.1:3456
+          TASK64_DATABASE_PATH: memory
+          TASK64_DATABASE_TYPE: sqlite
+          TASK64_RATELIMIT_NOAUTHLIMIT: 1000
+          TASK64_AUTH_OPENID_ENABLED: 1
+          TASK64_AUTH_OPENID_PROVIDERS_DEX_NAME: Dex
+          TASK64_AUTH_OPENID_PROVIDERS_DEX_AUTHURL: http://dex:5556
+          TASK64_AUTH_OPENID_PROVIDERS_DEX_CLIENTID: task64
+          TASK64_AUTH_OPENID_PROVIDERS_DEX_CLIENTSECRET: secret
       - name: Upload Playwright Report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()

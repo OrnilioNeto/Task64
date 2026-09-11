@@ -1,4 +1,4 @@
-# Contributing to Vikunja
+# Contributing to Task64
 
 Thanks for your interest in contributing!
 
@@ -6,7 +6,7 @@ For full documentation, visit https://vikunja.io/docs/development/
 
 ## AI-Assisted Contributions
 
-Using AI tools to write code is fine. Parts of Vikunja are built that way too. What matters is what lands in the PR and who stands behind it:
+Using AI tools to write code is fine. Parts of Task64 are built that way too. What matters is what lands in the PR and who stands behind it:
 
 - **Disclose it.** If an AI wrote a meaningful part of your change, say so in the PR description. Disclosed assistance is fine; finding out during review is not.
 - **You are the author.** Understand every line you submit and be ready to answer questions about it — "that's what the AI did" is not an answer. There must be a human on the other end of the review.

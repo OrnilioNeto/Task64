@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import (
 	"net/http"
 	"testing"
 
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-sql-driver/mysql"
@@ -58,7 +58,7 @@ func (e *errTaskDoesNotExist) HTTPError() web.HTTPError {
 func TestFingerprintDomainError(t *testing.T) {
 	t.Run("wrapped domain error groups by its code", func(t *testing.T) {
 		err := fmt.Errorf("could not read project: %w", &errProjectDoesNotExist{ID: 42})
-		assert.Equal(t, []string{"vikunja", "3001"}, Fingerprint(err))
+		assert.Equal(t, []string{"task64", "3001"}, Fingerprint(err))
 	})
 	t.Run("the wrapping does not change the fingerprint", func(t *testing.T) {
 		inner := &errProjectDoesNotExist{ID: 42}
@@ -122,7 +122,7 @@ func TestFingerprintDriverError(t *testing.T) {
 
 func TestFingerprintGenericError(t *testing.T) {
 	t.Run("ids and paths are normalised away", func(t *testing.T) {
-		first := fmt.Errorf("wrapped: %w", errors.New("could not open file /var/lib/vikunja/files/12345 for user 42"))
+		first := fmt.Errorf("wrapped: %w", errors.New("could not open file /var/lib/task64/files/12345 for user 42"))
 		second := errors.New("could not open file /srv/data/files/98 for user 7")
 		assert.Equal(t, Fingerprint(first), Fingerprint(second))
 		assert.Equal(t, []string{"*errors.errorString", "could not open file ? for user ?"}, Fingerprint(first))
@@ -165,7 +165,7 @@ func TestFingerprintHTTPAndPanic(t *testing.T) {
 	t.Run("a panic does not group with the same error returned normally", func(t *testing.T) {
 		inner := &errProjectDoesNotExist{ID: 42}
 		panicked := &middleware.PanicStackError{Err: inner, Stack: []byte("goroutine 1 [running]")}
-		assert.Equal(t, []string{"panic", "vikunja", "3001"}, Fingerprint(panicked))
+		assert.Equal(t, []string{"panic", "task64", "3001"}, Fingerprint(panicked))
 		assert.NotEqual(t, Fingerprint(inner), Fingerprint(panicked))
 	})
 }
@@ -188,7 +188,7 @@ func TestApply(t *testing.T) {
 		err := fmt.Errorf("could not read project: %w", &errProjectDoesNotExist{ID: 42})
 		event := applied(t, func(scope *sentry.Scope) { Apply(scope, err) })
 
-		assert.Equal(t, []string{"vikunja", "3001"}, event.Fingerprint)
+		assert.Equal(t, []string{"task64", "3001"}, event.Fingerprint)
 		assert.Equal(t, "*errorreport.errProjectDoesNotExist", event.Tags["error.type"])
 	})
 	t.Run("keeps an explicit fingerprint", func(t *testing.T) {

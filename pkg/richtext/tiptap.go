@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ import (
 )
 
 // registerTipTapRules teaches the HTML→Markdown converter about the two
-// Vikunja-specific nodes that standard GFM doesn't model: TipTap mentions and
+// Task64-specific nodes that standard GFM doesn't model: TipTap mentions and
 // TipTap task lists.
 func registerTipTapRules(conv *converter.Converter) {
 	// Empty mention elements (the common stored form is <mention-user data-id data-label></mention-user>)

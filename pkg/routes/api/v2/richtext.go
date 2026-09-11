@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,10 @@ package apiv2
 import (
 	"context"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/humabridge"
-	"code.vikunja.io/api/pkg/richtext"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/humabridge"
+	"github.com/OrnilioNeto/Task64/pkg/richtext"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/labstack/echo/v5"
@@ -31,13 +31,13 @@ import (
 const (
 	// "markdown" converts rich-text fields on read and write; anything else keeps HTML.
 	richTextFormatQuery  = "format"
-	richTextFormatHeader = "X-Vikunja-Format"
+	richTextFormatHeader = "X-Task64-Format"
 	markdownFormat       = "markdown"
 )
 
 // requestWantsMarkdown reports whether the request asked for markdown. The per-op
 // `format` query field on the input structs only documents the param; the value is
-// read here so this also catches the X-Vikunja-Format header — the only channel
+// read here so this also catches the X-Task64-Format header — the only channel
 // that survives AutoPatch's PATCH re-dispatch (it strips the query).
 func requestWantsMarkdown(ctx context.Context) bool {
 	ec, ok := ctx.Value(humabridge.EchoContextKey).(*echo.Context)
@@ -53,7 +53,7 @@ func requestWantsMarkdown(ctx context.Context) bool {
 const richTextFormatAPIDescription = "## Rich-text fields\n\n" +
 	"Descriptions (task, project, label, team, saved filter) and task comments are stored as HTML. " +
 	"Add `?format=markdown` to read and write them as GFM Markdown instead; on write it is converted " +
-	"to HTML and `@mentions` resolved to existing users. On `PATCH`, send the `X-Vikunja-Format: markdown` " +
+	"to HTML and `@mentions` resolved to existing users. On `PATCH`, send the `X-Task64-Format: markdown` " +
 	"header instead (merge-patch drops query parameters). CalDAV always exchanges task descriptions as " +
 	"Markdown.\n\n" +
 	"Writing is lossy: Markdown can't express every HTML construct (e.g. underline), so a field you send " +
@@ -65,7 +65,7 @@ const richTextFormatAPIDescription = "## Rich-text fields\n\n" +
 // stripPatchFormatQuery removes the `format` query param AutoPatch copies onto
 // each synthesised PATCH. The query doesn't survive AutoPatch's re-dispatch, so
 // advertising it on PATCH would be a trap (markdown silently stored as HTML);
-// PATCH uses the X-Vikunja-Format header instead. Call after EnableAutoPatch.
+// PATCH uses the X-Task64-Format header instead. Call after EnableAutoPatch.
 func stripPatchFormatQuery(api huma.API) {
 	for _, item := range api.OpenAPI().Paths {
 		if item == nil || item.Patch == nil {

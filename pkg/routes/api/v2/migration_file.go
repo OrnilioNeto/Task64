@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,13 @@ import (
 	"context"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/modules/migration"
-	migrationHandler "code.vikunja.io/api/pkg/modules/migration/handler"
-	"code.vikunja.io/api/pkg/modules/migration/ticktick"
-	vikunja_file "code.vikunja.io/api/pkg/modules/migration/vikunja-file"
-	"code.vikunja.io/api/pkg/modules/migration/wekan"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	migrationHandler "github.com/OrnilioNeto/Task64/pkg/modules/migration/handler"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/ticktick"
+	vikunja_file "github.com/OrnilioNeto/Task64/pkg/modules/migration/vikunja-file"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/wekan"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -35,11 +35,11 @@ import (
 // migrate endpoint.
 type fileMigrateInput struct {
 	RawBody huma.MultipartFormFiles[struct {
-		Import huma.FormFile `form:"import" required:"true" doc:"The export file to import. Its expected format depends on the migrator (e.g. a Vikunja export zip, a TickTick CSV, a WeKan JSON export)."`
+		Import huma.FormFile `form:"import" required:"true" doc:"The export file to import. Its expected format depends on the migrator (e.g. a Task64 export zip, a TickTick CSV, a WeKan JSON export)."`
 	}]
 }
 
-// RegisterMigrationFileRoutes wires the file-based migrators (Vikunja export,
+// RegisterMigrationFileRoutes wires the file-based migrators (Task64 export,
 // TickTick, WeKan) onto the Huma API. Unlike the OAuth migrators these have no
 // config flag in v1, so they are always registered.
 func RegisterMigrationFileRoutes(api huma.API) {
@@ -71,7 +71,7 @@ func registerFileMigrator(api huma.API, factory func() migration.FileMigrator) {
 	Register(api, huma.Operation{
 		OperationID: "migration-" + name + "-migrate",
 		Summary:     "Migrate from " + name,
-		Description: "Imports the authenticated user's data from an uploaded export file into Vikunja. Send the file under the multipart \"import\" field. The import runs synchronously and returns once it has finished.",
+		Description: "Imports the authenticated user's data from an uploaded export file into Task64. Send the file under the multipart \"import\" field. The import runs synchronously and returns once it has finished.",
 		Method:      http.MethodPost,
 		Path:        "/migration/" + name + "/migrate",
 		// POST runs an import rather than creating a REST resource, so it

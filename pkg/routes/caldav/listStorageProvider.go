@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,14 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/caldav"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/richtext"
-	user2 "code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/caldav"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/richtext"
+	user2 "github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 	"github.com/samedi/caldav-go/data"
 	"github.com/samedi/caldav-go/errs"
 	"xorm.io/xorm"
@@ -50,8 +50,8 @@ const PrincipalBasePath = DavBasePath + `/principals`
 // ProjectHomeSetPath is the CalDAV home-set path Apple clients use after discovery.
 const ProjectHomeSetPath = ProjectBasePath + `/`
 
-// VikunjaCaldavProjectStorage represents a project storage
-type VikunjaCaldavProjectStorage struct {
+// Task64CaldavProjectStorage represents a project storage
+type Task64CaldavProjectStorage struct {
 	// Used when handling a project
 	project *models.ProjectWithTasksAndBuckets
 	// Used when handling a single task, like updating
@@ -63,7 +63,7 @@ type VikunjaCaldavProjectStorage struct {
 }
 
 // GetResources returns either all projects, links to the principal, or only one project, depending on the request
-func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren bool) ([]data.Resource, error) {
+func (vcls *Task64CaldavProjectStorage) GetResources(rpath string, withChildren bool) ([]data.Resource, error) {
 
 	// It looks like we need to have the same handler for returning both the calendar home set and the user principal
 	// Since the client seems to ignore the whatever is being returned in the first request and just makes a second one
@@ -78,7 +78,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren
 	// and not /dav/projects. I'm not sure if thats a bug in the client or in caldav-go.
 
 	if vcls.isEntry {
-		r := data.NewResource(withTrailingSlash(rpath), &VikunjaProjectResourceAdapter{
+		r := data.NewResource(withTrailingSlash(rpath), &Task64ProjectResourceAdapter{
 			isPrincipal:  true,
 			isCollection: true,
 		})
@@ -87,7 +87,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren
 
 	// If the request wants the principal url, we'll return that and nothing else
 	if vcls.isPrincipal {
-		r := data.NewResource(ProjectHomeSetPath, &VikunjaProjectResourceAdapter{
+		r := data.NewResource(ProjectHomeSetPath, &Task64ProjectResourceAdapter{
 			isPrincipal:  true,
 			isCollection: true,
 		})
@@ -118,7 +118,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren
 				}
 				emitted[href] = true
 
-				taskResource := VikunjaProjectResourceAdapter{
+				taskResource := Task64ProjectResourceAdapter{
 					project:      vcls.project,
 					task:         task,
 					isCollection: false,
@@ -145,7 +145,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren
 	projects := theprojects.([]*models.Project)
 
 	if !withChildren {
-		r := data.NewResource(withTrailingSlash(rpath), &VikunjaProjectResourceAdapter{
+		r := data.NewResource(withTrailingSlash(rpath), &Task64ProjectResourceAdapter{
 			isPrincipal:  true,
 			isCollection: true,
 		})
@@ -154,7 +154,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResources(rpath string, withChildren
 
 	var resources []data.Resource
 	for _, l := range projects {
-		rr := VikunjaProjectResourceAdapter{
+		rr := Task64ProjectResourceAdapter{
 			project: &models.ProjectWithTasksAndBuckets{
 				Project: *l,
 			},
@@ -183,7 +183,7 @@ func principalPathForUser(username string) string {
 }
 
 // GetResourcesByList fetches a list of resources from a slice of paths
-func (vcls *VikunjaCaldavProjectStorage) GetResourcesByList(rpaths []string) (resources []data.Resource, err error) {
+func (vcls *Task64CaldavProjectStorage) GetResourcesByList(rpaths []string) (resources []data.Resource, err error) {
 
 	// Path format: /dav/projects/{projectID}/{uid}.ics.
 	// Remember the href's project ID per uid so the consistency check below
@@ -270,7 +270,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResourcesByList(rpaths []string) (re
 			continue
 		}
 		emitted[href] = true
-		rr := VikunjaProjectResourceAdapter{
+		rr := Task64ProjectResourceAdapter{
 			task: t,
 		}
 		addTaskResource(urlProjectID, t, &rr, &resources)
@@ -285,7 +285,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResourcesByList(rpaths []string) (re
 }
 
 // GetResourcesByFilters fetches a project of resources with a filter
-func (vcls *VikunjaCaldavProjectStorage) GetResourcesByFilters(rpath string, _ *data.ResourceFilter) ([]data.Resource, error) {
+func (vcls *Task64CaldavProjectStorage) GetResourcesByFilters(rpath string, _ *data.ResourceFilter) ([]data.Resource, error) {
 
 	// If we already have a project saved, that means the user is making a REPORT request to find out if
 	// anything changed, in that case we need to return all tasks.
@@ -293,7 +293,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResourcesByFilters(rpath string, _ *
 	if vcls.project.Tasks != nil {
 		var resources []data.Resource
 		for i := range vcls.project.Tasks {
-			rr := VikunjaProjectResourceAdapter{
+			rr := Task64ProjectResourceAdapter{
 				project:      vcls.project,
 				task:         &vcls.project.Tasks[i].Task,
 				isCollection: false,
@@ -329,7 +329,7 @@ func encodeURIPathSegment(segment string) string {
 
 // caldav-go builds rpath from the decoded request path, so echoing it back for a
 // task resource would undo the encoding taskURL applied.
-func (vcls *VikunjaCaldavProjectStorage) hrefFor(rpath string) string {
+func (vcls *Task64CaldavProjectStorage) hrefFor(rpath string) string {
 	if strings.HasSuffix(rpath, ".ics") && vcls.project != nil && vcls.task != nil && vcls.task.UID != "" {
 		return taskURL(vcls.project.ID, vcls.task)
 	}
@@ -345,7 +345,7 @@ func denyArchived(can bool, err error) (bool, error) {
 	return can, err
 }
 
-func (vcls *VikunjaCaldavProjectStorage) canReadCollection(s *xorm.Session) (bool, error) {
+func (vcls *Task64CaldavProjectStorage) canReadCollection(s *xorm.Session) (bool, error) {
 	if vcls.project == nil {
 		return false, nil
 	}
@@ -354,7 +354,7 @@ func (vcls *VikunjaCaldavProjectStorage) canReadCollection(s *xorm.Session) (boo
 }
 
 // Read-only shares and pseudo collections are both the model's call, not the route's.
-func (vcls *VikunjaCaldavProjectStorage) canWriteCollection(s *xorm.Session) (bool, error) {
+func (vcls *Task64CaldavProjectStorage) canWriteCollection(s *xorm.Session) (bool, error) {
 	if vcls.project == nil {
 		return false, nil
 	}
@@ -363,7 +363,7 @@ func (vcls *VikunjaCaldavProjectStorage) canWriteCollection(s *xorm.Session) (bo
 
 // GHSA-48ch-p4gq-x46x: a task addressed through a collection must belong to it. A pseudo
 // collection has no project_id to compare against, so membership stands in.
-func (vcls *VikunjaCaldavProjectStorage) taskInCollection(s *xorm.Session, task *models.Task) (bool, error) {
+func (vcls *Task64CaldavProjectStorage) taskInCollection(s *xorm.Session, task *models.Task) (bool, error) {
 	if models.IsPseudoProjectID(vcls.project.ID) {
 		return vcls.collectionContains(s, task.ID)
 	}
@@ -372,7 +372,7 @@ func (vcls *VikunjaCaldavProjectStorage) taskInCollection(s *xorm.Session, task 
 
 // A pseudo collection has no permissions of its own, so it cannot gate anything: membership
 // takes the place of the collection gate and the task's own project decides the rest.
-func (vcls *VikunjaCaldavProjectStorage) checkCollectionWrite(s *xorm.Session, task *models.Task) error {
+func (vcls *Task64CaldavProjectStorage) checkCollectionWrite(s *xorm.Session, task *models.Task) error {
 	if vcls.project == nil || !models.IsPseudoProjectID(vcls.project.ID) {
 		canWrite, err := vcls.canWriteCollection(s)
 		if err != nil {
@@ -404,7 +404,7 @@ var membershipQueryChunkSize = 500
 // Callers must have access-gated the candidates first (via models.GetTasksByUIDs): the
 // favorites arm of TaskCollection.ReadAll is not project-scoped, so membership alone
 // does not prove the user may still read the task.
-func (vcls *VikunjaCaldavProjectStorage) collectionContainsAll(s *xorm.Session, taskIDs []int64) (map[int64]bool, error) {
+func (vcls *Task64CaldavProjectStorage) collectionContainsAll(s *xorm.Session, taskIDs []int64) (map[int64]bool, error) {
 	members := make(map[int64]bool, len(taskIDs))
 	if len(taskIDs) == 0 {
 		return members, nil
@@ -444,7 +444,7 @@ func (vcls *VikunjaCaldavProjectStorage) collectionContainsAll(s *xorm.Session, 
 	return members, nil
 }
 
-func (vcls *VikunjaCaldavProjectStorage) collectionContains(s *xorm.Session, taskID int64) (bool, error) {
+func (vcls *Task64CaldavProjectStorage) collectionContains(s *xorm.Session, taskID int64) (bool, error) {
 	members, err := vcls.collectionContainsAll(s, []int64{taskID})
 	if err != nil {
 		return false, err
@@ -453,7 +453,7 @@ func (vcls *VikunjaCaldavProjectStorage) collectionContains(s *xorm.Session, tas
 }
 
 // GetResource fetches a single resource
-func (vcls *VikunjaCaldavProjectStorage) GetResource(rpath string) (*data.Resource, bool, error) {
+func (vcls *Task64CaldavProjectStorage) GetResource(rpath string) (*data.Resource, bool, error) {
 
 	// If the task is not nil, we need to get the task and not the project
 	if vcls.task != nil {
@@ -513,7 +513,7 @@ func (vcls *VikunjaCaldavProjectStorage) GetResource(rpath string) (*data.Resour
 			vcls.task.Updated = updated
 		}
 
-		rr := VikunjaProjectResourceAdapter{
+		rr := Task64ProjectResourceAdapter{
 			project: vcls.project,
 			task:    vcls.task,
 		}
@@ -531,15 +531,15 @@ func (vcls *VikunjaCaldavProjectStorage) GetResource(rpath string) (*data.Resour
 }
 
 // GetShallowResource gets a resource without children
-// Since Vikunja has no children, this is the same as GetResource
-func (vcls *VikunjaCaldavProjectStorage) GetShallowResource(rpath string) (*data.Resource, bool, error) {
-	// Since Vikunja has no children, this just returns the same as GetResource()
+// Since Task64 has no children, this is the same as GetResource
+func (vcls *Task64CaldavProjectStorage) GetShallowResource(rpath string) (*data.Resource, bool, error) {
+	// Since Task64 has no children, this just returns the same as GetResource()
 	// FIXME: This should just get the project with no tasks whatsoever, nothing else
 	return vcls.GetResource(rpath)
 }
 
 // CreateResource creates a new resource
-func (vcls *VikunjaCaldavProjectStorage) CreateResource(rpath, content string) (*data.Resource, error) {
+func (vcls *Task64CaldavProjectStorage) CreateResource(rpath, content string) (*data.Resource, error) {
 
 	if vcls.project == nil {
 		return nil, errs.ForbiddenError
@@ -644,7 +644,7 @@ func (vcls *VikunjaCaldavProjectStorage) CreateResource(rpath, content string) (
 	events.DispatchPending(context.Background(), s)
 
 	// Build up the proper response
-	rr := VikunjaProjectResourceAdapter{
+	rr := Task64ProjectResourceAdapter{
 		project: vcls.project,
 		task:    vTask,
 	}
@@ -670,7 +670,7 @@ func applyDescriptionFromMarkdown(s *xorm.Session, vTask *models.Task, storedHTM
 }
 
 // UpdateResource updates a resource
-func (vcls *VikunjaCaldavProjectStorage) UpdateResource(rpath, content string) (*data.Resource, error) {
+func (vcls *Task64CaldavProjectStorage) UpdateResource(rpath, content string) (*data.Resource, error) {
 
 	s := db.NewSession()
 	defer s.Close()
@@ -834,7 +834,7 @@ func (vcls *VikunjaCaldavProjectStorage) UpdateResource(rpath, content string) (
 	events.DispatchPending(context.Background(), s)
 
 	// base, not vTask: Update wrote back the Updated timestamp the etag is built from.
-	rr := VikunjaProjectResourceAdapter{
+	rr := Task64ProjectResourceAdapter{
 		project: vcls.project,
 		task:    &base,
 	}
@@ -843,7 +843,7 @@ func (vcls *VikunjaCaldavProjectStorage) UpdateResource(rpath, content string) (
 }
 
 // DeleteResource deletes a resource
-func (vcls *VikunjaCaldavProjectStorage) DeleteResource(_ string) error {
+func (vcls *Task64CaldavProjectStorage) DeleteResource(_ string) error {
 	s := db.NewSession()
 	defer s.Close()
 
@@ -1061,8 +1061,8 @@ func persistRelations(s *xorm.Session, a web.Auth, task *models.Task, newRelatio
 	return nil
 }
 
-// VikunjaProjectResourceAdapter holds the actual resource
-type VikunjaProjectResourceAdapter struct {
+// Task64ProjectResourceAdapter holds the actual resource
+type Task64ProjectResourceAdapter struct {
 	project      *models.ProjectWithTasksAndBuckets
 	projectTasks []*models.TaskWithComments
 	task         *models.Task
@@ -1072,13 +1072,13 @@ type VikunjaProjectResourceAdapter struct {
 }
 
 // IsCollection checks if the resoure in the adapter is a collection
-func (vlra *VikunjaProjectResourceAdapter) IsCollection() bool {
+func (vlra *Task64ProjectResourceAdapter) IsCollection() bool {
 	// If the discovery does not work, setting this to true makes it work again.
 	return vlra.isCollection
 }
 
 // CalculateEtag returns the etag of a resource
-func (vlra *VikunjaProjectResourceAdapter) CalculateEtag() string {
+func (vlra *Task64ProjectResourceAdapter) CalculateEtag() string {
 
 	if vlra.task != nil {
 		return `"` + strconv.FormatInt(vlra.task.ID, 10) + `-` + strconv.FormatInt(vlra.task.Updated.Unix(), 10) + `"`
@@ -1102,7 +1102,7 @@ func (vlra *VikunjaProjectResourceAdapter) CalculateEtag() string {
 }
 
 // GetContent returns the content string of a resource (a task in our case)
-func (vlra *VikunjaProjectResourceAdapter) GetContent() string {
+func (vlra *Task64ProjectResourceAdapter) GetContent() string {
 	if vlra.project != nil && vlra.projectTasks != nil {
 		return caldav.GetCaldavTodosForTasks(vlra.project, vlra.projectTasks)
 	}
@@ -1116,12 +1116,12 @@ func (vlra *VikunjaProjectResourceAdapter) GetContent() string {
 }
 
 // GetContentSize is the size of a caldav content
-func (vlra *VikunjaProjectResourceAdapter) GetContentSize() int64 {
+func (vlra *Task64ProjectResourceAdapter) GetContentSize() int64 {
 	return int64(len(vlra.GetContent()))
 }
 
 // GetModTime returns when the resource was last modified
-func (vlra *VikunjaProjectResourceAdapter) GetModTime() time.Time {
+func (vlra *Task64ProjectResourceAdapter) GetModTime() time.Time {
 	if vlra.task != nil {
 		return vlra.task.Updated
 	}
@@ -1133,7 +1133,7 @@ func (vlra *VikunjaProjectResourceAdapter) GetModTime() time.Time {
 	return time.Time{}
 }
 
-func (vcls *VikunjaCaldavProjectStorage) getProjectRessource(isCollection bool) (rr VikunjaProjectResourceAdapter, err error) {
+func (vcls *Task64CaldavProjectStorage) getProjectRessource(isCollection bool) (rr Task64ProjectResourceAdapter, err error) {
 	s := db.NewSession()
 	defer s.Close()
 
@@ -1183,7 +1183,7 @@ func (vcls *VikunjaCaldavProjectStorage) getProjectRessource(isCollection bool) 
 		return rr, err
 	}
 
-	rr = VikunjaProjectResourceAdapter{
+	rr = Task64ProjectResourceAdapter{
 		project:      vcls.project,
 		projectTasks: projectTasks,
 		isCollection: isCollection,
@@ -1192,7 +1192,7 @@ func (vcls *VikunjaCaldavProjectStorage) getProjectRessource(isCollection bool) 
 	return
 }
 
-func addTaskResource(collectionProjectID int64, task *models.Task, rr *VikunjaProjectResourceAdapter, resources *[]data.Resource) {
+func addTaskResource(collectionProjectID int64, task *models.Task, rr *Task64ProjectResourceAdapter, resources *[]data.Resource) {
 	taskResourceInstance := data.NewResource(taskURL(collectionProjectID, task), rr)
 	taskResourceInstance.Name = task.Title
 	*resources = append(*resources, taskResourceInstance)

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 )
 
 // s3Storage implements FileStorage backed by S3.

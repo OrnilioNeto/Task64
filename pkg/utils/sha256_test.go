@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,12 +29,12 @@ func TestSha256(t *testing.T) {
 	}{
 		{
 			name: "Test sha256 generation",
-			args: args{cleartext: "vikunjarandomstringwhichisnotrandom"},
+			args: args{cleartext: "task64randomstringwhichisnotrandom"},
 			want: "46fc0f603dd986cf7ed3e631917d43da89a8df2bdf291",
 		},
 		{
 			name: "Test sha256 generation",
-			args: args{cleartext: "vikunjastring"},
+			args: args{cleartext: "task64string"},
 			want: "f54d310f4d9a0bc13479dad5c5701e8d581744666b69f",
 		},
 		{

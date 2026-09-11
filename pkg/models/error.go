@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ import (
 	"net/http"
 	"strings"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 )
 
 // Generic
@@ -132,7 +132,7 @@ func (err ValidationHTTPError) GetHTTPCode() int {
 	return err.HTTPCode
 }
 
-// GetCode returns Vikunja's numeric domain error code. v2's translateDomainError
+// GetCode returns Task64's numeric domain error code. v2's translateDomainError
 // reads it to keep the v1 `code` body contract, since this type does not
 // implement web.HTTPErrorProcessor (the embedded field shadows the method name).
 func (err ValidationHTTPError) GetCode() int {

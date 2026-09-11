@@ -61,8 +61,8 @@ jobs:
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: |
-            vikunja/vikunja
-            ghcr.io/go-vikunja/vikunja
+            task64/task64
+            ghcr.io/ornilioneto/task64
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -74,8 +74,8 @@ jobs:
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
           push: true
           tags: |
-            vikunja/vikunja:unstable
-            ghcr.io/go-vikunja/vikunja:unstable
+            task64/task64:unstable
+            ghcr.io/ornilioneto/task64:unstable
           build-args: |
             RELEASE_VERSION=${{ steps.ghd.outputs.describe }}
       - name: Build and push version
@@ -98,7 +98,7 @@ jobs:
         uses: proudust/gh-describe@80412be8ce0e77d8afba6b340e34790bc772aa45 # v2.2.0
       - uses: ./.github/actions/release-binaries
         with:
-          project: vikunja
+          project: task64
           release-version: ${{ steps.ghd.outputs.describe }}
           gpg-passphrase: ${{ secrets.RELEASE_GPG_PASSPHRASE }}
           gpg-sign-key: ${{ secrets.RELEASE_GPG_SIGN_KEY }}
@@ -152,7 +152,7 @@ jobs:
         uses: proudust/gh-describe@80412be8ce0e77d8afba6b340e34790bc772aa45 # v2.2.0
       - uses: ./.github/actions/release-os-package
         with:
-          project: vikunja
+          project: task64
           release-version: ${{ steps.ghd.outputs.describe }}
           packager: ${{ matrix.package }}
           nfpm-arch: ${{ matrix.arch.nfpm }}
@@ -248,13 +248,13 @@ jobs:
       - name: Download all server OS packages
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          pattern: vikunja_os_package_*
+          pattern: task64_os_package_*
           merge-multiple: true
           path: dist/repo-work/incoming
 
       - name: Download all veans OS packages
         # Merged into the same incoming dir so reprepro / createrepo_c /
-        # repo-add / the apk loop pick them up alongside vikunja's packages
+        # repo-add / the apk loop pick them up alongside task64's packages
         # — same suite, same arch fan-out, no extra source entry for users.
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
@@ -265,7 +265,7 @@ jobs:
       - name: Download desktop packages (Linux)
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_desktop_packages_ubuntu-latest
+          name: task64_desktop_packages_ubuntu-latest
           path: dist/repo-work/incoming-desktop
 
       - name: Copy desktop packages to incoming
@@ -323,8 +323,8 @@ jobs:
         if: matrix.format == 'apk'
         run: |
           mkdir -p ~/.abuild
-          echo "${{ secrets.APK_SIGNING_KEY }}" > ~/.abuild/vikunja-apk.rsa
-          echo "PACKAGER_PRIVKEY=$HOME/.abuild/vikunja-apk.rsa" > ~/.abuild/abuild.conf
+          echo "${{ secrets.APK_SIGNING_KEY }}" > ~/.abuild/task64-apk.rsa
+          echo "PACKAGER_PRIVKEY=$HOME/.abuild/task64-apk.rsa" > ~/.abuild/abuild.conf
 
       - name: Generate repo metadata
         if: matrix.format != 'apk'
@@ -341,7 +341,7 @@ jobs:
         run: |
           incoming=dist/repo-work/incoming
           output_base=dist/repo-output/apk/$REPO_SUITE/main
-          signing_key=~/.abuild/vikunja-apk.rsa
+          signing_key=~/.abuild/task64-apk.rsa
           for arch in x86_64 aarch64 armv7; do
             repo_dir="$output_base/$arch"
             mkdir -p "$repo_dir"
@@ -417,7 +417,7 @@ jobs:
           s3-endpoint: ${{ secrets.S3_ENDPOINT }}
           s3-bucket: ${{ secrets.S3_BUCKET }}
           s3-region: ${{ secrets.S3_REGION }}
-          target-path: /vikunja/${{ github.ref_type == 'tag' && steps.ghd.outputs.describe || 'unstable' }}
+          target-path: /task64/${{ github.ref_type == 'tag' && steps.ghd.outputs.describe || 'unstable' }}
           files: "config.yml.sample"
 
   desktop:
@@ -467,16 +467,16 @@ jobs:
           s3-endpoint: ${{ secrets.S3_ENDPOINT }}
           s3-bucket: ${{ secrets.S3_BUCKET }}
           s3-region: ${{ secrets.S3_REGION }}
-          files: "desktop/dist/Vikunja*"
+          files: "desktop/dist/Task64*"
           target-path: /desktop/${{ github.ref_type == 'tag' && steps.ghd.outputs.describe || 'unstable' }}
           strip-path-prefix: desktop/dist/
           exclude: "desktop/dist/*.blockmap"
       - name: Store Desktop Package
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: vikunja_desktop_packages_${{ matrix.os }}
+          name: task64_desktop_packages_${{ matrix.os }}
           path: |
-            ./desktop/dist/Vikunja*
+            ./desktop/dist/Task64*
             !./desktop/dist/*.blockmap
 
   generate-swagger-and-yaegi:
@@ -549,12 +549,12 @@ jobs:
       - name: Download Binaries
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_bin_packages
+          name: task64_bin_packages
 
       - name: Download OS Packages
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          pattern: vikunja_os_package_*
+          pattern: task64_os_package_*
           merge-multiple: true
 
       - name: Download Veans Binaries
@@ -571,17 +571,17 @@ jobs:
       - name: Download Desktop Package Linux
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_desktop_packages_ubuntu-latest
+          name: task64_desktop_packages_ubuntu-latest
 
       - name: Download Desktop Package MacOS
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_desktop_packages_macos-latest
+          name: task64_desktop_packages_macos-latest
 
       - name: Download Desktop Package Windows
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: vikunja_desktop_packages_windows-latest
+          name: task64_desktop_packages_windows-latest
 
       - name: Release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
@@ -589,14 +589,14 @@ jobs:
         with:
           draft: true
           files: |
-            vikunja*.zip
-            vikunja*.rpm
-            vikunja*.deb
-            vikunja*.apk
-            vikunja*.archlinux
+            task64*.zip
+            task64*.rpm
+            task64*.deb
+            task64*.apk
+            task64*.archlinux
             veans*.zip
             veans*.rpm
             veans*.deb
             veans*.apk
             veans*.archlinux
-            Vikunja Desktop*
+            Task64 Desktop*

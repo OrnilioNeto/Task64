@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
 // Root builds the cobra command tree.
 func Root(version string) *cobra.Command {
 	root := &cobra.Command{
 		Use:           "veans",
-		Short:         "veans — a beans-shaped CLI for Vikunja",
+		Short:         "veans — a beans-shaped CLI for Task64",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Version:       version,

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,10 @@ import (
 	"strings"
 	"testing"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/license"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/license"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/labstack/echo/v5"
 	"github.com/samedi/caldav-go/errs"
@@ -73,14 +73,14 @@ func createSavedFilter(t *testing.T, u *user.User, filter string) int64 {
 	return pseudoID
 }
 
-func storageFor(u *user.User, projectID int64) *VikunjaCaldavProjectStorage {
-	return &VikunjaCaldavProjectStorage{
+func storageFor(u *user.User, projectID int64) *Task64CaldavProjectStorage {
+	return &Task64CaldavProjectStorage{
 		project: &models.ProjectWithTasksAndBuckets{Project: models.Project{ID: projectID}},
 		user:    u,
 	}
 }
 
-func filterStorage(pseudoProjectID int64) *VikunjaCaldavProjectStorage {
+func filterStorage(pseudoProjectID int64) *Task64CaldavProjectStorage {
 	return storageFor(caldavFilterUser, pseudoProjectID)
 }
 
@@ -110,7 +110,7 @@ func TestSavedFilterCollection_ChildHrefs(t *testing.T) {
 func TestPseudoCollection_Writes(t *testing.T) {
 	const newTaskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-new
 DTSTAMP:20230301T073337Z
@@ -120,7 +120,7 @@ END:VCALENDAR`
 
 	const doneTaskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test
 DTSTAMP:20230301T073337Z
@@ -131,7 +131,7 @@ END:VCALENDAR`
 
 	// The PUT and DELETE flows in caldav-go both resolve the resource first, which is what
 	// puts the full task - including its real project - into the storage.
-	resolve := func(t *testing.T, storage *VikunjaCaldavProjectStorage, rpath string) {
+	resolve := func(t *testing.T, storage *Task64CaldavProjectStorage, rpath string) {
 		t.Helper()
 
 		storage.task = &models.Task{UID: "uid-caldav-test"}
@@ -518,7 +518,7 @@ func TestCollectionContainsAll_Chunked(t *testing.T) {
 		t.Cleanup(func() { membershipQueryChunkSize = previous })
 	}
 
-	membersOf := func(t *testing.T, storage *VikunjaCaldavProjectStorage, taskIDs []int64) map[int64]bool {
+	membersOf := func(t *testing.T, storage *Task64CaldavProjectStorage, taskIDs []int64) map[int64]bool {
 		t.Helper()
 
 		s := db.NewSession()
@@ -609,7 +609,7 @@ func favoriteTask(t *testing.T, taskID int64, u *user.User) {
 func TestArchivedProject_WritesAreForbidden(t *testing.T) {
 	const taskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-new
 DTSTAMP:20230301T073337Z
@@ -703,7 +703,7 @@ END:VCALENDAR`
 func TestCreateResource_MissesBeforeDenials(t *testing.T) {
 	const newTaskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-new
 DTSTAMP:20230301T073337Z
@@ -713,7 +713,7 @@ END:VCALENDAR`
 
 	const existingTaskContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-caldav-test
 DTSTAMP:20230301T073337Z
@@ -721,7 +721,7 @@ SUMMARY:Recreated through the filter
 END:VTODO
 END:VCALENDAR`
 
-	create := func(t *testing.T, storage *VikunjaCaldavProjectStorage, uid, content string) error {
+	create := func(t *testing.T, storage *Task64CaldavProjectStorage, uid, content string) error {
 		t.Helper()
 
 		storage.task = &models.Task{UID: uid}

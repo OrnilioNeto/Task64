@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,9 @@ import (
 	"context"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/routes/api/shared"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/routes/api/shared"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -73,7 +73,7 @@ func RegisterTestingRoutes(api huma.API) {
 	Register(api, huma.Operation{
 		OperationID: "testing-truncate-all",
 		Summary:     "Truncate all tables",
-		Description: "Removes all data from every Vikunja table. Used by e2e tests to ensure a clean state before each test. Authenticates with the configured testing token via the Authorization header, not a JWT or API token.",
+		Description: "Removes all data from every Task64 table. Used by e2e tests to ensure a clean state before each test. Authenticates with the configured testing token via the Authorization header, not a JWT or API token.",
 		Method:      http.MethodDelete,
 		Path:        "/test/all",
 		Tags:        tags,

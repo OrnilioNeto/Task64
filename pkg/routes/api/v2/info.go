@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"context"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/routes/api/shared"
+	"github.com/OrnilioNeto/Task64/pkg/routes/api/shared"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -34,7 +34,7 @@ func RegisterInfoRoutes(api huma.API) {
 	Register(api, huma.Operation{
 		OperationID: "info",
 		Summary:     "Instance info",
-		Description: "Returns version, frontend URL, motd and the enabled features of this Vikunja instance. Public — no authentication required.",
+		Description: "Returns version, frontend URL, motd and the enabled features of this Task64 instance. Public — no authentication required.",
 		Method:      http.MethodGet,
 		Path:        "/info",
 		Tags:        []string{"service"},

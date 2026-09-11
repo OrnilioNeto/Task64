@@ -1,14 +1,14 @@
 {
-  "name": "vikunja-desktop",
+  "name": "task64-desktop",
   "version": "v0.1.0",
-  "description": "Vikunja's frontend as a standalone desktop application.",
+  "description": "Task64's frontend as a standalone desktop application.",
   "main": "main.js",
   "repository": "https://code.vikunja.io/desktop",
   "license": "GPL-3.0-or-later",
   "packageManager": "pnpm@11.26.0",
   "author": {
     "email": "maintainers@vikunja.io",
-    "name": "Vikunja Team"
+    "name": "Task64 Team"
   },
   "homepage": "https://vikunja.io",
   "scripts": {
@@ -18,17 +18,17 @@
     "dist": "electron-builder --publish never"
   },
   "build": {
-    "appId": "io.vikunja.desktop",
+    "appId": "io.task64.desktop",
     "files": [
       "**/*",
       "preload-quick-entry.js"
     ],
-    "productName": "Vikunja Desktop",
+    "productName": "Task64 Desktop",
     "artifactName": "${productName}-${version}.${ext}",
     "icon": "build/icon.icns",
     "protocols": {
-      "name": "Vikunja Desktop",
-      "schemes": ["vikunja-desktop"]
+      "name": "Task64 Desktop",
+      "schemes": ["task64-desktop"]
     },
     "linux": {
       "target": [

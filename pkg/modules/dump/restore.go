@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -34,15 +34,15 @@ import (
 
 	"github.com/hashicorp/go-version"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/initialize"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/migration"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/utils"
-	vversion "code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/initialize"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/migration"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	vversion "github.com/OrnilioNeto/Task64/pkg/version"
 
 	"src.techknowlogick.com/xormigrate"
 )
@@ -126,7 +126,7 @@ func Restore(filename string, overrideConfig bool) error {
 
 	///////
 	// Check if we're restoring to the same version as the dump
-	err = checkVikunjaVersion(versionFile)
+	err = checkTask64Version(versionFile)
 	if err != nil {
 		return err
 	}
@@ -226,7 +226,7 @@ func Restore(filename string, overrideConfig bool) error {
 	// Done
 	log.Infof("Done restoring dump.")
 	if overrideConfig {
-		log.Infof("Restart Vikunja to make sure the new configuration file is applied.")
+		log.Infof("Restart Task64 to make sure the new configuration file is applied.")
 	}
 
 	return nil
@@ -245,10 +245,10 @@ func restoreDatabaseContents(dbfiles map[string]*zip.File) error {
 	s := db.NewSession()
 	defer s.Close()
 	if err := models.RebuildProjectAncestors(s); err != nil {
-		return fmt.Errorf("could not rebuild project ancestors (data is restored, run 'vikunja repair projects'): %w", err)
+		return fmt.Errorf("could not rebuild project ancestors (data is restored, run 'task64 repair projects'): %w", err)
 	}
 	if err := s.Commit(); err != nil {
-		return fmt.Errorf("could not commit project ancestors rebuild (data is restored, run 'vikunja repair projects'): %w", err)
+		return fmt.Errorf("could not commit project ancestors rebuild (data is restored, run 'task64 repair projects'): %w", err)
 	}
 
 	return nil
@@ -266,7 +266,7 @@ func restoreFile(id int64, zipFile *zip.File) error {
 	// Create a temporary file to make the content seekable without loading
 	// it all into memory. zip.File.Open() returns io.ReadCloser which is not
 	// seekable, but f.Save requires io.ReadSeeker.
-	tmpFile, err := os.CreateTemp("", "vikunja-restore-*")
+	tmpFile, err := os.CreateTemp("", "task64-restore-*")
 	if err != nil {
 		return fmt.Errorf("could not create temp file: %w", err)
 	}
@@ -494,7 +494,7 @@ func restoreConfig(configFile, dotEnvFile *zip.File, stdin *bufio.Reader) error 
 	}
 
 	log.Warning("No config file found, not restoring one.")
-	log.Warning("You'll likely have had Vikunja configured through environment variables.")
+	log.Warning("You'll likely have had Task64 configured through environment variables.")
 
 	if dotEnvFile != nil {
 		dotenv, err := dotEnvFile.Open()
@@ -518,7 +518,7 @@ func restoreConfig(configFile, dotEnvFile *zip.File, stdin *bufio.Reader) error 
 	return nil
 }
 
-func checkVikunjaVersion(versionFile *zip.File) error {
+func checkTask64Version(versionFile *zip.File) error {
 	if versionFile == nil {
 		return fmt.Errorf("dump does not contain VERSION file, refusing to continue")
 	}
@@ -546,7 +546,7 @@ func checkVikunjaVersion(versionFile *zip.File) error {
 		}
 
 		if !dumpedVersion.Equal(currentVersion) {
-			return fmt.Errorf("export was created with version %s but this is %s - please make sure you are running the same Vikunja version before restoring", dumpedVersion, currentVersion)
+			return fmt.Errorf("export was created with version %s but this is %s - please make sure you are running the same Task64 version before restoring", dumpedVersion, currentVersion)
 		}
 	}
 

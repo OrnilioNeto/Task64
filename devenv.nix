@@ -72,7 +72,7 @@ in {
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
     PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "1";
 #    PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs-unstable.chromium}/bin/chromium";
-    VIKUNJA_SERVICE_TESTINGTOKEN = "test";
+    TASK64_SERVICE_TESTINGTOKEN = "test";
   };
 	
 	devcontainer = {
@@ -81,10 +81,10 @@ in {
 			forwardPorts = [ 4173 3456 ];
 			portsAttributes = {
 				"4173" = {
-					label = "Vikunja Frontend dev server";
+					label = "Task64 Frontend dev server";
 				};
 				"3456" = {
-					label = "Vikunja API";
+					label = "Task64 API";
 				};
 			};
 			customizations.vscode.extensions = [

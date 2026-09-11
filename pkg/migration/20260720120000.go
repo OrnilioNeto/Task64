@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"src.techknowlogick.com/xormigrate"
 	"xorm.io/xorm"
@@ -133,7 +133,7 @@ func dbSchema20260720120000(tx *xorm.Engine) (*dbSchema20260720120000Result, err
 
 // Reads tables, columns and indexes from sqlite's pragma table-valued functions
 // instead of DBMetas: xorm's sqlite3 dialect parses the DDL text in sqlite_master,
-// so it silently skips every index older Vikunja migrations created with lowercase
+// so it silently skips every index older Task64 migrations created with lowercase
 // `create index` SQL (#3313) and the implicit indexes of UNIQUE constraints, which
 // have no DDL at all. Worse, it splits an index's column list on "(", so a single
 // expression index makes DBMetas fail outright with "Unknown col lower(username".
@@ -273,7 +273,7 @@ func ensureNoDuplicates20260720120000(tx *xorm.Engine, table string, cols []stri
 	if len(rows) > 0 {
 		// Some unique-indexed columns hold secrets (token_hash, oauth codes, ...) — never log the values.
 		return fmt.Errorf(
-			"cannot recreate the unique index on %s (%s) because %d sets of duplicate values exist — remove the duplicates manually, then restart Vikunja",
+			"cannot recreate the unique index on %s (%s) because %d sets of duplicate values exist — remove the duplicates manually, then restart Task64",
 			table, strings.Join(cols, ", "), len(rows))
 	}
 	return nil

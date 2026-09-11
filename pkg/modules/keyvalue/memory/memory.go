@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	e "code.vikunja.io/api/pkg/modules/keyvalue/error"
+	e "github.com/OrnilioNeto/Task64/pkg/modules/keyvalue/error"
 )
 
 // Storage is the memory implementation of a storage backend

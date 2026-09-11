@@ -17,7 +17,7 @@ export default defineConfig({
 		}),
 	],
 	theme: {
-		title: 'Vikunja',
+		title: 'Task64',
 		colors: {
 			// https://histoire.dev/guide/config.html#builtin-colors
 			gray: defaultColors.zinc,

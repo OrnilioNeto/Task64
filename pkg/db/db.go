@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,8 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
@@ -56,16 +56,16 @@ var postgresConnectionCredentials = regexp.MustCompile(`(?i)(postgres(?:ql)?://)
 // DatabasePathMemory is the database.path value selecting an ephemeral database.
 const DatabasePathMemory = "memory"
 
-// registeredTables holds all table beans registered by Vikunja packages.
+// registeredTables holds all table beans registered by Task64 packages.
 var registeredTables []interface{}
 
 // RegisterTables registers table beans so that Dump and WipeEverything
-// only operate on known Vikunja tables.
+// only operate on known Task64 tables.
 func RegisterTables(tables []interface{}) {
 	registeredTables = append(registeredTables, tables...)
 }
 
-// RegisteredTableNames returns the table names of all registered Vikunja tables.
+// RegisteredTableNames returns the table names of all registered Task64 tables.
 func RegisteredTableNames() []string {
 	tableNames := make([]string, 0, len(registeredTables)+1)
 	for _, bean := range registeredTables {
@@ -118,7 +118,7 @@ func CreateDBEngine() (engine *xorm.Engine, err error) {
 		log.Fatalf("Unknown database type %s", config.DatabaseType.GetString())
 	}
 
-	engine.SetTZLocation(config.GetTimeZone()) // Vikunja's timezone
+	engine.SetTZLocation(config.GetTimeZone()) // Task64's timezone
 	loc, err := time.LoadLocation("GMT")       // The db data timezone
 	if err != nil {
 		log.Fatalf("Error parsing time zone: %s", err)
@@ -395,11 +395,11 @@ func initSqliteEngine() (engine *xorm.Engine, err error) {
 		// SQLITE_BUSY) and concurrent connections deadlock. A temp file with
 		// WAL mode provides proper concurrency: readers never block writers,
 		// and _busy_timeout handles write-write contention.
-		tmpDir, mkErr := os.MkdirTemp("", "vikunja-*")
+		tmpDir, mkErr := os.MkdirTemp("", "task64-*")
 		if mkErr != nil {
 			return nil, fmt.Errorf("could not create temp directory for ephemeral database: %w", mkErr)
 		}
-		dbPath := filepath.Join(tmpDir, "vikunja.db")
+		dbPath := filepath.Join(tmpDir, "task64.db")
 		engine, err = xorm.NewEngine("sqlite3", dbPath+"?_busy_timeout=5000&_journal_mode=WAL")
 		if err != nil {
 			return
@@ -478,7 +478,7 @@ func resolveUserDataDir() (string, error) {
 
 	switch runtime.GOOS {
 	case "windows":
-		// On Windows, use %LOCALAPPDATA%\Vikunja
+		// On Windows, use %LOCALAPPDATA%\Task64
 		localAppData := os.Getenv("LOCALAPPDATA")
 		if localAppData == "" {
 			// Fallback to %USERPROFILE%\AppData\Local if LOCALAPPDATA is not set
@@ -488,25 +488,25 @@ func resolveUserDataDir() (string, error) {
 			}
 			localAppData = filepath.Join(userProfile, "AppData", "Local")
 		}
-		dataDir = filepath.Join(localAppData, "Vikunja")
+		dataDir = filepath.Join(localAppData, "Task64")
 	case "darwin":
-		// On macOS, use ~/Library/Application Support/Vikunja
+		// On macOS, use ~/Library/Application Support/Task64
 		home, err := os.UserHomeDir()
 		if err != nil {
 			return "", err
 		}
-		dataDir = filepath.Join(home, "Library", "Application Support", "Vikunja")
+		dataDir = filepath.Join(home, "Library", "Application Support", "Task64")
 	default:
-		// On Linux and other Unix-like systems, use XDG_DATA_HOME or ~/.local/share/vikunja
+		// On Linux and other Unix-like systems, use XDG_DATA_HOME or ~/.local/share/task64
 		xdgDataHome := os.Getenv("XDG_DATA_HOME")
 		if xdgDataHome != "" {
-			dataDir = filepath.Join(xdgDataHome, "vikunja")
+			dataDir = filepath.Join(xdgDataHome, "task64")
 		} else {
 			home, err := os.UserHomeDir()
 			if err != nil {
 				return "", err
 			}
-			dataDir = filepath.Join(home, ".local", "share", "vikunja")
+			dataDir = filepath.Join(home, ".local", "share", "task64")
 		}
 	}
 
@@ -574,7 +574,7 @@ func isSystemDirectory(path string) bool {
 	return false
 }
 
-// WipeEverything wipes all Vikunja tables and their data. Use with caution...
+// WipeEverything wipes all Task64 tables and their data. Use with caution...
 func WipeEverything() error {
 	for _, name := range RegisteredTableNames() {
 		if err := x.DropTables(name); err != nil {

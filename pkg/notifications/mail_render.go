@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,10 @@ import (
 	"strings"
 	templatetext "text/template"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/i18n"
-	"code.vikunja.io/api/pkg/mail"
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/i18n"
+	"github.com/OrnilioNeto/Task64/pkg/mail"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/yuin/goldmark/v2/ast"
@@ -93,7 +93,7 @@ const mailTemplateHTML = `
 <div style="width: 100%; font-family: 'Open Sans', sans-serif; Text-rendering: optimizeLegibility">
     <div style="width: 600px; margin: 0 auto; Text-align: justify;">
         <h1 style="font-size: 30px; Text-align: center;">
-            <img src="cid:logo.png" style="height: 75px;" alt="Vikunja"/>
+            <img src="cid:logo.png" style="height: 75px;" alt="Task64"/>
         </h1>
         <div class="email-card" style="border: 1px solid #dbdbdb; -webkit-box-shadow: 0.3em 0.3em 0.8em #e6e6e6; box-shadow: 0.3em 0.3em 0.8em #e6e6e6; color: #4a4a4a; padding: 5px 25px; border-radius: 3px; background: #fff;">
 <p>

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,12 +25,12 @@ import (
 	"sort"
 	"time"
 
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/richtext"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/richtext"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // wekanBoard represents the top-level WeKan board JSON export.
@@ -141,7 +141,7 @@ func convertMarkdownToHTML(input string) (string, error) {
 	return richtext.CommonMarkToHTML([]byte(input))
 }
 
-func convertWekanToVikunja(board *wekanBoard) []*models.ProjectWithTasksAndBuckets {
+func convertWekanToTask64(board *wekanBoard) []*models.ProjectWithTasksAndBuckets {
 	// Build lookup maps
 	labelsByID := make(map[string]wekanLabel, len(board.Labels))
 	for _, l := range board.Labels {
@@ -369,9 +369,9 @@ func (m *Migrator) Name() string {
 	return "wekan"
 }
 
-// Migrate takes a WeKan board JSON export and imports it into Vikunja.
+// Migrate takes a WeKan board JSON export and imports it into Task64.
 // @Summary Import all projects, tasks etc. from a WeKan board export
-// @Description Imports all projects, tasks, labels, checklists, comments, and attachments from a WeKan board JSON export into Vikunja.
+// @Description Imports all projects, tasks, labels, checklists, comments, and attachments from a WeKan board JSON export into Task64.
 // @tags migration
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -396,7 +396,7 @@ func (m *Migrator) Migrate(user *user.User, file io.ReaderAt, size int64) error 
 		return &migration.ErrFileIsEmpty{}
 	}
 
-	vikunjaData := convertWekanToVikunja(board)
+	task64Data := convertWekanToTask64(board)
 
-	return migration.InsertFromStructure(vikunjaData, user)
+	return migration.InsertFromStructure(task64Data, user)
 }

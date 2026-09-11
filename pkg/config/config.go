@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import (
 	"time"
 	_ "time/tzdata" // Imports time zone data instead of relying on the os
 
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"github.com/c2h5oh/datasize"
 	"github.com/spf13/viper"
@@ -248,7 +248,7 @@ const (
 	PluginsDir     Key = `plugins.dir`
 	PluginsLoader  Key = `plugins.loader`
 
-	// LicenseKey gates optional paid features and funds Vikunja's development.
+	// LicenseKey gates optional paid features and funds Task64's development.
 	// See the package comment in pkg/license/license.go before removing.
 	LicenseKey Key = `license.key`
 )
@@ -292,7 +292,7 @@ func (k Key) Get() interface{} {
 
 var timezone *time.Location
 
-// GetTimeZone returns the time zone configured for vikunja
+// GetTimeZone returns the time zone configured for task64
 // It is a separate function and not done through viper because that makes handling
 // it way easier, especially when testing.
 func GetTimeZone() *time.Location {
@@ -326,7 +326,7 @@ func applyDefaultLogLevels() {
 	}
 }
 
-// getRootpathLocation determines the default root path for Vikunja data.
+// getRootpathLocation determines the default root path for Task64 data.
 // It prefers the current working directory, which respects systemd's
 // WorkingDirectory= setting and is the most intuitive default.
 // Falls back to the binary's directory if Getwd fails.
@@ -347,7 +347,7 @@ func getRootpathLocation() string {
 	if runtime.GOOS == "windows" {
 		exeSuffix = ".exe"
 	}
-	if exeLocation, err := exec.LookPath("vikunja" + exeSuffix); err == nil {
+	if exeLocation, err := exec.LookPath("task64" + exeSuffix); err == nil {
 		return filepath.Dir(exeLocation)
 	}
 
@@ -424,10 +424,10 @@ func initDefaultConfig() {
 	// Database
 	DatabaseType.setDefault("sqlite")
 	DatabaseHost.setDefault("localhost")
-	DatabaseUser.setDefault("vikunja")
+	DatabaseUser.setDefault("task64")
 	DatabasePassword.setDefault("")
-	DatabaseDatabase.setDefault("vikunja")
-	DatabasePath.setDefault(ResolvePath("vikunja.db"))
+	DatabaseDatabase.setDefault("task64")
+	DatabasePath.setDefault(ResolvePath("task64.db"))
 	DatabaseMaxOpenConnections.setDefault(100)
 	DatabaseMaxIdleConnections.setDefault(50)
 	DatabaseMaxConnectionLifetime.setDefault(1800000)
@@ -445,7 +445,7 @@ func initDefaultConfig() {
 	MailerUsername.setDefault("")
 	MailerPassword.setDefault("")
 	MailerSkipTLSVerify.setDefault(false)
-	MailerFromEmail.setDefault("mail@vikunja")
+	MailerFromEmail.setDefault("mail@task64")
 	MailerQueuelength.setDefault(100)
 	MailerQueueTimeout.setDefault(30)
 	MailerForceSSL.setDefault(false)
@@ -629,8 +629,8 @@ func setConfigFromEnv() error {
 		}
 		key, value := keyValue[0], keyValue[1]
 
-		if strings.HasPrefix(key, "VIKUNJA_") {
-			formattedKey := strings.ToLower(strings.TrimPrefix(key, "VIKUNJA_"))
+		if strings.HasPrefix(key, "TASK64_") {
+			formattedKey := strings.ToLower(strings.TrimPrefix(key, "TASK64_"))
 			keys := strings.Split(formattedKey, "_")
 			currentMap := configMap
 
@@ -694,7 +694,7 @@ func anchorRootpathToConfigFile() {
 	// The default baked in initDefaultConfig() points at the caller's cwd, which
 	// would split the database off from the rest of the pinned install.
 	if !viper.InConfig(string(DatabasePath)) {
-		DatabasePath.setDefault(ResolvePath("vikunja.db"))
+		DatabasePath.setDefault(ResolvePath("task64.db"))
 	}
 }
 
@@ -705,7 +705,7 @@ func InitConfig() {
 	initDefaultConfig()
 
 	// Init checking for environment variables
-	viper.SetEnvPrefix("vikunja")
+	viper.SetEnvPrefix("task64")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
@@ -716,13 +716,13 @@ func InitConfig() {
 		viper.SetConfigFile(configFileOverride)
 	} else {
 		viper.AddConfigPath(ServiceRootpath.GetString())
-		viper.AddConfigPath("/etc/vikunja/")
+		viper.AddConfigPath("/etc/task64/")
 
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			log.Debugf("No home directory found, not using config from ~/.config/vikunja/. Error was: %s\n", err.Error())
+			log.Debugf("No home directory found, not using config from ~/.config/task64/. Error was: %s\n", err.Error())
 		} else {
-			viper.AddConfigPath(path.Join(homeDir, ".config", "vikunja"))
+			viper.AddConfigPath(path.Join(homeDir, ".config", "task64"))
 		}
 
 		viper.AddConfigPath(".")

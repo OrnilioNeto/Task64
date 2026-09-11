@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,11 +23,11 @@ import (
 )
 
 func TestValidateRedirectURI(t *testing.T) {
-	t.Run("accepts vikunja-flutter scheme", func(t *testing.T) {
-		assert.True(t, ValidateRedirectURI("vikunja-flutter://callback"))
+	t.Run("accepts task64-flutter scheme", func(t *testing.T) {
+		assert.True(t, ValidateRedirectURI("task64-flutter://callback"))
 	})
-	t.Run("accepts vikunja-desktop scheme", func(t *testing.T) {
-		assert.True(t, ValidateRedirectURI("vikunja-desktop://auth"))
+	t.Run("accepts task64-desktop scheme", func(t *testing.T) {
+		assert.True(t, ValidateRedirectURI("task64-desktop://auth"))
 	})
 	t.Run("accepts http localhost", func(t *testing.T) {
 		assert.True(t, ValidateRedirectURI("http://localhost/callback"))
@@ -74,7 +74,7 @@ func TestValidateRedirectURI(t *testing.T) {
 	t.Run("rejects data scheme", func(t *testing.T) {
 		assert.False(t, ValidateRedirectURI("data:text/html,<script>alert(1)</script>"))
 	})
-	t.Run("rejects non-vikunja custom scheme", func(t *testing.T) {
+	t.Run("rejects non-task64 custom scheme", func(t *testing.T) {
 		assert.False(t, ValidateRedirectURI("myapp://callback"))
 	})
 	t.Run("rejects empty URI", func(t *testing.T) {

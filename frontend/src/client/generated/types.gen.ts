@@ -142,7 +142,7 @@ export type AdminUser = {
 
 export type AttachmentUploadError = {
     /**
-     * Vikunja numeric error code, when the failure carries one.
+     * Task64 numeric error code, when the failure carries one.
      */
     code?: number;
     /**
@@ -421,7 +421,7 @@ export type CreateUserBody = {
      */
     is_admin?: boolean;
     /**
-     * IETF BCP 47 language code; must exist in Vikunja.
+     * IETF BCP 47 language code; must exist in Task64.
      */
     language?: string;
     /**
@@ -1680,7 +1680,7 @@ export type Provider = {
 
 export type ProviderStatus = {
     /**
-     * True when the provider is initialized and offered for login. This reflects the last initialization attempt, not the provider's current reachability. A configured but unavailable provider was unreachable or misconfigured when Vikunja last initialized its providers; initialization is retried automatically with exponential backoff, after at most 15 minutes.
+     * True when the provider is initialized and offered for login. This reflects the last initialization attempt, not the provider's current reachability. A configured but unavailable provider was unreachable or misconfigured when Task64 last initialized its providers; initialization is retried automatically with exponential backoff, after at most 15 minutes.
      */
     available?: boolean;
     /**
@@ -3103,7 +3103,7 @@ export type VikunjaErrorModel = {
      */
     readonly $schema?: string;
     /**
-     * Vikunja numeric error code; see https://vikunja.io/docs/errors/
+     * Task64 numeric error code; see https://vikunja.io/docs/errors/
      */
     readonly code?: number;
     /**
@@ -3224,7 +3224,7 @@ export type VikunjaInfos = {
      */
     user_deletion_enabled?: boolean;
     /**
-     * The Vikunja version this instance runs.
+     * The Task64 version this instance runs.
      */
     version?: string;
     /**
@@ -3471,7 +3471,7 @@ export type CreateUserBodyWritable = {
      */
     is_admin?: boolean;
     /**
-     * IETF BCP 47 language code; must exist in Vikunja.
+     * IETF BCP 47 language code; must exist in Task64.
      */
     language?: string;
     /**
@@ -4664,7 +4664,7 @@ export type VikunjaInfosWritable = {
      */
     user_deletion_enabled?: boolean;
     /**
-     * The Vikunja version this instance runs.
+     * The Task64 version this instance runs.
      */
     version?: string;
     /**
@@ -5894,7 +5894,7 @@ export type MigrationPlankaStatusResponse = MigrationPlankaStatusResponses[keyof
 export type MigrationTicktickMigrateData = {
     body: {
         /**
-         * The export file to import. Its expected format depends on the migrator (e.g. a Vikunja export zip, a TickTick CSV, a WeKan JSON export).
+         * The export file to import. Its expected format depends on the migrator (e.g. a Task64 export zip, a TickTick CSV, a WeKan JSON export).
          */
         import: Blob | File;
     };
@@ -6099,7 +6099,7 @@ export type MigrationTrelloStatusResponse = MigrationTrelloStatusResponses[keyof
 export type MigrationVikunjaFileMigrateData = {
     body: {
         /**
-         * The export file to import. Its expected format depends on the migrator (e.g. a Vikunja export zip, a TickTick CSV, a WeKan JSON export).
+         * The export file to import. Its expected format depends on the migrator (e.g. a Task64 export zip, a TickTick CSV, a WeKan JSON export).
          */
         import: Blob | File;
     };
@@ -6154,7 +6154,7 @@ export type MigrationVikunjaFileStatusResponse = MigrationVikunjaFileStatusRespo
 export type MigrationWekanMigrateData = {
     body: {
         /**
-         * The export file to import. Its expected format depends on the migrator (e.g. a Vikunja export zip, a TickTick CSV, a WeKan JSON export).
+         * The export file to import. Its expected format depends on the migrator (e.g. a Task64 export zip, a TickTick CSV, a WeKan JSON export).
          */
         import: Blob | File;
     };

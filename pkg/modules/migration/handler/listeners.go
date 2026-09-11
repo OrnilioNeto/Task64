@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,13 +23,13 @@ import (
 	"net/http"
 	"strconv"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/errorreport"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/notifications"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/errorreport"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/getsentry/sentry-go"
@@ -51,7 +51,7 @@ func (m *migrationFailedError) Error() string {
 
 // shouldReportMigrationError filters out failures we cannot fix: a 4xx from the service we migrate from,
 // or a domain error that maps to a 4xx, means the user's account, token, url or data is the problem, not
-// Vikunja. The user still gets notified, with the actual message instead of the "we have been notified" one.
+// Task64. The user still gets notified, with the actual message instead of the "we have been notified" one.
 func shouldReportMigrationError(err error) bool {
 	// ErrUpstreamRequestFailed maps to 502 no matter what the upstream said, so it needs its own check.
 	var upstreamErr *migration.ErrUpstreamRequestFailed

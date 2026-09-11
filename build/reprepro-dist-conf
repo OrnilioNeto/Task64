@@ -1,13 +1,13 @@
 Origin: dl.vikunja.io
-Label: Vikunja
+Label: Task64
 Codename: stable
 Architectures: amd64 arm64 armhf
 Components: main
-Description: The Vikunja package repository.
+Description: The Task64 package repository.
 
 Origin: dl.vikunja.io
-Label: Vikunja
+Label: Task64
 Codename: unstable
 Architectures: amd64 arm64 armhf
 Components: main
-Description: The Vikunja unstable package repository.
+Description: The Task64 unstable package repository.

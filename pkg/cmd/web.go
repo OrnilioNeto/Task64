@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,15 +29,15 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/cron"
-	"code.vikunja.io/api/pkg/initialize"
-	"code.vikunja.io/api/pkg/license"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/plugins"
-	"code.vikunja.io/api/pkg/routes"
-	"code.vikunja.io/api/pkg/utils"
-	"code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/cron"
+	"github.com/OrnilioNeto/Task64/pkg/initialize"
+	"github.com/OrnilioNeto/Task64/pkg/license"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/plugins"
+	"github.com/OrnilioNeto/Task64/pkg/routes"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/version"
 
 	"github.com/spf13/cobra"
 	"golang.org/x/crypto/acme/autocert"
@@ -111,7 +111,7 @@ func setupAutoTLS(server *http.Server) {
 	}
 
 	if config.ServiceInterface.GetString() != ":443" {
-		log.Warningf("Vikunja's interface is set to %s, with tls it is recommended to set this to :443", config.ServiceInterface.GetString())
+		log.Warningf("Task64's interface is set to %s, with tls it is recommended to set this to :443", config.ServiceInterface.GetString())
 	}
 
 	// Start HTTP server for ACME challenges
@@ -143,7 +143,7 @@ var webCmd = &cobra.Command{
 	Run: func(_ *cobra.Command, _ []string) {
 
 		// Version notification
-		log.Infof("Vikunja version %s", version.Version)
+		log.Infof("Task64 version %s", version.Version)
 
 		// Start the webserver
 		e := routes.NewEcho()

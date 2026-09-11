@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,8 @@
 package botmarble
 
 import (
-	"code.vikunja.io/api/pkg/modules/avatar/marble"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/marble"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // botColors is a cool-toned palette distinct from the marble default so bot avatars are visually recognizable as bots at a glance.

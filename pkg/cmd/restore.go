@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,9 @@
 package cmd
 
 import (
-	"code.vikunja.io/api/pkg/initialize"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/dump"
+	"github.com/OrnilioNeto/Task64/pkg/initialize"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/dump"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ func init() {
 
 var restoreCmd = &cobra.Command{
 	Use:   "restore [filename]",
-	Short: "Restores all vikunja data from a vikunja dump.",
+	Short: "Restores all task64 data from a task64 dump.",
 	Args:  cobra.ExactArgs(1),
 	PreRun: func(_ *cobra.Command, _ []string) {
 		initialize.FullInitWithoutAsync()

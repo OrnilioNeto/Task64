@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 package caldav
 
 // In caldav, priority values are an int from 0 to 9 where 1 is the highest priority and 9 the lowest. 0 is "unset".
-// Vikunja only has priorites from 0 to 5 where 0 is unset and 5 is the highest
+// Task64 only has priorites from 0 to 5 where 0 is unset and 5 is the highest
 // See https://icalendar.org/iCalendar-RFC-5545/3-8-1-9-priority.html
 func mapPriorityToCaldav(priority int64) (caldavPriority int) {
 	switch priority {
@@ -38,7 +38,7 @@ func mapPriorityToCaldav(priority int64) (caldavPriority int) {
 }
 
 // See mapPriorityToCaldav
-func parseVTODOPriority(priority int64) (vikunjaPriority int64) {
+func parseVTODOPriority(priority int64) (task64Priority int64) {
 	switch priority {
 	case 0:
 		return 0

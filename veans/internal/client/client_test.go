@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
 func TestMapHTTPError_StatusCodeMapping(t *testing.T) {
@@ -89,9 +89,9 @@ func TestMapHTTPError_BodyTruncation(t *testing.T) {
 	}
 }
 
-func TestMapHTTPError_VikunjaProblemJSONTakesPrecedenceOverRawBody(t *testing.T) {
+func TestMapHTTPError_Task64ProblemJSONTakesPrecedenceOverRawBody(t *testing.T) {
 	// v2 returns RFC 9457 problem+json: the message is in `detail`, and `code`
-	// carries Vikunja's numeric domain error code (not the HTTP status).
+	// carries Task64's numeric domain error code (not the HTTP status).
 	body := []byte(`{"status":404,"title":"Not Found","detail":"x","code":3001}`)
 	err := mapHTTPError("GET", "/foo", http.StatusNotFound, body, 0)
 	var oe *output.Error

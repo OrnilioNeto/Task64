@@ -231,7 +231,7 @@ export const adminUsersPatchStatus = <ThrowOnError extends boolean = true>(optio
 /**
  * Authenticate with OpenID Connect
  *
- * Exchanges the authorization code returned by an OpenID Connect provider for a Vikunja JWT, creating or updating the matching user. A long-lived refresh token is set as an HttpOnly cookie. When the resolved user has 2FA enabled, the call returns 412 and must be retried with totp_passcode set.
+ * Exchanges the authorization code returned by an OpenID Connect provider for a Task64 JWT, creating or updating the matching user. A long-lived refresh token is set as an HttpOnly cookie. When the resolved user has 2FA enabled, the call returns 412 and must be retried with totp_passcode set.
  */
 export const authOpenidCallback = <ThrowOnError extends boolean = true>(options: Options<AuthOpenidCallbackData, ThrowOnError>): RequestResult<AuthOpenidCallbackResponses, AuthOpenidCallbackErrors, ThrowOnError> => (options.client ?? client).post<AuthOpenidCallbackResponses, AuthOpenidCallbackErrors, ThrowOnError>({
     url: '/auth/openid/{provider}/callback',
@@ -264,7 +264,7 @@ export const avatarGet = <ThrowOnError extends boolean = true>(options: Options<
 /**
  * Proxy a full-resolution Unsplash image
  *
- * Proxies the full-resolution Unsplash image for the given image id through Vikunja, so the client never contacts Unsplash directly (privacy). Vikunja fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.
+ * Proxies the full-resolution Unsplash image for the given image id through Task64, so the client never contacts Unsplash directly (privacy). Task64 fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.
  */
 export const backgroundsUnsplashImage = <ThrowOnError extends boolean = true>(options: Options<BackgroundsUnsplashImageData, ThrowOnError>): RequestResult<BackgroundsUnsplashImageResponses, BackgroundsUnsplashImageErrors, ThrowOnError> => (options.client ?? client).get<BackgroundsUnsplashImageResponses, BackgroundsUnsplashImageErrors, ThrowOnError>({
     security: [{
@@ -283,7 +283,7 @@ export const backgroundsUnsplashImage = <ThrowOnError extends boolean = true>(op
 /**
  * Proxy an Unsplash image thumbnail
  *
- * Proxies a thumbnail (max width 200px) of the Unsplash image for the given image id through Vikunja, so the client never contacts Unsplash directly (privacy). Vikunja fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.
+ * Proxies a thumbnail (max width 200px) of the Unsplash image for the given image id through Task64, so the client never contacts Unsplash directly (privacy). Task64 fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.
  */
 export const backgroundsUnsplashThumb = <ThrowOnError extends boolean = true>(options: Options<BackgroundsUnsplashThumbData, ThrowOnError>): RequestResult<BackgroundsUnsplashThumbResponses, BackgroundsUnsplashThumbErrors, ThrowOnError> => (options.client ?? client).get<BackgroundsUnsplashThumbResponses, BackgroundsUnsplashThumbErrors, ThrowOnError>({
     security: [{
@@ -428,14 +428,14 @@ export const filtersUpdate = <ThrowOnError extends boolean = true>(options: Opti
 /**
  * Healthcheck
  *
- * Reports whether the service and its dependencies (database, Redis if enabled) are reachable. Returns 200 with status "OK" when healthy, 500 otherwise. When OpenID Connect providers are configured, each provider's availability is reported too; an unavailable provider (typically because it was unreachable while Vikunja started) degrades the status but never fails the check, since initialization is retried automatically (with exponential backoff, after at most 15 minutes) and a restart would not help. Public — no authentication required.
+ * Reports whether the service and its dependencies (database, Redis if enabled) are reachable. Returns 200 with status "OK" when healthy, 500 otherwise. When OpenID Connect providers are configured, each provider's availability is reported too; an unavailable provider (typically because it was unreachable while Task64 started) degrades the status but never fails the check, since initialization is retried automatically (with exponential backoff, after at most 15 minutes) and a restart would not help. Public — no authentication required.
  */
 export const health = <ThrowOnError extends boolean = true>(options?: Options<HealthData, ThrowOnError>): RequestResult<HealthResponses, HealthErrors, ThrowOnError> => (options?.client ?? client).get<HealthResponses, HealthErrors, ThrowOnError>({ url: '/health', ...options });
 
 /**
  * Instance info
  *
- * Returns version, frontend URL, motd and the enabled features of this Vikunja instance. Public — no authentication required.
+ * Returns version, frontend URL, motd and the enabled features of this Task64 instance. Public — no authentication required.
  */
 export const info = <ThrowOnError extends boolean = true>(options?: Options<InfoData, ThrowOnError>): RequestResult<InfoResponses, InfoErrors, ThrowOnError> => (options?.client ?? client).get<InfoResponses, InfoErrors, ThrowOnError>({ url: '/info', ...options });
 
@@ -625,7 +625,7 @@ export const migrationCsvDetect = <ThrowOnError extends boolean = true>(options:
 /**
  * Import a CSV file
  *
- * Imports the tasks from the uploaded CSV file into Vikunja using the given config. The import runs synchronously and returns once it has finished.
+ * Imports the tasks from the uploaded CSV file into Task64 using the given config. The import runs synchronously and returns once it has finished.
  */
 export const migrationCsvMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationCsvMigrateData, ThrowOnError>): RequestResult<MigrationCsvMigrateResponses, MigrationCsvMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationCsvMigrateResponses, MigrationCsvMigrateErrors, ThrowOnError>({
     ...formDataBodySerializer,
@@ -711,7 +711,7 @@ export const migrationMicrosoftTodoAuth = <ThrowOnError extends boolean = true>(
 /**
  * Migrate from microsoft-todo
  *
- * Starts a migration of the authenticated user's data from this service into Vikunja. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
+ * Starts a migration of the authenticated user's data from this service into Task64. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
  */
 export const migrationMicrosoftTodoMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationMicrosoftTodoMigrateData, ThrowOnError>): RequestResult<MigrationMicrosoftTodoMigrateResponses, MigrationMicrosoftTodoMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationMicrosoftTodoMigrateResponses, MigrationMicrosoftTodoMigrateErrors, ThrowOnError>({
     security: [{
@@ -753,7 +753,7 @@ export const migrationMicrosoftTodoStatus = <ThrowOnError extends boolean = true
 /**
  * Migrate from planka
  *
- * Starts a migration of the authenticated user's data from the given instance into Vikunja. The credentials are verified synchronously and rejected with 400 if the instance refuses them; the migration itself runs asynchronously. Refuses with 412 if a migration for this service is already running.
+ * Starts a migration of the authenticated user's data from the given instance into Task64. The credentials are verified synchronously and rejected with 400 if the instance refuses them; the migration itself runs asynchronously. Refuses with 412 if a migration for this service is already running.
  */
 export const migrationPlankaMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationPlankaMigrateData, ThrowOnError>): RequestResult<MigrationPlankaMigrateResponses, MigrationPlankaMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationPlankaMigrateResponses, MigrationPlankaMigrateErrors, ThrowOnError>({
     security: [{
@@ -795,7 +795,7 @@ export const migrationPlankaStatus = <ThrowOnError extends boolean = true>(optio
 /**
  * Migrate from ticktick
  *
- * Imports the authenticated user's data from an uploaded export file into Vikunja. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
+ * Imports the authenticated user's data from an uploaded export file into Task64. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
  */
 export const migrationTicktickMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationTicktickMigrateData, ThrowOnError>): RequestResult<MigrationTicktickMigrateResponses, MigrationTicktickMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationTicktickMigrateResponses, MigrationTicktickMigrateErrors, ThrowOnError>({
     ...formDataBodySerializer,
@@ -857,7 +857,7 @@ export const migrationTodoistAuth = <ThrowOnError extends boolean = true>(option
 /**
  * Migrate from todoist
  *
- * Starts a migration of the authenticated user's data from this service into Vikunja. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
+ * Starts a migration of the authenticated user's data from this service into Task64. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
  */
 export const migrationTodoistMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationTodoistMigrateData, ThrowOnError>): RequestResult<MigrationTodoistMigrateResponses, MigrationTodoistMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationTodoistMigrateResponses, MigrationTodoistMigrateErrors, ThrowOnError>({
     security: [{
@@ -918,7 +918,7 @@ export const migrationTrelloAuth = <ThrowOnError extends boolean = true>(options
 /**
  * Migrate from trello
  *
- * Starts a migration of the authenticated user's data from this service into Vikunja. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
+ * Starts a migration of the authenticated user's data from this service into Task64. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.
  */
 export const migrationTrelloMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationTrelloMigrateData, ThrowOnError>): RequestResult<MigrationTrelloMigrateResponses, MigrationTrelloMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationTrelloMigrateResponses, MigrationTrelloMigrateErrors, ThrowOnError>({
     security: [{
@@ -960,9 +960,9 @@ export const migrationTrelloStatus = <ThrowOnError extends boolean = true>(optio
 /**
  * Migrate from vikunja-file
  *
- * Imports the authenticated user's data from an uploaded export file into Vikunja. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
+ * Imports the authenticated user's data from an uploaded export file into Task64. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
  */
-export const migrationVikunjaFileMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationVikunjaFileMigrateData, ThrowOnError>): RequestResult<MigrationVikunjaFileMigrateResponses, MigrationVikunjaFileMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationVikunjaFileMigrateResponses, MigrationVikunjaFileMigrateErrors, ThrowOnError>({
+export const migrationTask64FileMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationVikunjaFileMigrateData, ThrowOnError>): RequestResult<MigrationVikunjaFileMigrateResponses, MigrationVikunjaFileMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationVikunjaFileMigrateResponses, MigrationVikunjaFileMigrateErrors, ThrowOnError>({
     ...formDataBodySerializer,
     security: [{
             key: 'JWTKeyAuth',
@@ -986,7 +986,7 @@ export const migrationVikunjaFileMigrate = <ThrowOnError extends boolean = true>
  *
  * Returns the migration status of the authenticated user for this service, i.e. whether and when they last migrated.
  */
-export const migrationVikunjaFileStatus = <ThrowOnError extends boolean = true>(options?: Options<MigrationVikunjaFileStatusData, ThrowOnError>): RequestResult<MigrationVikunjaFileStatusResponses, MigrationVikunjaFileStatusErrors, ThrowOnError> => (options?.client ?? client).get<MigrationVikunjaFileStatusResponses, MigrationVikunjaFileStatusErrors, ThrowOnError>({
+export const migrationTask64FileStatus = <ThrowOnError extends boolean = true>(options?: Options<MigrationVikunjaFileStatusData, ThrowOnError>): RequestResult<MigrationVikunjaFileStatusResponses, MigrationVikunjaFileStatusErrors, ThrowOnError> => (options?.client ?? client).get<MigrationVikunjaFileStatusResponses, MigrationVikunjaFileStatusErrors, ThrowOnError>({
     security: [{
             key: 'JWTKeyAuth',
             scheme: 'bearer',
@@ -1003,7 +1003,7 @@ export const migrationVikunjaFileStatus = <ThrowOnError extends boolean = true>(
 /**
  * Migrate from wekan
  *
- * Imports the authenticated user's data from an uploaded export file into Vikunja. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
+ * Imports the authenticated user's data from an uploaded export file into Task64. Send the file under the multipart "import" field. The import runs synchronously and returns once it has finished.
  */
 export const migrationWekanMigrate = <ThrowOnError extends boolean = true>(options: Options<MigrationWekanMigrateData, ThrowOnError>): RequestResult<MigrationWekanMigrateResponses, MigrationWekanMigrateErrors, ThrowOnError> => (options.client ?? client).post<MigrationWekanMigrateResponses, MigrationWekanMigrateErrors, ThrowOnError>({
     ...formDataBodySerializer,
@@ -1103,7 +1103,7 @@ export const notificationsMarkAllRead = <ThrowOnError extends boolean = true>(op
 /**
  * Notifications Atom feed
  *
- * Returns the authenticated user's latest notifications as an Atom feed. Authenticated with HTTP Basic auth: the username is the token owner and the password is a feeds-scoped Vikunja API token (tk_ prefix) — password and LDAP credentials are rejected because feed URLs are commonly shared or cached. Fetching the feed does not mark notifications as read.
+ * Returns the authenticated user's latest notifications as an Atom feed. Authenticated with HTTP Basic auth: the username is the token owner and the password is a feeds-scoped Task64 API token (tk_ prefix) — password and LDAP credentials are rejected because feed URLs are commonly shared or cached. Fetching the feed does not mark notifications as read.
  */
 export const notificationsAtomFeed = <ThrowOnError extends boolean = true>(options?: Options<NotificationsAtomFeedData, ThrowOnError>): RequestResult<NotificationsAtomFeedResponses, NotificationsAtomFeedErrors, ThrowOnError> => (options?.client ?? client).get<NotificationsAtomFeedResponses, NotificationsAtomFeedErrors, ThrowOnError>({
     security: [{ scheme: 'basic', type: 'http' }],
@@ -1137,7 +1137,7 @@ export const notificationsMarkRead = <ThrowOnError extends boolean = true>(optio
 /**
  * OAuth 2.0 authorize endpoint
  *
- * Creates a single-use authorization code for the authenticated user. PKCE (code_challenge with method S256) and a loopback or vikunja- scheme redirect_uri are required.
+ * Creates a single-use authorization code for the authenticated user. PKCE (code_challenge with method S256) and a loopback or task64- scheme redirect_uri are required.
  */
 export const oauthAuthorize = <ThrowOnError extends boolean = true>(options: Options<OauthAuthorizeData, ThrowOnError>): RequestResult<OauthAuthorizeResponses, OauthAuthorizeErrors, ThrowOnError> => (options.client ?? client).post<OauthAuthorizeResponses, OauthAuthorizeErrors, ThrowOnError>({
     security: [{
@@ -4091,7 +4091,7 @@ export const userWebhooksUpdate = <ThrowOnError extends boolean = true>(options:
 /**
  * List available time zones
  *
- * Returns every time zone this Vikunja instance can handle. The list depends on the host system and is unsorted; sort it client-side.
+ * Returns every time zone this Task64 instance can handle. The list depends on the host system and is unsorted; sort it client-side.
  */
 export const userTimezones = <ThrowOnError extends boolean = true>(options?: Options<UserTimezonesData, ThrowOnError>): RequestResult<UserTimezonesResponses, UserTimezonesErrors, ThrowOnError> => (options?.client ?? client).get<UserTimezonesResponses, UserTimezonesErrors, ThrowOnError>({
     security: [{

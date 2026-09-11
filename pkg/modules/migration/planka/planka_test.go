@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -94,7 +94,7 @@ func TestFetchBoardV1Unsupported(t *testing.T) {
 	require.ErrorAs(t, err, &errVersion)
 }
 
-func TestConvertPlankaToVikunja(t *testing.T) {
+func TestConvertPlankaToTask64(t *testing.T) {
 	f, srv := newFake(t)
 	f.validAPIKey = "key"
 	f.fixtures = plankaFixtures
@@ -107,7 +107,7 @@ func TestConvertPlankaToVikunja(t *testing.T) {
 	require.NoError(t, err)
 
 	downloads := []string{}
-	projects, err := convertPlankaToVikunja(data, func(a *plankaAttachment) (*bytes.Buffer, error) {
+	projects, err := convertPlankaToTask64(data, func(a *plankaAttachment) (*bytes.Buffer, error) {
 		downloads = append(downloads, a.ID)
 		if a.ID == "3001" {
 			return nil, errors.New("boom")
@@ -229,7 +229,7 @@ func TestConvertPlankaToVikunja(t *testing.T) {
 		assert.Contains(t, first.Description, "<h2>Base Group</h2>", "group name derived from base group")
 		assert.Contains(t, first.Description, "<td>Estimate</td>")
 		assert.Contains(t, first.Description, "<td>3d</td>")
-		assert.Contains(t, first.Description, `<a href="https://vikunja.io">Vikunja</a>`)
+		assert.Contains(t, first.Description, `<a href="https://vikunja.io">Task64</a>`)
 	})
 
 	t.Run("attachments and cover", func(t *testing.T) {

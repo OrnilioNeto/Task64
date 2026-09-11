@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,9 @@ import (
 	"net/http"
 	"strings"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 	"github.com/labstack/echo/v5"
 )
 
@@ -67,7 +67,7 @@ func parsePropertyUpdate(body string) ([]xml.Name, error) {
 }
 
 // handlePropPatch answers PROPPATCH (RFC 4918 §9.2) without applying any
-// change: Vikunja doesn't support client-set collection metadata, so every
+// change: Task64 doesn't support client-set collection metadata, so every
 // submitted property is refused with 403, the same "polite refusal" shape
 // sabre/dav uses for protected properties. Clients treat this as best-effort
 // and keep syncing instead of aborting on the 501 caldav-go falls back to.

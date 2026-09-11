@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"os"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/config"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,7 +29,7 @@ func TestGetMailDomain(t *testing.T) {
 		config.ServicePublicURL.Set("")
 		expectedHostname, err := os.Hostname()
 		if err != nil || expectedHostname == "" {
-			assert.Equal(t, "vikunja", GetMailDomain())
+			assert.Equal(t, "task64", GetMailDomain())
 		} else {
 			assert.Equal(t, expectedHostname, GetMailDomain())
 		}
@@ -49,7 +49,7 @@ func TestGetMailDomain(t *testing.T) {
 		config.ServicePublicURL.Set("://bad")
 		expectedHostname, err := os.Hostname()
 		if err != nil || expectedHostname == "" {
-			assert.Equal(t, "vikunja", GetMailDomain())
+			assert.Equal(t, "task64", GetMailDomain())
 		} else {
 			assert.Equal(t, expectedHostname, GetMailDomain())
 		}

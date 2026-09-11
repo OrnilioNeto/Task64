@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@ import (
 	"os"
 	"strings"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
 )
 
 // CheckDatabase returns database connectivity checks.
@@ -172,8 +172,8 @@ var paradeDBIndexes = []string{
 }
 
 // checkParadeDB reports whether the pg_search extension is installed and, if so,
-// whether the bm25 indexes Vikunja relies on exist. A missing extension is not a
-// failure — Vikunja falls back to substring search.
+// whether the bm25 indexes Task64 relies on exist. A missing extension is not a
+// failure — Task64 falls back to substring search.
 func checkParadeDB() []CheckResult {
 	s := db.NewSession()
 	defer s.Close()
@@ -232,7 +232,7 @@ func checkParadeDB() []CheckResult {
 		return append(results, CheckResult{
 			Name:   "ParadeDB indexes",
 			Passed: false,
-			Error:  fmt.Sprintf("missing: %s (restart Vikunja to create them)", strings.Join(missing, ", ")),
+			Error:  fmt.Sprintf("missing: %s (restart Task64 to create them)", strings.Join(missing, ", ")),
 		})
 	}
 

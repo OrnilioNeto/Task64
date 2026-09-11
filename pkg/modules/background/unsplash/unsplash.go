@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -32,14 +32,14 @@ import (
 
 	"xorm.io/xorm"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/background"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
-	"code.vikunja.io/api/pkg/utils"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 )
 
 func init() {
@@ -298,7 +298,7 @@ func (p *Provider) Set(s *xorm.Session, image *background.Image, project *models
 
 	// Stream the response body into a temp file so we have a seekable reader
 	// for S3 uploads without buffering the entire image in memory.
-	tmpFile, err := os.CreateTemp("", "vikunja-unsplash-*")
+	tmpFile, err := os.CreateTemp("", "task64-unsplash-*")
 	if err != nil {
 		return fmt.Errorf("could not create temp file for unsplash download: %w", err)
 	}
@@ -319,7 +319,7 @@ func (p *Provider) Set(s *xorm.Session, image *background.Image, project *models
 		return fmt.Errorf("could not seek temp file to start: %w", err)
 	}
 
-	// Save it as a file in vikunja
+	// Save it as a file in task64
 	file, err := files.CreateWithSession(s, tmpFile, "", uint64(written), auth)
 	if err != nil {
 		return

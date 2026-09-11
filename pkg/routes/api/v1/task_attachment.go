@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,10 +20,10 @@ import (
 	"errors"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	auth2 "code.vikunja.io/api/pkg/modules/auth"
-	webfiles "code.vikunja.io/api/pkg/web/files"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	auth2 "github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	webfiles "github.com/OrnilioNeto/Task64/pkg/web/files"
 
 	"github.com/labstack/echo/v5"
 )

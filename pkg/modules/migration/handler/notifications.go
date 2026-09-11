@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,9 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/i18n"
-	"code.vikunja.io/api/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/i18n"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
 )
 
 // MigrationDoneNotification represents a MigrationDoneNotification notification
@@ -37,7 +37,7 @@ func (n *MigrationDoneNotification) ToMail(lang string) *notifications.Mail {
 	return notifications.NewMail().
 		Subject(i18n.T(lang, "notifications.migration.done.subject", kind)).
 		Line(i18n.T(lang, "notifications.migration.done.imported", kind)).
-		Action(i18n.T(lang, "notifications.common.actions.open_vikunja"), config.ServicePublicURL.GetString()).
+		Action(i18n.T(lang, "notifications.common.actions.open_task64"), config.ServicePublicURL.GetString()).
 		Line(i18n.T(lang, "notifications.migration.done.have_fun"))
 }
 

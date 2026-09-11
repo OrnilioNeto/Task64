@@ -45,7 +45,7 @@
 	<CustomTransition name="fade">
 		<section
 			v-if="baseStore.loading"
-			class="vikunja-loading"
+			class="task64-loading"
 		>
 			<Logo class="logo" />
 			<p>
@@ -75,7 +75,7 @@ const baseStore = useBaseStore()
 <style lang="scss" scoped>
 // stylelint-disable no-invalid-position-declaration
 
-.vikunja-loading {
+.task64-loading {
 	display: flex;
 	justify-content: center;
 	align-items: center;

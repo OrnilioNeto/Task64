@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,12 @@ import (
 	"testing"
 	"text/template"
 
-	"code.vikunja.io/veans/internal/config"
+	"github.com/OrnilioNeto/Task64/veans/internal/config"
 )
 
 func TestPrimeTemplate_RendersAnchors(t *testing.T) {
 	data := primeContext{
-		Server:            "https://vikunja.example.com",
+		Server:            "https://task64.example.com",
 		ProjectID:         42,
 		ProjectTitle:      "Test Project",
 		ProjectIdentifier: "PROJ",
@@ -89,7 +89,7 @@ func TestPrimeTemplate_NoIdentifierFallback(t *testing.T) {
 		ProjectIdentifier: "",
 		BotUsername:       "bot-x",
 		TaskIDExample:     "#1",
-		Server:            "https://vikunja.example.com",
+		Server:            "https://task64.example.com",
 		ProjectID:         1,
 		ViewID:            1,
 	}

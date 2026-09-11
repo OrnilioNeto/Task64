@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,9 +25,9 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/routes/caldav"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/routes/caldav"
 
 	ics "github.com/arran4/golang-ical"
 	"github.com/labstack/echo/v5"
@@ -41,7 +41,7 @@ func TestCaldav(t *testing.T) {
 		rec, err := newCaldavTestRequestWithUser(t, e, http.MethodGet, caldav.ProjectHandler, &testuser15, ``, nil, map[string]string{"project": "36"})
 		require.NoError(t, err)
 		assert.Contains(t, rec.Body.String(), "BEGIN:VCALENDAR")
-		assert.Contains(t, rec.Body.String(), "PRODID:-//Vikunja Todo App//EN")
+		assert.Contains(t, rec.Body.String(), "PRODID:-//Task64 Todo App//EN")
 		assert.Contains(t, rec.Body.String(), "X-WR-CALNAME:Project 36 for Caldav tests")
 		assert.Contains(t, rec.Body.String(), "BEGIN:VTODO")
 		assert.Contains(t, rec.Body.String(), "END:VTODO")
@@ -58,7 +58,7 @@ func TestCaldav(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:List 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid
 DTSTAMP:20230301T073337Z
@@ -327,7 +327,7 @@ func TestCaldavSubtasks(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 `
 	const vtodoFooter = `
 END:VCALENDAR`
@@ -744,7 +744,7 @@ func TestCaldavSubtasksDifferentLists(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_parent_import
 DTSTAMP:20230301T073337Z
@@ -758,7 +758,7 @@ END:VCALENDAR`
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 38 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid_child_import
 DTSTAMP:20230301T073337Z
@@ -1154,7 +1154,7 @@ func TestCaldavSync(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-ctag-sync-test
 DTSTAMP:20230301T073337Z
@@ -1343,7 +1343,7 @@ func TestCaldavSyncCollection(t *testing.T) {
 		// Create a new task so there is a change newer than the token.
 		const vtodo = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 BEGIN:VTODO
 UID:uid-sync-delta-test
 DTSTAMP:20230301T073337Z
@@ -1432,7 +1432,7 @@ func TestCaldavPartialUpdate(t *testing.T) {
 VERSION:2.0
 X-PUBLISHED-TTL:PT4H
 X-WR-CALNAME:Project 36 for Caldav tests
-PRODID:-//Vikunja Todo App//EN
+PRODID:-//Task64 Todo App//EN
 `
 	const vtodoFooter = `
 END:VCALENDAR`

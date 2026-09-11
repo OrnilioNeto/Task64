@@ -1,6 +1,6 @@
 //go:build !windows
 
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"syscall"
 
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 	"golang.org/x/sys/unix"
 )
 
@@ -90,7 +90,7 @@ func checkDirectoryOwnership(info os.FileInfo) []CheckResult {
 	switch {
 	case currentUID != 0 && currentUID != int(uid):
 		errMsg := fmt.Sprintf(
-			"directory owned by uid %d but Vikunja runs as uid %d",
+			"directory owned by uid %d but Task64 runs as uid %d",
 			uid, currentUID,
 		)
 		if nsActive {

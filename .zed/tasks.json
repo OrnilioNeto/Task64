@@ -2,7 +2,7 @@
 [
     {
         "label": "build and run api",
-        "command": "mage build && ./vikunja"
+        "command": "mage build && ./task64"
     },
     {
         "label": "run frontend dev",

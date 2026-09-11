@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ func TestServiceSecret(t *testing.T) {
 		assert.Equal(t, "legacy-secret", ServiceSecret.GetString())
 	})
 	t.Run("service.jwtsecret is migrated from the environment", func(t *testing.T) {
-		t.Setenv("VIKUNJA_SERVICE_JWTSECRET", "legacy-env-secret")
+		t.Setenv("TASK64_SERVICE_JWTSECRET", "legacy-env-secret")
 		initConfigFromYAML(t, "")
 
 		assert.Equal(t, "legacy-env-secret", ServiceSecret.GetString())
@@ -93,7 +93,7 @@ func TestLogLevelDefaults(t *testing.T) {
 		assert.Equal(t, "WARNING", LogDatabaseLevel.GetString())
 	})
 	t.Run("category level from the environment wins", func(t *testing.T) {
-		t.Setenv("VIKUNJA_LOG_HTTPLEVEL", "ERROR")
+		t.Setenv("TASK64_LOG_HTTPLEVEL", "ERROR")
 		initConfigFromYAML(t, "log:\n  level: WARNING\n")
 
 		assert.Equal(t, "ERROR", LogHTTPLevel.GetString())
@@ -113,7 +113,7 @@ func TestResolvePath(t *testing.T) {
 	// Save and restore rootpath
 	original := ServiceRootpath.GetString()
 	defer ServiceRootpath.Set(original)
-	ServiceRootpath.Set("/var/lib/vikunja")
+	ServiceRootpath.Set("/var/lib/task64")
 
 	tests := []struct {
 		name     string
@@ -122,23 +122,23 @@ func TestResolvePath(t *testing.T) {
 	}{
 		{
 			name:     "absolute path returned as-is",
-			input:    "/etc/vikunja/config.yml",
-			expected: "/etc/vikunja/config.yml",
+			input:    "/etc/task64/config.yml",
+			expected: "/etc/task64/config.yml",
 		},
 		{
 			name:     "relative path joined with rootpath",
 			input:    "files",
-			expected: "/var/lib/vikunja/files",
+			expected: "/var/lib/task64/files",
 		},
 		{
 			name:     "relative subdir path joined with rootpath",
-			input:    "data/vikunja.db",
-			expected: "/var/lib/vikunja/data/vikunja.db",
+			input:    "data/task64.db",
+			expected: "/var/lib/task64/data/task64.db",
 		},
 		{
 			name:     "empty string returns rootpath",
 			input:    "",
-			expected: "/var/lib/vikunja",
+			expected: "/var/lib/task64",
 		},
 	}
 

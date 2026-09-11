@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
-// Client is a thin JSON wrapper around the Vikunja REST API. It holds the
+// Client is a thin JSON wrapper around the Task64 REST API. It holds the
 // server base URL and a bearer token (either a JWT from POST /login or an
 // API token minted via POST /tokens). Every method in this package is a thin
 // shim over Do.
@@ -57,7 +57,7 @@ const (
 // UserAgent is the value sent in the User-Agent header on every request.
 // main sets this at startup with the linker-injected version + the
 // runtime os/arch (e.g. "veans/0.3.1 (linux/amd64)"). Tests get the
-// default "veans/dev". Vikunja admins see this in their access logs.
+// default "veans/dev". Task64 admins see this in their access logs.
 var UserAgent = "veans/dev"
 
 // defaultHTTPTimeout is the timeout applied to the HTTP client returned by
@@ -74,14 +74,14 @@ func New(baseURL, token string) *Client {
 	}
 }
 
-// vikunjaError matches the RFC 9457 problem+json body /api/v2 returns
-// (huma.ErrorModel augmented with Vikunja's numeric domain `code`). The
+// task64Error matches the RFC 9457 problem+json body /api/v2 returns
+// (huma.ErrorModel augmented with Task64's numeric domain `code`). The
 // human-readable message lives in `detail`; `title` is the status text
 // fallback. `message` is v1's legacy field, kept only as a fallback so a
 // stray legacy/proxy error body still yields a readable message instead of
 // raw JSON. The HTTP status used for output.Code mapping comes from the
 // response status line, not this body.
-type vikunjaError struct {
+type task64Error struct {
 	Title   string `json:"title"`
 	Detail  string `json:"detail"`
 	Message string `json:"message"`
@@ -242,7 +242,7 @@ func (c *Client) DoRaw(ctx context.Context, method, path string, query url.Value
 }
 
 // maxBodyBytes caps the size of any response body we'll read into memory.
-// Vikunja JSON payloads are far smaller; the cap exists so a misbehaving
+// Task64 JSON payloads are far smaller; the cap exists so a misbehaving
 // proxy can't OOM the CLI by streaming an unbounded body.
 const maxBodyBytes = 32 * 1024 * 1024 // 32 MiB
 
@@ -266,7 +266,7 @@ func parseRetryAfter(v string) time.Duration {
 }
 
 func mapHTTPError(method, path string, status int, body []byte, retryAfter time.Duration) error {
-	var ve vikunjaError
+	var ve task64Error
 	_ = json.Unmarshal(body, &ve)
 	// v2's problem+json carries the human-readable text in `detail`; fall back
 	// to `title`, then v1's legacy `message`, then the raw body, then the

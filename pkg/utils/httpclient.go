@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ import (
 	"net/url"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/version"
 
 	"code.dny.dev/ssrf"
 )
@@ -57,8 +57,8 @@ func NewSSRFSafeHTTPClient() *http.Client {
 		parsedURL, _ := url.Parse(proxyURL)
 		transport.Proxy = http.ProxyURL(parsedURL)
 		transport.ProxyConnectHeader = http.Header{
-			"Proxy-Authorization": []string{"Basic " + base64.StdEncoding.EncodeToString([]byte("vikunja:"+proxyPassword))},
-			"User-Agent":          []string{"Vikunja/" + version.Version},
+			"Proxy-Authorization": []string{"Basic " + base64.StdEncoding.EncodeToString([]byte("task64:"+proxyPassword))},
+			"User-Agent":          []string{"Task64/" + version.Version},
 		}
 	}
 

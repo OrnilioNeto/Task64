@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestConvertWekanToVikunja(t *testing.T) {
+func TestConvertWekanToTask64(t *testing.T) {
 	startDate := time.Date(2024, 1, 15, 10, 0, 0, 0, time.UTC)
 	dueDate := time.Date(2024, 2, 15, 10, 0, 0, 0, time.UTC)
 	createdAt := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
@@ -83,7 +83,7 @@ func TestConvertWekanToVikunja(t *testing.T) {
 		},
 	}
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 
 	// Should have 1 project (the board itself)
 	require.Len(t, result, 1)
@@ -162,7 +162,7 @@ func TestParseWekanJSON_ParsesAttachments(t *testing.T) {
 	assert.Equal(t, "text/plain", board.Attachments[0].Type)
 }
 
-func TestConvertWekanToVikunja_Attachments(t *testing.T) {
+func TestConvertWekanToTask64_Attachments(t *testing.T) {
 	// "hello" in base64 is "aGVsbG8="
 	board := &wekanBoard{
 		ID:    "b1",
@@ -176,7 +176,7 @@ func TestConvertWekanToVikunja_Attachments(t *testing.T) {
 		},
 	}
 
-	projects := convertWekanToVikunja(board)
+	projects := convertWekanToTask64(board)
 	require.Len(t, projects, 1)
 	require.Len(t, projects[0].Tasks, 1)
 
@@ -238,7 +238,7 @@ func TestConvertWekanEmptyBoard(t *testing.T) {
 		Title: "Empty Board",
 	}
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	require.Len(t, result, 1)
 	assert.Equal(t, "Empty Board", result[0].Title)
 	assert.Empty(t, result[0].Tasks)
@@ -256,7 +256,7 @@ func TestConvertWekanCardWithoutList(t *testing.T) {
 		},
 	}
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	require.Len(t, result, 1)
 	// Orphan card should still be created, just with bucket ID 0
 	require.Len(t, result[0].Tasks, 2)
@@ -278,7 +278,7 @@ func TestConvertWekanLabelColorMapping(t *testing.T) {
 		},
 	}
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	labels := result[0].Tasks[0].Labels
 	require.Len(t, labels, 3)
 	assert.Equal(t, "eb4646", labels[0].HexColor) // red
@@ -301,7 +301,7 @@ func TestConvertWekanMultipleChecklists(t *testing.T) {
 		},
 	}
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	desc := result[0].Tasks[0].Description
 	assert.Contains(t, desc, "Checklist A")
 	assert.Contains(t, desc, "Checklist B")
@@ -336,7 +336,7 @@ func TestParseWekanUnsupportedFieldsIgnored(t *testing.T) {
 	assert.Equal(t, "Task", board.Cards[0].Title)
 
 	// Conversion should also work fine
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	require.Len(t, result, 1)
 	assert.Equal(t, "Board With Extras", result[0].Title)
 	require.Len(t, result[0].Tasks, 1)
@@ -351,7 +351,7 @@ func TestConvertWekanFromFixtureFile(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "Sample Project Board", board.Title)
 
-	result := convertWekanToVikunja(board)
+	result := convertWekanToTask64(board)
 	require.Len(t, result, 1)
 	project := result[0]
 

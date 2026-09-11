@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,24 +17,24 @@
 package shared
 
 import (
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/license"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/auth/openid"
-	csvmigrator "code.vikunja.io/api/pkg/modules/migration/csv"
-	microsofttodo "code.vikunja.io/api/pkg/modules/migration/microsoft-todo"
-	"code.vikunja.io/api/pkg/modules/migration/planka"
-	"code.vikunja.io/api/pkg/modules/migration/ticktick"
-	"code.vikunja.io/api/pkg/modules/migration/todoist"
-	"code.vikunja.io/api/pkg/modules/migration/trello"
-	vikunja_file "code.vikunja.io/api/pkg/modules/migration/vikunja-file"
-	"code.vikunja.io/api/pkg/modules/migration/wekan"
-	"code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/license"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/openid"
+	csvmigrator "github.com/OrnilioNeto/Task64/pkg/modules/migration/csv"
+	microsofttodo "github.com/OrnilioNeto/Task64/pkg/modules/migration/microsoft-todo"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/planka"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/ticktick"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/todoist"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/trello"
+	vikunja_file "github.com/OrnilioNeto/Task64/pkg/modules/migration/vikunja-file"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/wekan"
+	"github.com/OrnilioNeto/Task64/pkg/version"
 )
 
-// VikunjaInfos holds public information about this Vikunja instance.
+// VikunjaInfos holds public information about this Task64 instance.
 type VikunjaInfos struct {
-	Version                    string            `json:"version" doc:"The Vikunja version this instance runs."`
+	Version                    string            `json:"version" doc:"The Task64 version this instance runs."`
 	FrontendURL                string            `json:"frontend_url" doc:"The publicly configured frontend URL of this instance."`
 	Motd                       string            `json:"motd" doc:"The message of the day, shown to all users."`
 	LinkSharingEnabled         bool              `json:"link_sharing_enabled" doc:"Whether sharing projects via public links is enabled."`

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@ import (
 	"strings"
 	"time"
 
-	caldavpkg "code.vikunja.io/api/pkg/caldav"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
+	caldavpkg "github.com/OrnilioNeto/Task64/pkg/caldav"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
 	"github.com/labstack/echo/v5"
 	"github.com/samedi/caldav-go/errs"
 )
@@ -115,7 +115,7 @@ func writeForbiddenValidSyncToken(c *echo.Context) error {
 //   - Valid sync-token  → return only tasks changed/created since the token timestamp
 //     plus 404 entries for tasks deleted since then
 //   - Invalid/unknown token → 403 + <D:valid-sync-token/> so client resets
-func handleSyncCollectionReport(c *echo.Context, body string, storage *VikunjaCaldavProjectStorage) error {
+func handleSyncCollectionReport(c *echo.Context, body string, storage *Task64CaldavProjectStorage) error {
 	rawToken := extractSyncTokenFromBody(body)
 	includeCalendarData := requestsCalendarData(body)
 
@@ -214,7 +214,7 @@ func handleSyncCollectionReport(c *echo.Context, body string, storage *VikunjaCa
 // changed tasks as 200 entries, deleted tasks as 404 entries.
 func writeSyncResponse(
 	c *echo.Context,
-	rr VikunjaProjectResourceAdapter,
+	rr Task64ProjectResourceAdapter,
 	tasks []*models.TaskWithComments,
 	deletions []*models.Task,
 	newToken string,

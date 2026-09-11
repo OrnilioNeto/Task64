@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ import (
 	"net/http"
 	"time"
 
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 )
 
 // upstreamErrorBodyLimit caps the response body kept in an ErrUpstreamRequestFailed: it ends up in
@@ -160,7 +160,7 @@ func (err *ErrFileIsEmpty) HTTPError() web.HTTPError {
 type ErrNoDataFileInZip struct{}
 
 func (err *ErrNoDataFileInZip) Error() string {
-	return "The provided zip file does not contain a Vikunja data file"
+	return "The provided zip file does not contain a Task64 data file"
 }
 
 // ErrCodeNoDataFileInZip holds the unique world-error code of this error
@@ -171,7 +171,7 @@ func (err *ErrNoDataFileInZip) HTTPError() web.HTTPError {
 	return web.HTTPError{
 		HTTPCode: http.StatusBadRequest,
 		Code:     ErrCodeNoDataFileInZip,
-		Message:  "The provided zip file does not contain a Vikunja data file.",
+		Message:  "The provided zip file does not contain a Task64 data file.",
 	}
 }
 
@@ -241,7 +241,7 @@ func (err *ErrInvalidImportFile) HTTPError() web.HTTPError {
 	}
 }
 
-// ErrImportFromUnsupportedVersion represents an export created by a Vikunja version we can no longer read.
+// ErrImportFromUnsupportedVersion represents an export created by a Task64 version we can no longer read.
 type ErrImportFromUnsupportedVersion struct {
 	DumpVersion string
 	MinVersion  string
@@ -259,6 +259,6 @@ func (err *ErrImportFromUnsupportedVersion) HTTPError() web.HTTPError {
 	return web.HTTPError{
 		HTTPCode: http.StatusBadRequest,
 		Code:     ErrCodeImportFromUnsupportedVersion,
-		Message:  "The export was created with a Vikunja version that is too old to import. Please create a new export with a more recent version.",
+		Message:  "The export was created with a Task64 version that is too old to import. Please create a new export with a more recent version.",
 	}
 }

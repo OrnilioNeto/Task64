@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,20 +22,20 @@ import (
 	"sync"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/cron"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/cron"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 )
 
 // ProviderStatus reports whether one configured OpenID Connect provider is
 // available for login. A configured but unavailable provider was unreachable
-// when Vikunja last initialized its providers and would stay broken until a
-// restart (vikunja#3135) — initialization is retried automatically instead,
+// when Task64 last initialized its providers and would stay broken until a
+// restart (task64#3135) — initialization is retried automatically instead,
 // see RegisterProviderAvailabilityCron.
 type ProviderStatus struct {
 	Key       string `json:"key" doc:"The config key of the provider."`
-	Available bool   `json:"available" doc:"True when the provider is initialized and offered for login. This reflects the last initialization attempt, not the provider's current reachability. A configured but unavailable provider was unreachable or misconfigured when Vikunja last initialized its providers; initialization is retried automatically with exponential backoff, after at most 15 minutes."`
+	Available bool   `json:"available" doc:"True when the provider is initialized and offered for login. This reflects the last initialization attempt, not the provider's current reachability. A configured but unavailable provider was unreachable or misconfigured when Task64 last initialized its providers; initialization is retried automatically with exponential backoff, after at most 15 minutes."`
 }
 
 func availableProviderKeys() map[string]bool {
@@ -105,7 +105,7 @@ func unavailableProviderKeys() []string {
 
 // initializeUnavailableProviders re-runs provider initialization for the
 // given configured but unavailable providers. This heals the state from
-// vikunja#3135: a provider that was down while Vikunja started stayed
+// task64#3135: a provider that was down while Task64 started stayed
 // unusable for login until a manual restart.
 func initializeUnavailableProviders(unavailable []string) {
 	log.Infof("Openid providers %v are configured but not available, retrying initialization", unavailable)
@@ -211,7 +211,7 @@ func randomJitter(limit time.Duration) time.Duration {
 
 // RegisterProviderAvailabilityCron periodically retries initializing
 // configured openid providers which are not available, typically because
-// they were unreachable while Vikunja started. Retries are paced with
+// they were unreachable while Task64 started. Retries are paced with
 // capped exponential backoff.
 func RegisterProviderAvailabilityCron() {
 	err := cron.Schedule("* * * * *", retryUnavailableProviders)

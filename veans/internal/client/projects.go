@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ func (c *Client) GetProject(ctx context.Context, id int64) (*Project, error) {
 	return &out, nil
 }
 
-// CreateProject creates a new project owned by the calling user. Vikunja
+// CreateProject creates a new project owned by the calling user. Task64
 // auto-creates the default views (List, Gantt, Table, Kanban) on insert.
 func (c *Client) CreateProject(ctx context.Context, p *Project) (*Project, error) {
 	var out Project

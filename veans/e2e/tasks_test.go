@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,11 @@ import (
 	"strings"
 	"testing"
 
-	"code.vikunja.io/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
 )
 
 // TestCreateShowList_RoundTrip verifies the read+write path against a real
-// Vikunja: provision a workspace via init, create a task, show it, list it
+// Task64: provision a workspace via init, create a task, show it, list it
 // (with --filter), and confirm the JSON shapes are unwrapped raw object/array.
 func TestCreateShowList_RoundTrip(t *testing.T) {
 	ws, h := provisionWorkspace(t)

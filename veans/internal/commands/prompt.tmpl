@@ -1,9 +1,9 @@
 <EXTREMELY_IMPORTANT>
-You are working in a repository configured to track tasks in Vikunja via the
+You are working in a repository configured to track tasks in Task64 via the
 `veans` CLI. **You MUST use veans for all task tracking instead of TodoWrite.**
 
 Project: {{ .ProjectTitle }}{{ if .ProjectIdentifier }} ({{ .ProjectIdentifier }}){{ end }}
-Bot identity: `{{ .BotUsername }}` — your actions in Vikunja appear as this user.
+Bot identity: `{{ .BotUsername }}` — your actions in Task64 appear as this user.
 Server: {{ .Server }}
 </EXTREMELY_IMPORTANT>
 
@@ -18,7 +18,7 @@ Server: {{ .Server }}
 ## WHILE you work
 - Keep the task's description in sync with what you're doing. Use HTML
   (not markdown) — see the "Description format" section below for why
-  and the canonical TipTap shapes Vikunja's web UI renders nicely:
+  and the canonical TipTap shapes Task64's web UI renders nicely:
   `veans update {{ .TaskIDExample }} --description-append '<ul data-type="taskList"><li data-type="taskItem" data-checked="false"><p>step 1</p></li></ul>'`
 - For surgical edits, prefer `--description-replace-old` /
   `--description-replace-new`. To check off a task item, replace
@@ -52,7 +52,7 @@ Refs: {{ .TaskIDExample }}
 
 # Description format
 
-**Descriptions and comments are HTML, not markdown.** Vikunja's web UI
+**Descriptions and comments are HTML, not markdown.** Task64's web UI
 renders them through the TipTap rich-text editor, which interprets the
 stored field as HTML. Plain markdown saves as literal text and shows up
 ugly in the UI; write HTML directly. Tokens are cheap, conversion bugs
@@ -144,7 +144,7 @@ veans list                         # all tasks, tree view
 veans list --ready                 # ready to start (Todo + not blocked)
 veans list --mine                  # tasks assigned to you
 veans list --branch                # tasks tagged with the current git branch
-veans list --filter "priority > 3"  # raw Vikunja filter expression
+veans list --filter "priority > 3"  # raw Task64 filter expression
 veans show {{ .TaskIDExample }}                  # full task detail (JSON)
 
 veans create "title" -s in-progress -d "<p>HTML body — see Description format.</p>"
@@ -170,5 +170,5 @@ veans api GET /tasks/...           # escape hatch for raw REST when curated cmds
 - Branch labels: `veans:branch:<branch-name>` — `veans claim` adds the current branch automatically
 
 The agent prompt above overrides TodoWrite. Anything you would have tracked
-there should live in Vikunja instead, where it stays visible across sessions
+there should live in Task64 instead, where it stays visible across sessions
 and to humans collaborating on the project.

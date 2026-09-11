@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/modules/migration/csv"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/csv"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -96,7 +96,7 @@ func RegisterMigrationCSVRoutes(api huma.API) {
 	Register(api, huma.Operation{
 		OperationID: "migration-csv-migrate",
 		Summary:     "Import a CSV file",
-		Description: "Imports the tasks from the uploaded CSV file into Vikunja using the given config. The import runs synchronously and returns once it has finished.",
+		Description: "Imports the tasks from the uploaded CSV file into Task64 using the given config. The import runs synchronously and returns once it has finished.",
 		Method:      http.MethodPost,
 		Path:        "/migration/csv/migrate",
 		// POST runs an import rather than creating a REST resource, so it

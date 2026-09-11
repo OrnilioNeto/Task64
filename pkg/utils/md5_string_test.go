@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,12 +29,12 @@ func TestMd5String(t *testing.T) {
 	}{
 		{
 			name: "Test md5 generation",
-			args: args{cleartext: "vikunjarandomstringwhichisnotrandom"},
+			args: args{cleartext: "task64randomstringwhichisnotrandom"},
 			want: "58b27d8a1e45a9427dcfb8dea261c5ae",
 		},
 		{
 			name: "Test md5 generation",
-			args: args{cleartext: "vikunjastring"},
+			args: args{cleartext: "task64string"},
 			want: "3e22b01e055d3d113a946742c2f67b90",
 		},
 		{

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	user2 "code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	user2 "github.com/OrnilioNeto/Task64/pkg/user"
 	"github.com/labstack/echo/v5"
 )
 
@@ -148,7 +148,7 @@ func (c *MigratorWeb) Preview(ctx *echo.Context) error {
 
 // Migrate imports the CSV file
 // @Summary Import CSV file
-// @Description Imports tasks from a CSV file into Vikunja with the provided configuration.
+// @Description Imports tasks from a CSV file into Task64 with the provided configuration.
 // @tags migration
 // @Accept multipart/form-data
 // @Produce json

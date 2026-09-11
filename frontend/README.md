@@ -1,13 +1,13 @@
-# Web frontend for Vikunja
+# Web frontend for Task64
 
 > The todo app to organize your life.
 
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg)](LICENSE)
 [![Translation](https://badges.crowdin.net/vikunja/localized.svg)](https://crowdin.com/project/vikunja)
 
-This is the web frontend for Vikunja, written in Vue.js.
+This is the web frontend for Task64, written in Vue.js.
 
-Take a look at [our roadmap](https://my.vikunja.cloud/share/UrdhKPqumxDXUbYpEGJLSIyNTwAnbBzVlwdDpRbv/auth) (hosted on Vikunja!) for a list of things we're currently working on!
+Take a look at [our roadmap](https://my.vikunja.cloud/share/UrdhKPqumxDXUbYpEGJLSIyNTwAnbBzVlwdDpRbv/auth) (hosted on Task64!) for a list of things we're currently working on!
 
 For general information about the project, refer to the top-level readme of this repo.
 

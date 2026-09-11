@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,9 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/notifications"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -39,7 +39,7 @@ func TestGetThreadID(t *testing.T) {
 	t.Run("default domain when no public URL", func(t *testing.T) {
 		config.ServicePublicURL.Set("")
 		threadID := getThreadID(123)
-		expectedDomain := "vikunja"
+		expectedDomain := "task64"
 		if hostname, err := os.Hostname(); err == nil && hostname != "" {
 			expectedDomain = hostname
 		}
@@ -47,16 +47,16 @@ func TestGetThreadID(t *testing.T) {
 	})
 
 	t.Run("simple domain without port", func(t *testing.T) {
-		config.ServicePublicURL.Set("https://vikunja.example.com")
+		config.ServicePublicURL.Set("https://task64.example.com")
 		threadID := getThreadID(456)
-		assert.Equal(t, "<task-456@vikunja.example.com>", threadID)
+		assert.Equal(t, "<task-456@task64.example.com>", threadID)
 	})
 
 	t.Run("domain with standard HTTPS port", func(t *testing.T) {
-		config.ServicePublicURL.Set("https://vikunja.example.com:443")
+		config.ServicePublicURL.Set("https://task64.example.com:443")
 		threadID := getThreadID(789)
 		// Should strip port to create valid RFC 5322 domain
-		assert.Equal(t, "<task-789@vikunja.example.com>", threadID)
+		assert.Equal(t, "<task-789@task64.example.com>", threadID)
 	})
 
 	t.Run("domain with non-standard port", func(t *testing.T) {
@@ -67,10 +67,10 @@ func TestGetThreadID(t *testing.T) {
 	})
 
 	t.Run("domain with port 3456", func(t *testing.T) {
-		config.ServicePublicURL.Set("http://vikunja.local:3456")
+		config.ServicePublicURL.Set("http://task64.local:3456")
 		threadID := getThreadID(111)
 		// Should strip port to create valid RFC 5322 domain
-		assert.Equal(t, "<task-111@vikunja.local>", threadID)
+		assert.Equal(t, "<task-111@task64.local>", threadID)
 	})
 
 	t.Run("IP address with port", func(t *testing.T) {
@@ -83,7 +83,7 @@ func TestGetThreadID(t *testing.T) {
 	t.Run("invalid URL falls back to default", func(t *testing.T) {
 		config.ServicePublicURL.Set("not a valid url")
 		threadID := getThreadID(333)
-		expectedDomain := "vikunja"
+		expectedDomain := "task64"
 		if hostname, err := os.Hostname(); err == nil && hostname != "" {
 			expectedDomain = hostname
 		}
@@ -91,7 +91,7 @@ func TestGetThreadID(t *testing.T) {
 	})
 
 	t.Run("URL with path", func(t *testing.T) {
-		config.ServicePublicURL.Set("https://example.com:9000/vikunja")
+		config.ServicePublicURL.Set("https://example.com:9000/task64")
 		threadID := getThreadID(444)
 		// Should use hostname without port
 		assert.Equal(t, "<task-444@example.com>", threadID)
@@ -101,7 +101,7 @@ func TestGetThreadID(t *testing.T) {
 func TestUndoneTasksOverdueNotification_TitleIsMarkdownEscaped(t *testing.T) {
 	originalPublicURL := config.ServicePublicURL.GetString()
 	t.Cleanup(func() { config.ServicePublicURL.Set(originalPublicURL) })
-	config.ServicePublicURL.Set("https://vikunja.example.com/")
+	config.ServicePublicURL.Set("https://task64.example.com/")
 
 	maliciousTitle := "bad](https://evil.com) [click here"
 	n := &UndoneTasksOverdueNotification{
@@ -129,12 +129,12 @@ func TestUndoneTasksOverdueNotification_TitleIsMarkdownEscaped(t *testing.T) {
 		"malicious URL must not be rendered as an anchor")
 	assert.NotContains(t, opts.HTMLMessage, `src="https://evil.com`,
 		"malicious URL must not be rendered as an image")
-	assert.Contains(t, opts.HTMLMessage, "https://vikunja.example.com/tasks/42",
+	assert.Contains(t, opts.HTMLMessage, "https://task64.example.com/tasks/42",
 		"legitimate task link must still render")
 	// Exactly one anchor to the task — the injection must not create a
-	// second one. Vikunja templates also render the Action link, but this
+	// second one. Task64 templates also render the Action link, but this
 	// notification has no Action for the individual task.
-	assert.Equal(t, 1, strings.Count(opts.HTMLMessage, `<a href="https://vikunja.example.com/tasks/42`),
+	assert.Equal(t, 1, strings.Count(opts.HTMLMessage, `<a href="https://task64.example.com/tasks/42`),
 		"expected exactly one anchor to the task")
 	// The malicious title text must still be displayed as literal text
 	// (goldmark will render the backslash escapes as the original characters).
@@ -229,7 +229,7 @@ func TestUserMentionedInTaskNotification_ToTitle(t *testing.T) {
 func TestReminderDueNotification_TitleIsMarkdownEscaped(t *testing.T) {
 	originalPublicURL := config.ServicePublicURL.GetString()
 	t.Cleanup(func() { config.ServicePublicURL.Set(originalPublicURL) })
-	config.ServicePublicURL.Set("https://vikunja.example.com/")
+	config.ServicePublicURL.Set("https://task64.example.com/")
 
 	n := &ReminderDueNotification{
 		User:    &user.User{ID: 1, Name: "alice"},

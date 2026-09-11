@@ -312,7 +312,7 @@ async function clearAll() {
 		}
 
 		.head {
-			font-family: $vikunja-font;
+			font-family: $task64-font;
 			font-size: 1rem;
 			padding: .5rem;
 			display: flex;

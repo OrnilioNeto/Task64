@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/routes/api/shared"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/routes/api/shared"
 
 	"github.com/labstack/echo/v5"
 )
@@ -76,7 +76,7 @@ func HandleTesting(c *echo.Context) error {
 
 // HandleTestingTruncateAll truncates all tables in the database
 // @Summary Truncate all tables
-// @Description Removes all data from every Vikunja table. Used by e2e tests to ensure clean state before each test. Requires the testing token.
+// @Description Removes all data from every Task64 table. Used by e2e tests to ensure clean state before each test. Requires the testing token.
 // @tags testing
 // @Produce json
 // @Success 200 {object} map[string]string "All tables truncated."

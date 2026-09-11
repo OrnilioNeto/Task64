@@ -1,9 +1,9 @@
-name: "vikunja"
+name: "task64"
 arch: "<arch>"
 platform: "linux"
 version: "<version>"
-description: "Vikunja is an open-source todo application, written in Go. It lets you create lists,tasks and share them via teams or directly between users."
-maintainer: "Vikunja Maintainers <maintainers@vikunja.io>"
+description: "Task64 is an open-source todo application, written in Go. It lets you create lists,tasks and share them via teams or directly between users."
+maintainer: "Task64 Maintainers <maintainers@vikunja.io>"
 homepage: "https://vikunja.io"
 section: "default"
 priority: "extra"
@@ -30,18 +30,18 @@ overrides:
       postinstall: ./build/after-install-openrc.sh
 contents:
   - src: <binlocation>
-    dst: /opt/vikunja/vikunja
+    dst: /opt/task64/task64
   - src: ./config.yml.sample
-    dst: /etc/vikunja/config.yml
+    dst: /etc/task64/config.yml
     # noreplace only affects rpm; the other packagers treat it as plain config.
     type: "config|noreplace"
-  - src: /opt/vikunja/vikunja
-    dst: /usr/local/bin/vikunja
+  - src: /opt/task64/task64
+    dst: /usr/local/bin/task64
     type: "symlink"
-  - src: vikunja.service
-    dst: /usr/lib/systemd/system/vikunja.service
-  - src: vikunja.initd
-    dst: /etc/init.d/vikunja
+  - src: task64.service
+    dst: /usr/lib/systemd/system/task64.service
+  - src: task64.initd
+    dst: /etc/init.d/task64
     type: "config"
     packager: apk
 scripts:

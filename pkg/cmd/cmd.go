@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,23 +20,17 @@ import (
 	"fmt"
 	"os"
 
-	"code.vikunja.io/api/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/config"
 
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "vikunja",
-	Short: "Vikunja is the to-do app to organize your life.",
-	Long: `Vikunja (/vɪˈkuːnjə/)
-The to-do app to organize your life.
+	Use:   "task64",
+	Short: "Task64 is the to-do app to organize your life.",
+	Long: `Task64 is a self-hosted To-Do list application with a web app and mobile apps for all platforms. It is licensed under the AGPL-3.0-or-later.
 
-Also one of the two wild South American camelids which live in the high
-alpine areas of the Andes and a relative of the llama.
-
-Vikunja is a self-hosted To-Do list application with a web app and mobile apps for all platforms. It is licensed under the AGPL-3.0-or-later.
-
-Find out more at vikunja.io.`,
+Find out more at https://github.com/OrnilioNeto/Task64.`,
 	PreRun: webCmd.PreRun,
 	Run:    webCmd.Run,
 }

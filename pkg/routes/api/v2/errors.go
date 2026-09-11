@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,10 @@ import (
 	"net/http"
 	"strings"
 
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -45,7 +45,7 @@ func authFromCtx(ctx context.Context) (web.Auth, error) {
 	return a, nil
 }
 
-// translateDomainError maps a Vikunja domain error (web.HTTPErrorProcessor)
+// translateDomainError maps a Task64 domain error (web.HTTPErrorProcessor)
 // onto Huma's status-error type so the response carries the right code
 // and an RFC 9457 body. Errors without HTTP semantics fall through, which
 // Huma treats as 500.
@@ -61,12 +61,12 @@ func translateDomainError(err error) error {
 			msg = err.Error()
 		}
 		se := huma.NewError(details.HTTPCode, msg)
-		// Preserve Vikunja's numeric domain error code (the value the
+		// Preserve Task64's numeric domain error code (the value the
 		// error docs key off) on the problem+json body. v1 exposes it as
 		// `code`; without this v2 clients always read 0. I18nParams rides
 		// along the same way so v2 clients can localise the message like
 		// v1 clients do.
-		if vm, ok := se.(*vikunjaErrorModel); ok {
+		if vm, ok := se.(*task64ErrorModel); ok {
 			vm.Code = details.Code
 			vm.I18nParams = details.I18nParams
 		}
@@ -78,7 +78,7 @@ func translateDomainError(err error) error {
 	var ve models.ValidationHTTPError
 	if errors.As(err, &ve) {
 		se := huma.NewError(http.StatusUnprocessableEntity, ve.Error(), invalidFieldDetails(ve.InvalidFields)...)
-		if vm, ok := se.(*vikunjaErrorModel); ok {
+		if vm, ok := se.(*task64ErrorModel); ok {
 			vm.Code = ve.GetCode()
 		}
 		return se
@@ -101,24 +101,24 @@ func invalidFieldDetails(fields []string) []error {
 	return details
 }
 
-// vikunjaErrorModel extends Huma's RFC 9457 body with Vikunja's numeric
+// task64ErrorModel extends Huma's RFC 9457 body with Task64's numeric
 // domain error code, preserving the v1 error-code contract on v2. Wired in
 // as the global error type via the huma.NewError override in init().
-type vikunjaErrorModel struct {
+type task64ErrorModel struct {
 	huma.ErrorModel
-	Code       int               `json:"code,omitempty" readOnly:"true" doc:"Vikunja numeric error code; see https://vikunja.io/docs/errors/"`
+	Code       int               `json:"code,omitempty" readOnly:"true" doc:"Task64 numeric error code; see https://vikunja.io/docs/errors/"`
 	I18nParams map[string]string `json:"i18n_params,omitempty" readOnly:"true" doc:"Dynamic values referenced by the error message, keyed by translation placeholder name, for client-side localisation."`
 }
 
 func init() {
 	// Replace Huma's default error constructor so both the generated
-	// OpenAPI schema and runtime responses use vikunjaErrorModel. Huma
+	// OpenAPI schema and runtime responses use task64ErrorModel. Huma
 	// derives the error-response schema from NewError(0, "") at register
 	// time and routes runtime errors through the same constructor, so the
 	// `code` field stays consistent between spec and wire.
 	huma.NewError = func(status int, msg string, errs ...error) huma.StatusError {
 		// Strip internal detail from server errors. The humaecho adapter writes
-		// responses itself, bypassing Vikunja's CreateHTTPErrorHandler which for
+		// responses itself, bypassing Task64's CreateHTTPErrorHandler which for
 		// v1 returns a generic 500 — so without this a raw DB/driver error (hosts,
 		// ports, credentials, schema names) leaks into problem+json `errors[]`,
 		// including on public endpoints like /health. This must live in NewError
@@ -145,7 +145,7 @@ func init() {
 				details = append(details, &huma.ErrorDetail{Message: e.Error()})
 			}
 		}
-		return &vikunjaErrorModel{ErrorModel: huma.ErrorModel{
+		return &task64ErrorModel{ErrorModel: huma.ErrorModel{
 			Status: status,
 			Title:  http.StatusText(status),
 			Detail: msg,

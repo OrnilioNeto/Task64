@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ package v1
 // @Produce json
 // @Param project path string true "The project id or the project's identifier"
 // @Param index path int true "The task's per-project index"
-// @Param expand query string false "If set to `subtasks`, Vikunja will fetch only tasks which do not have subtasks and then in a second step, will fetch all of these subtasks. This may result in more tasks than the pagination limit being returned, but all subtasks will be present in the response. You can only set this to `subtasks`."
+// @Param expand query string false "If set to `subtasks`, Task64 will fetch only tasks which do not have subtasks and then in a second step, will fetch all of these subtasks. This may result in more tasks than the pagination limit being returned, but all subtasks will be present in the response. You can only set this to `subtasks`."
 // @Security JWTKeyAuth
 // @Success 200 {object} models.Task "The task"
 // @Failure 400 {object} web.HTTPError "Invalid project ID or index"

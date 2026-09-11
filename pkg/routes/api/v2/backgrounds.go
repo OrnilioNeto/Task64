@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@ import (
 	"io"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/background"
-	backgroundHandler "code.vikunja.io/api/pkg/modules/background/handler"
-	"code.vikunja.io/api/pkg/modules/background/unsplash"
-	webfiles "code.vikunja.io/api/pkg/web/files"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background"
+	backgroundHandler "github.com/OrnilioNeto/Task64/pkg/modules/background/handler"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background/unsplash"
+	webfiles "github.com/OrnilioNeto/Task64/pkg/web/files"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/danielgtaylor/huma/v2/adapters/humaecho"
@@ -127,7 +127,7 @@ func RegisterBackgroundRoutes(api huma.API) {
 		Register(api, huma.Operation{
 			OperationID: "backgrounds-unsplash-image",
 			Summary:     "Proxy a full-resolution Unsplash image",
-			Description: "Proxies the full-resolution Unsplash image for the given image id through Vikunja, so the client never contacts Unsplash directly (privacy). Vikunja fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.",
+			Description: "Proxies the full-resolution Unsplash image for the given image id through Task64, so the client never contacts Unsplash directly (privacy). Task64 fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.",
 			Method:      http.MethodGet,
 			Path:        "/backgrounds/unsplash/images/{image}",
 			Tags:        tags,
@@ -138,7 +138,7 @@ func RegisterBackgroundRoutes(api huma.API) {
 		Register(api, huma.Operation{
 			OperationID: "backgrounds-unsplash-thumb",
 			Summary:     "Proxy an Unsplash image thumbnail",
-			Description: "Proxies a thumbnail (max width 200px) of the Unsplash image for the given image id through Vikunja, so the client never contacts Unsplash directly (privacy). Vikunja fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.",
+			Description: "Proxies a thumbnail (max width 200px) of the Unsplash image for the given image id through Task64, so the client never contacts Unsplash directly (privacy). Task64 fires the required Unsplash pingback as a side effect. Returns 404 if the image does not exist.",
 			Method:      http.MethodGet,
 			Path:        "/backgrounds/unsplash/images/{image}/thumb",
 			Tags:        tags,

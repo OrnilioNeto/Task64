@@ -1,8 +1,8 @@
 const crypto = require('crypto')
 const {net} = require('electron')
 
-const CLIENT_ID = 'vikunja-desktop'
-const REDIRECT_URI = 'vikunja-desktop://callback'
+const CLIENT_ID = 'task64-desktop'
+const REDIRECT_URI = 'task64-desktop://callback'
 
 let pendingCodeVerifier = null
 

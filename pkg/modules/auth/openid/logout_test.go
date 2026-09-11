@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@ import (
 	"net/url"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -53,7 +53,7 @@ func newMockOIDCServerWithEndSession() *httptest.Server {
 
 func TestBuildEndSessionURLAssembly(t *testing.T) {
 	t.Run("all params", func(t *testing.T) {
-		got, err := buildEndSessionURL("https://op.example.com/logout", "my-client", "the-id-token", "https://vikunja.example.com/")
+		got, err := buildEndSessionURL("https://op.example.com/logout", "my-client", "the-id-token", "https://task64.example.com/")
 		require.NoError(t, err)
 
 		u, err := url.Parse(got)
@@ -63,12 +63,12 @@ func TestBuildEndSessionURLAssembly(t *testing.T) {
 		assert.Equal(t, "op.example.com", u.Host)
 		assert.Equal(t, "/logout", u.Path)
 		assert.Equal(t, "the-id-token", q.Get("id_token_hint"))
-		assert.Equal(t, "https://vikunja.example.com/", q.Get("post_logout_redirect_uri"))
+		assert.Equal(t, "https://task64.example.com/", q.Get("post_logout_redirect_uri"))
 		assert.Equal(t, "my-client", q.Get("client_id"))
 	})
 
 	t.Run("preserves existing endpoint query params", func(t *testing.T) {
-		got, err := buildEndSessionURL("https://op.example.com/logout?foo=bar", "my-client", "the-id-token", "https://vikunja.example.com/")
+		got, err := buildEndSessionURL("https://op.example.com/logout?foo=bar", "my-client", "the-id-token", "https://task64.example.com/")
 		require.NoError(t, err)
 
 		u, err := url.Parse(got)
@@ -79,19 +79,19 @@ func TestBuildEndSessionURLAssembly(t *testing.T) {
 	})
 
 	t.Run("omits id_token_hint when no token", func(t *testing.T) {
-		got, err := buildEndSessionURL("https://op.example.com/logout", "my-client", "", "https://vikunja.example.com/")
+		got, err := buildEndSessionURL("https://op.example.com/logout", "my-client", "", "https://task64.example.com/")
 		require.NoError(t, err)
 
 		u, err := url.Parse(got)
 		require.NoError(t, err)
 		q := u.Query()
 		assert.False(t, q.Has("id_token_hint"))
-		assert.Equal(t, "https://vikunja.example.com/", q.Get("post_logout_redirect_uri"))
+		assert.Equal(t, "https://task64.example.com/", q.Get("post_logout_redirect_uri"))
 		assert.Equal(t, "my-client", q.Get("client_id"))
 	})
 
 	t.Run("empty endpoint returns empty", func(t *testing.T) {
-		got, err := buildEndSessionURL("", "my-client", "the-id-token", "https://vikunja.example.com/")
+		got, err := buildEndSessionURL("", "my-client", "the-id-token", "https://task64.example.com/")
 		require.NoError(t, err)
 		assert.Empty(t, got)
 	})
@@ -104,7 +104,7 @@ func TestBuildEndSessionURLFromDiscovery(t *testing.T) {
 	defer server.Close()
 
 	config.AuthOpenIDEnabled.Set(true)
-	config.ServicePublicURL.Set("https://vikunja.example.com/")
+	config.ServicePublicURL.Set("https://task64.example.com/")
 	config.AuthOpenIDProviders.Set(map[string]interface{}{
 		"provider1": map[string]interface{}{
 			"name":         "Provider One",
@@ -127,7 +127,7 @@ func TestBuildEndSessionURLFromDiscovery(t *testing.T) {
 	q := u.Query()
 	assert.Equal(t, server.URL+"/logout", u.Scheme+"://"+u.Host+u.Path)
 	assert.Equal(t, "raw-id-token", q.Get("id_token_hint"))
-	assert.Equal(t, "https://vikunja.example.com/", q.Get("post_logout_redirect_uri"))
+	assert.Equal(t, "https://task64.example.com/", q.Get("post_logout_redirect_uri"))
 	assert.Equal(t, "client1", q.Get("client_id"))
 }
 
@@ -135,7 +135,7 @@ func TestBuildEndSessionURLFromCachedProviderWithoutLiveObject(t *testing.T) {
 	defer CleanupSavedOpenIDProviders()
 
 	config.AuthOpenIDEnabled.Set(true)
-	config.ServicePublicURL.Set("https://vikunja.example.com/")
+	config.ServicePublicURL.Set("https://task64.example.com/")
 
 	// Seed only the cached static fields (no live openIDProvider), mimicking a
 	// provider restored from keyvalue whose OP is unreachable.
@@ -157,7 +157,7 @@ func TestBuildEndSessionURLFromCachedProviderWithoutLiveObject(t *testing.T) {
 	q := u.Query()
 	assert.Equal(t, "https://op.example.com/end-session", u.Scheme+"://"+u.Host+u.Path)
 	assert.Equal(t, "raw-id-token", q.Get("id_token_hint"))
-	assert.Equal(t, "https://vikunja.example.com/", q.Get("post_logout_redirect_uri"))
+	assert.Equal(t, "https://task64.example.com/", q.Get("post_logout_redirect_uri"))
 	assert.Equal(t, "client1", q.Get("client_id"))
 }
 

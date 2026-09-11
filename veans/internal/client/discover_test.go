@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,12 +29,12 @@ func TestServerCandidates(t *testing.T) {
 	}{
 		{
 			name:  "bare hostname → https first, then http, with default-port fallbacks",
-			input: "vikunja.example.com",
+			input: "task64.example.com",
 			want: []string{
-				"https://vikunja.example.com",
-				"https://vikunja.example.com:3456",
-				"http://vikunja.example.com",
-				"http://vikunja.example.com:3456",
+				"https://task64.example.com",
+				"https://task64.example.com:3456",
+				"http://task64.example.com",
+				"http://task64.example.com:3456",
 			},
 		},
 		{
@@ -49,30 +49,30 @@ func TestServerCandidates(t *testing.T) {
 		},
 		{
 			name:  "user-supplied /api/v1 suffix is trimmed (so the probe doesn't double it up)",
-			input: "https://vikunja.example.com/api/v1",
+			input: "https://task64.example.com/api/v1",
 			want: []string{
-				"https://vikunja.example.com",
-				"https://vikunja.example.com:3456",
-				"http://vikunja.example.com",
-				"http://vikunja.example.com:3456",
+				"https://task64.example.com",
+				"https://task64.example.com:3456",
+				"http://task64.example.com",
+				"http://task64.example.com:3456",
 			},
 		},
 		{
 			name:  "explicit port is respected — no default-port fallback added",
-			input: "https://vikunja.example.com:8443",
+			input: "https://task64.example.com:8443",
 			want: []string{
-				"https://vikunja.example.com:8443",
-				"http://vikunja.example.com:8443",
+				"https://task64.example.com:8443",
+				"http://task64.example.com:8443",
 			},
 		},
 		{
 			name:  "subpath install keeps the prefix",
-			input: "https://example.com/vikunja",
+			input: "https://example.com/task64",
 			want: []string{
-				"https://example.com/vikunja",
-				"https://example.com:3456/vikunja",
-				"http://example.com/vikunja",
-				"http://example.com:3456/vikunja",
+				"https://example.com/task64",
+				"https://example.com:3456/task64",
+				"http://example.com/task64",
+				"http://example.com:3456/task64",
 			},
 		},
 		{
@@ -85,12 +85,12 @@ func TestServerCandidates(t *testing.T) {
 		},
 		{
 			name:  "trailing slash trimmed",
-			input: "https://vikunja.example.com/",
+			input: "https://task64.example.com/",
 			want: []string{
-				"https://vikunja.example.com",
-				"https://vikunja.example.com:3456",
-				"http://vikunja.example.com",
-				"http://vikunja.example.com:3456",
+				"https://task64.example.com",
+				"https://task64.example.com:3456",
+				"http://task64.example.com",
+				"http://task64.example.com:3456",
 			},
 		},
 	}

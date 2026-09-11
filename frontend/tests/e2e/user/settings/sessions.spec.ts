@@ -43,9 +43,9 @@ test.describe('Sessions', () => {
 		await expect(page.locator('table.table tbody tr')).toHaveCount(1)
 
 		// After revoke, the refresh request must fail. Refresh tokens live in the
-		// vikunja_refresh_token cookie, not as a Bearer credential.
+		// task64_refresh_token cookie, not as a Bearer credential.
 		const after = await apiContext.post('user/token/refresh', {
-			headers: {Cookie: `vikunja_refresh_token=${rawToken}`},
+			headers: {Cookie: `task64_refresh_token=${rawToken}`},
 		})
 		expect(after.status()).toBe(401)
 	})

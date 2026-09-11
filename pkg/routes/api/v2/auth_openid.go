@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"errors"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/modules/auth/openid"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/openid"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -42,7 +42,7 @@ func RegisterOpenIDRoutes(api huma.API) {
 	Register(api, huma.Operation{
 		OperationID:   "auth-openid-callback",
 		Summary:       "Authenticate with OpenID Connect",
-		Description:   "Exchanges the authorization code returned by an OpenID Connect provider for a Vikunja JWT, creating or updating the matching user. A long-lived refresh token is set as an HttpOnly cookie. When the resolved user has 2FA enabled, the call returns 412 and must be retried with totp_passcode set.",
+		Description:   "Exchanges the authorization code returned by an OpenID Connect provider for a Task64 JWT, creating or updating the matching user. A long-lived refresh token is set as an HttpOnly cookie. When the resolved user has 2FA enabled, the call returns 412 and must be retried with totp_passcode set.",
 		Method:        http.MethodPost,
 		Path:          "/auth/openid/{provider}/callback",
 		DefaultStatus: http.StatusOK,

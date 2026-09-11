@@ -18,7 +18,7 @@ const oauth = require('./oauth.js')
 const {CONTENT_SECURITY_POLICY} = require('./csp.js')
 
 const frontendPath = 'frontend/'
-const PROTOCOL = 'vikunja-desktop'
+const PROTOCOL = 'task64-desktop'
 const SAFE_PROTOCOLS = new Set([
 	'http:', 'https:', 'mailto:',
 	'ftp:', 'git:', 'obsidian:', 'notion:', 'message:',
@@ -71,7 +71,7 @@ if (!gotTheLock) {
 	process.exit(0)
 }
 
-// AppImages aren't installed, so nothing registers the vikunja-desktop://
+// AppImages aren't installed, so nothing registers the task64-desktop://
 // scheme on the host — write a handler-only desktop file and register it via xdg-mime ourselves.
 function registerAppImageProtocolHandler() {
 	const appImagePath = process.env.APPIMAGE
@@ -91,7 +91,7 @@ function registerAppImageProtocolHandler() {
 		const quotedExecPath = '"' + appImagePath.replace(/["`$\\]/g, '\\$&').replace(/%/g, '%%') + '"'
 		const desktopEntry = [
 			'[Desktop Entry]',
-			'Name=Vikunja Desktop',
+			'Name=Task64 Desktop',
 			'Type=Application',
 			`Exec=${quotedExecPath} %u`,
 			'Terminal=false',
@@ -114,7 +114,7 @@ function registerAppImageProtocolHandler() {
 
 		execFile('xdg-mime', ['default', desktopFileName, `x-scheme-handler/${PROTOCOL}`], (err) => {
 			if (err) {
-				console.warn('Failed to set vikunja-desktop:// as default handler:', err.message)
+				console.warn('Failed to set task64-desktop:// as default handler:', err.message)
 			}
 		})
 		execFile('update-desktop-database', [applicationsDir], (err) => {
@@ -483,7 +483,7 @@ function setupTray() {
 		const iconPath = path.join(__dirname, 'icon.png')
 		const icon = nativeImage.createFromPath(iconPath).resize({width: 16, height: 16})
 		tray = new Tray(icon)
-		tray.setToolTip('Vikunja')
+		tray.setToolTip('Task64')
 		tray.on('click', () => {
 			if (mainWindow) {
 				mainWindow.show()
@@ -496,7 +496,7 @@ function setupTray() {
 
 	const contextMenu = Menu.buildFromTemplate([
 		{
-			label: 'Show Vikunja',
+			label: 'Show Task64',
 			click: () => {
 				if (mainWindow) {
 					mainWindow.show()

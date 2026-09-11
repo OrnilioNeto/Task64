@@ -1,6 +1,6 @@
 publiccode-yml-version: '0.2'
-name: 'Vikunja'
-url: 'https://code.vikunja.io/vikunja'
+name: 'Task64'
+url: 'https://code.vikunja.io/task64'
 landingURL: 'https://vikunja.io'
 isBasedOn: 'https://go.dev/'
 softwareVersion: 'v2.6.0'
@@ -51,7 +51,7 @@ legal:
 maintenance:
   type: 'https://vikunja.cloud/'
   contractors:
-    - name: 'Vikunja Cloud '
+    - name: 'Task64 Cloud '
 localisation:
   localisationReady: 'true'
   availableLanguages:

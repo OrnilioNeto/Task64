@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/veans/internal/config"
-	"code.vikunja.io/veans/internal/credentials"
+	"github.com/OrnilioNeto/Task64/veans/internal/config"
+	"github.com/OrnilioNeto/Task64/veans/internal/credentials"
 )
 
 // TestInit_HappyPath exercises the full bootstrap: pick project + view,
@@ -80,7 +80,7 @@ func TestInit_HappyPath(t *testing.T) {
 		t.Fatalf("token not persisted: %v", err)
 	}
 	if !strings.HasPrefix(tok, "tk_") {
-		t.Fatalf("bot token doesn't look like a Vikunja API token: %q", tok)
+		t.Fatalf("bot token doesn't look like a Task64 API token: %q", tok)
 	}
 
 	// Bot exists on the server with the right username.
@@ -159,13 +159,13 @@ func TestInit_NoIdentifierFallsBackToHashNN(t *testing.T) {
 
 // uniqueSuffix returns a short slug derived from the current nanosecond
 // timestamp, base-36-encoded so every character is alphanumeric. Tests
-// also use this slug as a project identifier, which Vikunja caps at 10
+// also use this slug as a project identifier, which Task64 caps at 10
 // chars, so the encoding has to be compact and free of separators.
 func uniqueSuffix() string {
 	return strconv.FormatInt(time.Now().UnixNano(), 36)
 }
 
-// identifier returns a stable 10-char-or-fewer slug for use as a Vikunja
+// identifier returns a stable 10-char-or-fewer slug for use as a Task64
 // project identifier. The base-36 timestamp's most-significant chars
 // barely change across consecutive runs, so we use the trailing chars
 // (which carry the nanosecond entropy) and uppercase them.

@@ -1,8 +1,8 @@
 import {defineConfig} from '@hey-api/openapi-ts'
 
-const input = process.env.VIKUNJA_OPENAPI_INPUT
+const input = process.env.TASK64_OPENAPI_INPUT
 if (!input) {
-	throw new Error('VIKUNJA_OPENAPI_INPUT must point to the generated temporary spec')
+	throw new Error('TASK64_OPENAPI_INPUT must point to the generated temporary spec')
 }
 
 export default defineConfig({

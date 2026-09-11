@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ func (c *Client) CreateBucket(ctx context.Context, projectID, viewID int64, b *B
 }
 
 // MoveTaskToBucket positions an existing task in `bucketID` on the
-// project's view. Vikunja stores task↔bucket relations in a separate
+// project's view. Task64 stores task↔bucket relations in a separate
 // table (`task_buckets`); a task update with bucket_id does not reliably
 // move tasks — this dedicated endpoint is the one the Kanban UI's
 // drag-and-drop uses. On v2 it's a PUT, and project/view/bucket all come

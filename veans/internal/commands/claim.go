@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"code.vikunja.io/veans/internal/output"
-	"code.vikunja.io/veans/internal/status"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/status"
 )
 
 func newClaimCmd() *cobra.Command {
@@ -41,7 +41,7 @@ func newClaimCmd() *cobra.Command {
 				return err
 			}
 
-			// Move to In Progress. Vikunja's task↔bucket relation lives
+			// Move to In Progress. Task64's task↔bucket relation lives
 			// in a separate table; POST /tasks doesn't move buckets, so
 			// use the dedicated endpoint.
 			bid, err := status.BucketID(status.InProgress, rt.cfg.Buckets)
@@ -53,7 +53,7 @@ func newClaimCmd() *cobra.Command {
 				return err
 			}
 
-			// Assign the bot. Idempotent on repeat — Vikunja returns 409 if
+			// Assign the bot. Idempotent on repeat — Task64 returns 409 if
 			// already assigned, which we map to a soft-skip.
 			if err := rt.client.AddAssignee(cmd.Context(), id, rt.cfg.Bot.UserID); err != nil {
 				var oe *output.Error

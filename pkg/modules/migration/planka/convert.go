@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,10 +26,10 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/richtext"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/richtext"
 )
 
 // labelColors maps Planka label color names (server/api/models/Label.js COLORS) to the hex values
@@ -92,7 +92,7 @@ type converter struct {
 	attachmentID int64
 }
 
-func convertPlankaToVikunja(data *plankaData, download attachmentDownloader) ([]*models.ProjectWithTasksAndBuckets, error) {
+func convertPlankaToTask64(data *plankaData, download attachmentDownloader) ([]*models.ProjectWithTasksAndBuckets, error) {
 	c := &converter{data: data, download: download}
 	root := c.newProject("Migrated from Planka", "", nil)
 	result := []*models.ProjectWithTasksAndBuckets{root}

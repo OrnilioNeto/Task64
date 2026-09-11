@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,13 +28,13 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 )
 
 const paginationLimit = 200
@@ -217,7 +217,7 @@ func (m *Migration) Name() string {
 
 // AuthURL returns the url users need to authenticate against
 // @Summary Get the auth url from todoist
-// @Description Returns the auth url where the user needs to get its auth code. This code can then be used to migrate everything from todoist to Vikunja.
+// @Description Returns the auth url where the user needs to get its auth code. This code can then be used to migrate everything from todoist to Task64.
 // @tags migration
 // @Produce json
 // @Security JWTKeyAuth
@@ -331,7 +331,7 @@ func isDownloadableURL(rawURL string) bool {
 	return (u.Scheme == "http" || u.Scheme == "https") && u.Host != ""
 }
 
-func convertTodoistToVikunja(sync *sync, doneItems map[string]*doneItem) (fullVikunjaHierachie []*models.ProjectWithTasksAndBuckets, err error) {
+func convertTodoistToTask64(sync *sync, doneItems map[string]*doneItem) (fullTask64Hierachie []*models.ProjectWithTasksAndBuckets, err error) {
 
 	var pseudoParentID int64 = 1
 
@@ -341,15 +341,15 @@ func convertTodoistToVikunja(sync *sync, doneItems map[string]*doneItem) (fullVi
 			Title: "Migrated from todoist",
 		},
 	}
-	fullVikunjaHierachie = append(fullVikunjaHierachie, parent)
+	fullTask64Hierachie = append(fullTask64Hierachie, parent)
 
-	// A map for all vikunja lists with the project id they're coming from as key
+	// A map for all task64 lists with the project id they're coming from as key
 	lists := make(map[string]*models.ProjectWithTasksAndBuckets, len(sync.Projects))
 
-	// A map for all vikunja tasks with the todoist task id as key to find them easily and add more data
+	// A map for all task64 tasks with the todoist task id as key to find them easily and add more data
 	tasks := make(map[string]*models.TaskWithComments, len(sync.Items))
 
-	// A map for all vikunja labels with the todoist id as key to find them easier
+	// A map for all task64 labels with the todoist id as key to find them easier
 	labels := make(map[string]*models.Label, len(sync.Labels))
 
 	sections := make(map[string]int64)
@@ -367,7 +367,7 @@ func convertTodoistToVikunja(sync *sync, doneItems map[string]*doneItem) (fullVi
 
 		lists[p.ID] = project
 
-		fullVikunjaHierachie = append(fullVikunjaHierachie, project)
+		fullTask64Hierachie = append(fullTask64Hierachie, project)
 	}
 
 	sort.Slice(sync.Sections, func(i, j int) bool {
@@ -551,7 +551,7 @@ func convertTodoistToVikunja(sync *sync, doneItems map[string]*doneItem) (fullVi
 		lists[pn.ProjectID].Description += pn.Content
 	}
 
-	// Reminders -> vikunja reminders
+	// Reminders -> task64 reminders
 	for _, r := range sync.Reminders {
 		if r.Due == nil {
 			continue
@@ -601,9 +601,9 @@ func getAccessTokenFromAuthToken(authToken string) (accessToken string, err erro
 	return token.AccessToken, err
 }
 
-// Migrate gets all tasks from todoist for a user and puts them into vikunja
+// Migrate gets all tasks from todoist for a user and puts them into task64
 // @Summary Migrate all lists, tasks etc. from todoist
-// @Description Migrates all projects, tasks, notes, reminders, subtasks and files from todoist to vikunja.
+// @Description Migrates all projects, tasks, notes, reminders, subtasks and files from todoist to task64.
 // @tags migration
 // @Accept json
 // @Produce json
@@ -797,7 +797,7 @@ func (m *Migration) Migrate(u *user.User) (err error) {
 	log.Debugf("[Todoist Migration] Got all todoist user data for user %d", u.ID)
 	log.Debugf("[Todoist Migration] Start converting data for user %d", u.ID)
 
-	fullVikunjaHierachie, err := convertTodoistToVikunja(syncResponse, doneItems)
+	fullTask64Hierachie, err := convertTodoistToTask64(syncResponse, doneItems)
 	if err != nil {
 		return
 	}
@@ -805,7 +805,7 @@ func (m *Migration) Migrate(u *user.User) (err error) {
 	log.Debugf("[Todoist Migration] Done converting data for user %d", u.ID)
 	log.Debugf("[Todoist Migration] Start inserting data for user %d", u.ID)
 
-	err = migration.InsertFromStructure(fullVikunjaHierachie, u)
+	err = migration.InsertFromStructure(fullTask64Hierachie, u)
 	if err != nil {
 		return
 	}

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,11 +23,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"code.vikunja.io/veans/internal/auth"
-	"code.vikunja.io/veans/internal/client"
-	"code.vikunja.io/veans/internal/config"
-	"code.vikunja.io/veans/internal/credentials"
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/auth"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/config"
+	"github.com/OrnilioNeto/Task64/veans/internal/credentials"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
 func newLoginCmd() *cobra.Command {
@@ -50,7 +50,7 @@ URL veans prints, sign in, and paste the callback URL back. Use
 --token to paste in a personal API token, or --use-password / --username
 to force POST /login instead.
 
-Use this after revoking the bot's token in Vikunja's UI, or any time
+Use this after revoking the bot's token in Task64's UI, or any time
 you want to rotate.`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			path, err := config.Find("")
@@ -112,8 +112,8 @@ you want to rotate.`,
 	}
 	cmd.Flags().StringVar(&token, "token", "", "JWT or personal API token (skips OAuth/password)")
 	cmd.Flags().BoolVar(&usePassword, "use-password", false, "use POST /login instead of the default OAuth flow")
-	cmd.Flags().StringVar(&username, "username", "", "your Vikunja username (implies --use-password)")
-	cmd.Flags().StringVar(&password, "password", "", "your Vikunja password (implies --use-password; prompted if empty)")
+	cmd.Flags().StringVar(&username, "username", "", "your Task64 username (implies --use-password)")
+	cmd.Flags().StringVar(&password, "password", "", "your Task64 password (implies --use-password; prompted if empty)")
 	cmd.Flags().StringVar(&totp, "totp", "", "TOTP code if your account requires 2FA")
 	return cmd
 }

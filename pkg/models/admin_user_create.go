@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,10 @@
 package models
 
 import (
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"xorm.io/xorm"
 )
@@ -29,8 +29,8 @@ import (
 type CreateUserBody struct {
 	// The full name of the new user. Optional.
 	Name string `json:"name" doc:"The full name of the new user. Optional."`
-	// The language of the new user. Must be a valid IETF BCP 47 language code and exist in Vikunja.
-	Language string `json:"language" valid:"language" doc:"IETF BCP 47 language code; must exist in Vikunja."`
+	// The language of the new user. Must be a valid IETF BCP 47 language code and exist in Task64.
+	Language string `json:"language" valid:"language" doc:"IETF BCP 47 language code; must exist in Task64."`
 	user.APIUserPassword
 	// Mark the new user as an instance admin.
 	IsAdmin bool `json:"is_admin" doc:"Mark the new user as an instance admin."`

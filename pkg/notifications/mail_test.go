@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -234,13 +234,13 @@ This is a footer line
 	t.Run("with link to notification settings in footer", func(t *testing.T) {
 		originalPublicURL := config.ServicePublicURL.GetString()
 		t.Cleanup(func() { config.ServicePublicURL.Set(originalPublicURL) })
-		config.ServicePublicURL.Set("https://vikunja.example.com/")
+		config.ServicePublicURL.Set("https://task64.example.com/")
 
 		mailopts, err := RenderMail(NewMail().IncludeLinkToSettings("en"), "en")
 		require.NoError(t, err)
 
-		assert.Contains(t, mailopts.Message, "here (https://vikunja.example.com/user/settings/general)")
-		assert.Contains(t, mailopts.HTMLMessage, `<a href="https://vikunja.example.com/user/settings/general" rel="nofollow">here</a>`)
+		assert.Contains(t, mailopts.Message, "here (https://task64.example.com/user/settings/general)")
+		assert.Contains(t, mailopts.HTMLMessage, `<a href="https://task64.example.com/user/settings/general" rel="nofollow">here</a>`)
 	})
 	t.Run("with footer and action", func(t *testing.T) {
 		mail := NewMail().
@@ -298,13 +298,13 @@ This is a footer line
 			Subject("Testmail").
 			Greeting("Hi there,").
 			Line("This is a line").
-			ThreadID("<task-123@vikunja>")
+			ThreadID("<task-123@task64>")
 
 		mailopts, err := RenderMail(mail, "en")
 		require.NoError(t, err)
 		assert.Equal(t, mail.from, mailopts.From)
 		assert.Equal(t, mail.to, mailopts.To)
-		assert.Equal(t, "<task-123@vikunja>", mailopts.ThreadID)
+		assert.Equal(t, "<task-123@task64>", mailopts.ThreadID)
 	})
 	t.Run("with special characters in task title", func(t *testing.T) {
 		mail := NewMail().
@@ -563,7 +563,7 @@ func TestConversationalMail(t *testing.T) {
 
 		// Should NOT have logo (completely removed)
 		assert.NotContains(t, mailopts.HTMLMessage, "logo.png")
-		assert.NotContains(t, mailopts.HTMLMessage, "Vikunja")
+		assert.NotContains(t, mailopts.HTMLMessage, "Task64")
 		assert.NotContains(t, mailopts.EmbedFS, "logo.png")
 
 		// Should have inline action link with arrow
@@ -602,7 +602,7 @@ func TestConversationalMail(t *testing.T) {
 
 		// Should HAVE logo in formal emails
 		assert.Contains(t, mailopts.HTMLMessage, "logo.png")
-		assert.Contains(t, mailopts.HTMLMessage, "Vikunja")
+		assert.Contains(t, mailopts.HTMLMessage, "Task64")
 		assert.Contains(t, mailopts.EmbedFS, "logo.png")
 
 		// Should have formal button styling

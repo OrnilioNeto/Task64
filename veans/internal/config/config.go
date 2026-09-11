@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"code.vikunja.io/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
 )
 
 // Filename is the canonical config name. Walked upward from cwd by Find.
@@ -64,7 +64,7 @@ type Buckets struct {
 	Scrapped   int64 `yaml:"scrapped"`
 }
 
-// Bot identifies the Vikunja bot user veans operates as.
+// Bot identifies the Task64 bot user veans operates as.
 type Bot struct {
 	Username string `yaml:"username"`
 	UserID   int64  `yaml:"user_id"`
@@ -161,7 +161,7 @@ func RepoRoot(ctx context.Context, start string) (string, error) {
 }
 
 // SuggestedBotUsername proposes `bot-<reponame>` from a repo root path.
-// Vikunja's username validator allows lowercase, digits, hyphens — we fold
+// Task64's username validator allows lowercase, digits, hyphens — we fold
 // the basename to a safe shape.
 func SuggestedBotUsername(root string) string {
 	base := filepath.Base(root)

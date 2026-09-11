@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,33 +25,33 @@ import (
 
 func TestGetPostgreSQLConnectionString(t *testing.T) {
 	t.Run("with schema", func(t *testing.T) {
-		connStr := getPostgreSQLConnectionString("localhost:5432", "vikunja", "secret", "vikunja", "vikunja", "disable", "", "", "", "")
-		assert.Equal(t, "postgres://vikunja:secret@localhost:5432/vikunja?sslmode=disable&sslcert=&sslkey=&sslrootcert=&search_path=%22vikunja%22%2Cpublic", connStr)
+		connStr := getPostgreSQLConnectionString("localhost:5432", "task64", "secret", "task64", "task64", "disable", "", "", "", "")
+		assert.Equal(t, "postgres://task64:secret@localhost:5432/task64?sslmode=disable&sslcert=&sslkey=&sslrootcert=&search_path=%22task64%22%2Cpublic", connStr)
 	})
 	t.Run("without schema", func(t *testing.T) {
-		connStr := getPostgreSQLConnectionString("localhost:5432", "vikunja", "secret", "vikunja", "", "disable", "", "", "", "")
-		assert.Equal(t, "postgres://vikunja:secret@localhost:5432/vikunja?sslmode=disable&sslcert=&sslkey=&sslrootcert=", connStr)
+		connStr := getPostgreSQLConnectionString("localhost:5432", "task64", "secret", "task64", "", "disable", "", "", "", "")
+		assert.Equal(t, "postgres://task64:secret@localhost:5432/task64?sslmode=disable&sslcert=&sslkey=&sslrootcert=", connStr)
 	})
 	t.Run("schema needing quoting", func(t *testing.T) {
-		connStr := getPostgreSQLConnectionString("localhost:5432", "vikunja", "secret", "vikunja", "MySchema", "disable", "", "", "", "")
-		assert.Equal(t, "postgres://vikunja:secret@localhost:5432/vikunja?sslmode=disable&sslcert=&sslkey=&sslrootcert=&search_path=%22MySchema%22%2Cpublic", connStr)
+		connStr := getPostgreSQLConnectionString("localhost:5432", "task64", "secret", "task64", "MySchema", "disable", "", "", "", "")
+		assert.Equal(t, "postgres://task64:secret@localhost:5432/task64?sslmode=disable&sslcert=&sslkey=&sslrootcert=&search_path=%22MySchema%22%2Cpublic", connStr)
 	})
 	t.Run("query exec mode", func(t *testing.T) {
-		connStr := getPostgreSQLConnectionString("localhost:5432", "vikunja", "secret", "vikunja", "", "disable", "", "", "", "exec")
-		assert.Equal(t, "postgres://vikunja:secret@localhost:5432/vikunja?sslmode=disable&sslcert=&sslkey=&sslrootcert=&default_query_exec_mode=exec", connStr)
+		connStr := getPostgreSQLConnectionString("localhost:5432", "task64", "secret", "task64", "", "disable", "", "", "", "exec")
+		assert.Equal(t, "postgres://task64:secret@localhost:5432/task64?sslmode=disable&sslcert=&sslkey=&sslrootcert=&default_query_exec_mode=exec", connStr)
 	})
 	t.Run("unix socket", func(t *testing.T) {
-		connStr := getPostgreSQLConnectionString("/var/run/postgresql", "vikunja", "secret", "vikunja", "public", "disable", "", "", "", "")
-		assert.Equal(t, "postgres://vikunja:secret@:5432/vikunja?sslmode=disable&sslcert=&sslkey=&sslrootcert=&host=/var/run/postgresql&search_path=%22public%22", connStr)
+		connStr := getPostgreSQLConnectionString("/var/run/postgresql", "task64", "secret", "task64", "public", "disable", "", "", "", "")
+		assert.Equal(t, "postgres://task64:secret@:5432/task64?sslmode=disable&sslcert=&sslkey=&sslrootcert=&host=/var/run/postgresql&search_path=%22public%22", connStr)
 	})
 }
 
 func TestSanitizePostgresConnectionError(t *testing.T) {
-	err := errors.New(`parse "postgres://vikunja:secret@invalid host/vikunja": invalid IP-literal`)
+	err := errors.New(`parse "postgres://task64:secret@invalid host/task64": invalid IP-literal`)
 
-	sanitized := sanitizePostgresConnectionError(err, "vikunja", "secret")
+	sanitized := sanitizePostgresConnectionError(err, "task64", "secret")
 
-	assert.NotContains(t, sanitized.Error(), "vikunja:secret")
+	assert.NotContains(t, sanitized.Error(), "task64:secret")
 	assert.NotContains(t, sanitized.Error(), "secret")
 	assert.Contains(t, sanitized.Error(), "postgres://<redacted>@")
 	assert.Contains(t, sanitized.Error(), "invalid IP-literal")

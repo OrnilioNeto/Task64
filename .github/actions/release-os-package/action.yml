@@ -9,7 +9,7 @@ description: >
 
 inputs:
   project:
-    description: 'Project name (vikunja | veans). Drives all derived paths.'
+    description: 'Project name (task64 | veans). Drives all derived paths.'
     required: true
   release-version:
     description: |
@@ -61,9 +61,9 @@ runs:
         GO_NAME: ${{ inputs.go-name }}
       run: |
         case "$PROJECT" in
-          vikunja)
+          task64)
             echo "BINARIES_DOWNLOAD_PATH=." >> "$GITHUB_ENV"
-            echo "STAGED_BINARY_PATH=./vikunja" >> "$GITHUB_ENV"
+            echo "STAGED_BINARY_PATH=./task64" >> "$GITHUB_ENV"
             echo "NFPM_BIN_PATH=" >> "$GITHUB_ENV"
             echo "NFPM_CONFIG_PATH=./nfpm.yaml" >> "$GITHUB_ENV"
             # No leading "./" — the s3-action's strip-path-prefix must
@@ -78,7 +78,7 @@ runs:
             echo "PACKAGE_OUTPUT_DIR=veans/dist/os-packages" >> "$GITHUB_ENV"
             ;;
           *)
-            echo "::error::unknown project '$PROJECT' (expected vikunja|veans)"
+            echo "::error::unknown project '$PROJECT' (expected task64|veans)"
             exit 1
             ;;
         esac
@@ -104,11 +104,11 @@ runs:
       shell: bash
       run: go install github.com/magefile/mage@v1.17.2
 
-    - name: Generate config.yml.sample (vikunja only)
-      # vikunja's nfpm.yaml ships ./config.yml.sample as /etc/vikunja/config.yml.
+    - name: Generate config.yml.sample (task64 only)
+      # task64's nfpm.yaml ships ./config.yml.sample as /etc/task64/config.yml.
       # release-binaries generates it for the zip bundles, but this job runs on a
       # fresh runner, so we regenerate it here before nfpm packs it.
-      if: inputs.project == 'vikunja'
+      if: inputs.project == 'task64'
       shell: bash
       run: |
         export PATH=$PATH:$GOPATH/bin

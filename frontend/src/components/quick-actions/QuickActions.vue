@@ -573,7 +573,7 @@ async function doAction(type: ACTION_TYPE, item: DoAction) {
 			break
 		case ACTION_TYPE.TASK:
 			if (isQuickAddMode) {
-				const channel = new BroadcastChannel('vikunja-task-updates')
+				const channel = new BroadcastChannel('task64-task-updates')
 				channel.postMessage({type: 'task-created-open', taskId: (item as DoAction<ITask>).id})
 				channel.close()
 				window.quickEntry?.showMainWindow()
@@ -649,7 +649,7 @@ async function newTask() {
 	success({message: t('task.createSuccess')})
 
 	if (isQuickAddMode) {
-		const channel = new BroadcastChannel('vikunja-task-updates')
+		const channel = new BroadcastChannel('task64-task-updates')
 		const type = openTaskAfterCreate ? 'task-created-open' : 'task-created'
 		channel.postMessage({type, taskId: task.id})
 		channel.close()

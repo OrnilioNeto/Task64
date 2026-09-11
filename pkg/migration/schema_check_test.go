@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -31,23 +31,23 @@ func TestValidateSchemaPlacement(t *testing.T) {
 		require.NoError(t, validateSchemaPlacement("public", "public", []string{"public"}))
 	})
 	t.Run("data in active schema with leftovers elsewhere", func(t *testing.T) {
-		require.NoError(t, validateSchemaPlacement("vikunja", "vikunja", []string{"public", "vikunja"}))
+		require.NoError(t, validateSchemaPlacement("task64", "task64", []string{"public", "task64"}))
 	})
 	t.Run("data only in another schema", func(t *testing.T) {
-		err := validateSchemaPlacement("public", "public", []string{"vikunja"})
+		err := validateSchemaPlacement("public", "public", []string{"task64"})
 		require.Error(t, err)
-		assert.Contains(t, err.Error(), "vikunja")
+		assert.Contains(t, err.Error(), "task64")
 		assert.Contains(t, err.Error(), `"public"`)
 		assert.Contains(t, err.Error(), "database.schema")
 	})
 	t.Run("configured schema does not exist", func(t *testing.T) {
-		err := validateSchemaPlacement("vikunja", "public", nil)
+		err := validateSchemaPlacement("task64", "public", nil)
 		require.Error(t, err)
 		assert.Contains(t, err.Error(), "does not exist")
-		assert.Contains(t, err.Error(), `"vikunja"`)
+		assert.Contains(t, err.Error(), `"task64"`)
 	})
 	t.Run("no valid schema in search_path", func(t *testing.T) {
-		err := validateSchemaPlacement("", "", []string{"vikunja"})
+		err := validateSchemaPlacement("", "", []string{"task64"})
 		require.Error(t, err)
 		assert.Contains(t, err.Error(), "does not exist")
 	})

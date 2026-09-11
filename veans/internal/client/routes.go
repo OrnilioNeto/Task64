@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ type RouteGroup map[string]struct {
 }
 
 // Routes returns the API token route map. Used during bootstrap to
-// negotiate exactly which permission groups+actions exist on this Vikunja
+// negotiate exactly which permission groups+actions exist on this Task64
 // instance, so the bot's API token only requests scopes the server knows
 // about — avoiding hard-coding a permission list that could drift.
 func (c *Client) Routes(ctx context.Context) (map[string]RouteGroup, error) {
@@ -40,9 +40,9 @@ func (c *Client) Routes(ctx context.Context) (map[string]RouteGroup, error) {
 // PermissionsForBot picks a curated subset of route groups the veans bot
 // needs and projects the available actions of each. Groups not present on
 // the server are silently dropped, so the resulting permission map is
-// always valid for POST /tokens regardless of Vikunja version.
+// always valid for POST /tokens regardless of Task64 version.
 //
-// The action names reflect Vikunja's actual route map (see GET /routes):
+// The action names reflect Task64's actual route map (see GET /routes):
 // bucket CRUD and the bucket-task move endpoint live under the `projects`
 // group as `views_buckets*` and `views_buckets_tasks`, not a separate
 // `buckets` group.

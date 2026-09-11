@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"code.vikunja.io/api/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -30,9 +30,9 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of Vikunja",
+	Short: "Print the version number of Task64",
 	Run: func(_ *cobra.Command, _ []string) {
-		fmt.Printf("Vikunja api version %s\n", version.Version)
+		fmt.Printf("Task64 api version %s\n", version.Version)
 		fmt.Printf("Built with %s\n", runtime.Version())
 	},
 }

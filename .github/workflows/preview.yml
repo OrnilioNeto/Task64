@@ -84,7 +84,7 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const base = 'preview.vikunja.dev';
             const image = `ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}`;
-            const marker = '<!-- vikunja-preview-comment -->';
+            const marker = '<!-- task64-preview-comment -->';
 
             // Extract the SHA tag from docker meta output (the actual tag pushed to GHCR)
             const metaTags = process.env.DOCKER_META_TAGS.split('\n').map(t => t.trim()).filter(Boolean);

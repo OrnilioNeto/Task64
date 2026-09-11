@@ -1,6 +1,6 @@
 const {contextBridge, ipcRenderer} = require('electron')
 
-contextBridge.exposeInMainWorld('vikunjaDesktop', {
+contextBridge.exposeInMainWorld('task64Desktop', {
 	startOAuthLogin: (apiUrl) => ipcRenderer.invoke('oauth:start-login', apiUrl),
 	onOAuthTokens: (callback) => {
 		ipcRenderer.removeAllListeners('oauth:tokens')

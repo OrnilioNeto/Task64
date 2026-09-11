@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,18 +22,18 @@ import (
 	"io"
 	"strings"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/avatar/botmarble"
-	"code.vikunja.io/api/pkg/modules/avatar/empty"
-	"code.vikunja.io/api/pkg/modules/avatar/gravatar"
-	"code.vikunja.io/api/pkg/modules/avatar/initials"
-	"code.vikunja.io/api/pkg/modules/avatar/ldap"
-	"code.vikunja.io/api/pkg/modules/avatar/marble"
-	"code.vikunja.io/api/pkg/modules/avatar/openid"
-	"code.vikunja.io/api/pkg/modules/avatar/upload"
-	"code.vikunja.io/api/pkg/modules/imageutils"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/botmarble"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/empty"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/gravatar"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/initials"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/ldap"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/marble"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/openid"
+	"github.com/OrnilioNeto/Task64/pkg/modules/avatar/upload"
+	"github.com/OrnilioNeto/Task64/pkg/modules/imageutils"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"github.com/gabriel-vasile/mimetype"
 	"xorm.io/xorm"

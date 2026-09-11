@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/initialize"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/dump"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/initialize"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/dump"
 
 	"github.com/spf13/cobra"
 )
@@ -40,12 +40,12 @@ var (
 
 var dumpCmd = &cobra.Command{
 	Use:   "dump",
-	Short: "Dump all vikunja data into a zip file. Includes config, files and db.",
+	Short: "Dump all task64 data into a zip file. Includes config, files and db.",
 	PreRun: func(_ *cobra.Command, _ []string) {
 		initialize.FullInitWithoutAsync()
 	},
 	Run: func(_ *cobra.Command, _ []string) {
-		filename := "vikunja-dump_" + time.Now().Format("2006-01-02_15-03-05") + ".zip"
+		filename := "task64-dump_" + time.Now().Format("2006-01-02_15-03-05") + ".zip"
 		if dumpFilenameFlag != "" {
 			filename = dumpFilenameFlag
 			if !strings.HasSuffix(filename, ".zip") {
@@ -65,6 +65,6 @@ var dumpCmd = &cobra.Command{
 }
 
 func init() {
-	dumpCmd.Flags().StringVarP(&dumpPathFlag, "path", "p", "", "The folder path where the dump file should be saved. Vikunja will use the configured root path or the binary location if the flag is not provided.")
-	dumpCmd.Flags().StringVarP(&dumpFilenameFlag, "filename", "f", "", "The filename of the dump file. If it does not end in '.zip', it will be added as a file extension. Defaults to 'vikunja-dump_YYYY-MM-DD_HH-II-SS.zip'.")
+	dumpCmd.Flags().StringVarP(&dumpPathFlag, "path", "p", "", "The folder path where the dump file should be saved. Task64 will use the configured root path or the binary location if the flag is not provided.")
+	dumpCmd.Flags().StringVarP(&dumpFilenameFlag, "filename", "f", "", "The filename of the dump file. If it does not end in '.zip', it will be added as a file extension. Defaults to 'task64-dump_YYYY-MM-DD_HH-II-SS.zip'.")
 }

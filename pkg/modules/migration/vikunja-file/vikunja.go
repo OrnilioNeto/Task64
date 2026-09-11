@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -29,22 +29,22 @@ import (
 	"strconv"
 	"strings"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
-	vversion "code.vikunja.io/api/pkg/version"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	vversion "github.com/OrnilioNeto/Task64/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"github.com/c2h5oh/datasize"
 	"github.com/hashicorp/go-version"
 )
 
-const logPrefix = "[Vikunja File Import] "
+const logPrefix = "[Task64 File Import] "
 
 // minZipEntryCap ensures data.json / filters.json / VERSION entries can
 // still be read when files.maxsize is tiny.
@@ -101,29 +101,29 @@ type storageBudget struct {
 	remaining int64
 }
 
-// ErrVikunjaFileImportTooLarge is returned when the export exceeds the
+// ErrTask64FileImportTooLarge is returned when the export exceeds the
 // configured size, file-count or storage-quota limits.
-type ErrVikunjaFileImportTooLarge struct {
+type ErrTask64FileImportTooLarge struct {
 	Reason string
 }
 
-func (err *ErrVikunjaFileImportTooLarge) Error() string {
-	return "The Vikunja export is too large: " + err.Reason
+func (err *ErrTask64FileImportTooLarge) Error() string {
+	return "The Task64 export is too large: " + err.Reason
 }
 
-// ErrCodeVikunjaFileImportTooLarge holds the unique world-error code of this error
-const ErrCodeVikunjaFileImportTooLarge = 14007
+// ErrCodeTask64FileImportTooLarge holds the unique world-error code of this error
+const ErrCodeTask64FileImportTooLarge = 14007
 
 // HTTPError holds the http error description
-func (err *ErrVikunjaFileImportTooLarge) HTTPError() web.HTTPError {
+func (err *ErrTask64FileImportTooLarge) HTTPError() web.HTTPError {
 	return web.HTTPError{
 		HTTPCode: http.StatusBadRequest,
-		Code:     ErrCodeVikunjaFileImportTooLarge,
-		Message:  "The Vikunja export is too large: " + err.Reason,
+		Code:     ErrCodeTask64FileImportTooLarge,
+		Message:  "The Task64 export is too large: " + err.Reason,
 	}
 }
 
-func vikunjaFileMaxSize() (int64, error) {
+func task64FileMaxSize() (int64, error) {
 	var size datasize.ByteSize
 	if err := size.UnmarshalText([]byte(config.MigrationVikunjaFileMaxSize.GetString())); err != nil {
 		return 0, fmt.Errorf("could not parse migration.vikunjafile.maxsize: %w", err)
@@ -131,7 +131,7 @@ func vikunjaFileMaxSize() (int64, error) {
 	return int64(size.Bytes()), nil //nolint:gosec // config value is bounded in practice
 }
 
-func vikunjaFileMaxUserStorage() (int64, error) {
+func task64FileMaxUserStorage() (int64, error) {
 	var size datasize.ByteSize
 	if err := size.UnmarshalText([]byte(config.MigrationVikunjaFileMaxUserStorage.GetString())); err != nil {
 		return 0, fmt.Errorf("could not parse migration.vikunjafile.maxuserstorage: %w", err)
@@ -142,14 +142,14 @@ func vikunjaFileMaxUserStorage() (int64, error) {
 func (b *importBudget) count(n int64) error {
 	b.remaining -= n
 	if b.remaining < 0 {
-		return &ErrVikunjaFileImportTooLarge{Reason: "it contains more decompressed data than migration.vikunjafile.maxsize allows"}
+		return &ErrTask64FileImportTooLarge{Reason: "it contains more decompressed data than migration.vikunjafile.maxsize allows"}
 	}
 	return nil
 }
 
 func (b *storageBudget) count(n int64) error {
 	if n > b.remaining {
-		return &ErrVikunjaFileImportTooLarge{Reason: "it would exceed the import storage quota of migration.vikunjafile.maxuserstorage"}
+		return &ErrTask64FileImportTooLarge{Reason: "it would exceed the import storage quota of migration.vikunjafile.maxuserstorage"}
 	}
 	b.remaining -= n
 	return nil
@@ -191,7 +191,7 @@ func (p *lazyFileProvider) openZipFile(f *zip.File, countStorage bool) (io.ReadS
 	}
 	defer func() { _ = rc.Close() }()
 
-	tmp, err := os.CreateTemp("", "vikunja-import-*")
+	tmp, err := os.CreateTemp("", "task64-import-*")
 	if err != nil {
 		return nil, 0, err
 	}
@@ -276,14 +276,14 @@ func (v *FileMigrator) Name() string {
 	return "vikunja-file"
 }
 
-// Migrate takes a vikunja file export, parses it and imports everything in it into Vikunja.
-// @Summary Import all projects, tasks etc. from a Vikunja data export
-// @Description Imports all projects, tasks, notes, reminders, subtasks and files from a Vikunjda data export into Vikunja.
+// Migrate takes a task64 file export, parses it and imports everything in it into Task64.
+// @Summary Import all projects, tasks etc. from a Task64 data export
+// @Description Imports all projects, tasks, notes, reminders, subtasks and files from a Vikunjda data export into Task64.
 // @tags migration
 // @Accept x-www-form-urlencoded
 // @Produce json
 // @Security JWTKeyAuth
-// @Param import formData string true "The Vikunja export zip file."
+// @Param import formData string true "The Task64 export zip file."
 // @Success 200 {object} models.Message "A message telling you everything was migrated successfully."
 // @Failure 500 {object} models.Message "Internal server error"
 // @Router /migration/vikunja-file/migrate [post]
@@ -311,7 +311,7 @@ func (v *FileMigrator) Migrate(user *user.User, file io.ReaderAt, size int64) er
 		if strings.HasPrefix(f.Name, "files/") {
 			storedFileCount++
 			if storedFileCount > config.MigrationVikunjaFileMaxFiles.GetInt64() {
-				return &ErrVikunjaFileImportTooLarge{Reason: "it contains more files than migration.vikunjafile.maxfiles allows"}
+				return &ErrTask64FileImportTooLarge{Reason: "it contains more files than migration.vikunjafile.maxfiles allows"}
 			}
 			fname := strings.TrimPrefix(f.Name, "files/")
 			id, err := strconv.ParseInt(fname, 10, 64)
@@ -345,7 +345,7 @@ func (v *FileMigrator) Migrate(user *user.User, file io.ReaderAt, size int64) er
 	}
 
 	// Preflight: bound the import before anything is read (GHSA-w7jp-mf2v-8342).
-	maxSize, err := vikunjaFileMaxSize()
+	maxSize, err := task64FileMaxSize()
 	if err != nil {
 		return err
 	}
@@ -353,13 +353,13 @@ func (v *FileMigrator) Migrate(user *user.User, file io.ReaderAt, size int64) er
 	for _, f := range r.File {
 		totalUncompressed += f.UncompressedSize64
 		if totalUncompressed < f.UncompressedSize64 {
-			return &ErrVikunjaFileImportTooLarge{Reason: "the sum of file sizes overflows"}
+			return &ErrTask64FileImportTooLarge{Reason: "the sum of file sizes overflows"}
 		}
 	}
 	if totalUncompressed > uint64(maxSize) { //nolint:gosec // maxSize fits uint64 by construction
-		return &ErrVikunjaFileImportTooLarge{Reason: "it decompresses to more than migration.vikunjafile.maxsize allows"}
+		return &ErrTask64FileImportTooLarge{Reason: "it decompresses to more than migration.vikunjafile.maxsize allows"}
 	}
-	maxUserStorage, err := vikunjaFileMaxUserStorage()
+	maxUserStorage, err := task64FileMaxUserStorage()
 	if err != nil {
 		return err
 	}
@@ -375,7 +375,7 @@ func (v *FileMigrator) Migrate(user *user.User, file io.ReaderAt, size int64) er
 		return fmt.Errorf("could not check the storage quota: %w", err)
 	}
 	if existingStorage > maxUserStorage {
-		return &ErrVikunjaFileImportTooLarge{Reason: "it would exceed the import storage quota of migration.vikunjafile.maxuserstorage"}
+		return &ErrTask64FileImportTooLarge{Reason: "it would exceed the import storage quota of migration.vikunjafile.maxuserstorage"}
 	}
 
 	budget := &importBudget{remaining: maxSize}
@@ -417,7 +417,7 @@ func (v *FileMigrator) Migrate(user *user.User, file io.ReaderAt, size int64) er
 	}
 
 	//////
-	// Import the bulk of Vikunja data
+	// Import the bulk of Task64 data
 	df, err := dataFile.Open()
 	if err != nil {
 		return fmt.Errorf("could not open data file: %w", err)

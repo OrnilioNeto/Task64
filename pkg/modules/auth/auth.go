@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,14 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/humabridge"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/humabridge"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	petname "github.com/dustinkirkland/golang-petname"
 	"github.com/golang-jwt/jwt/v5"
@@ -54,7 +54,7 @@ type Token struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"`
 }
 
-const RefreshTokenCookieName = "vikunja_refresh_token" //nolint:gosec // not a credential
+const RefreshTokenCookieName = "task64_refresh_token" //nolint:gosec // not a credential
 
 const (
 	RefreshTokenPathV1 = "/api/v1/user/token/refresh" //nolint:gosec // a route path, not a credential
@@ -474,7 +474,7 @@ func SessionIDFromContext(c *echo.Context) string {
 }
 
 // GetAuthFromContext retrieves the authenticated web.Auth from a plain
-// context.Context, bridging Huma handlers to Vikunja's echo JWT flow. The
+// context.Context, bridging Huma handlers to Task64's echo JWT flow. The
 // humabridge group middleware stashes the *echo.Context under EchoContextKey
 // first.
 func GetAuthFromContext(ctx context.Context) (web.Auth, error) {

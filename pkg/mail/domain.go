@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,12 @@ import (
 	"net/url"
 	"os"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 )
 
 // GetMailDomain returns the hostname from the configured public URL,
-// or "vikunja" as a fallback. Used for RFC 5322 compliant Message-ID
+// or "task64" as a fallback. Used for RFC 5322 compliant Message-ID
 // and thread ID generation.
 func GetMailDomain() string {
 	publicURL := config.ServicePublicURL.GetString()
@@ -41,7 +41,7 @@ func GetMailDomain() string {
 		return hostname
 	}
 	if log.IsInitialized() {
-		log.Warningf("Could not determine mail domain from public URL or hostname, falling back to %q", "vikunja")
+		log.Warningf("Could not determine mail domain from public URL or hostname, falling back to %q", "task64")
 	}
-	return "vikunja"
+	return "task64"
 }

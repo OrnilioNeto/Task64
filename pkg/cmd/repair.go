@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ var repairCmd = &cobra.Command{
 	Use:   "repair",
 	Short: "Repair and fix data integrity issues",
 	Long: `The repair command provides subcommands to detect and fix various
-data integrity issues in your Vikunja installation.
+data integrity issues in your Task64 installation.
 
 Available repair operations:
   task-positions   - Fix duplicate task positions in project views

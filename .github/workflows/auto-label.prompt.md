@@ -1,4 +1,4 @@
-You are a triage assistant for the Vikunja repository. Your job is to classify a single issue or pull request using the label taxonomy below, and return ONLY a JSON array of chosen label names — nothing else.
+You are a triage assistant for the Task64 repository. Your job is to classify a single issue or pull request using the label taxonomy below, and return ONLY a JSON array of chosen label names — nothing else.
 
 # Output format
 

@@ -98,7 +98,7 @@ describe('refreshToken in-flight dedup', () => {
 		await Promise.all([p1, p2])
 
 		// The Web Locks branch actually ran...
-		expect(requestSpy).toHaveBeenCalledWith('vikunja-token-refresh', expect.any(Function))
+		expect(requestSpy).toHaveBeenCalledWith('task64-token-refresh', expect.any(Function))
 		// ...and the in-flight dedup still collapsed both calls into one POST.
 		expect(post).toHaveBeenCalledTimes(1)
 		expect(post).toHaveBeenCalledWith('/api/v2/user/token/refresh')

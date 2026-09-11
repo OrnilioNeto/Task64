@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -40,12 +40,12 @@ import (
 func TestFileStorageIntegration(t *testing.T) {
 	// Ensure S3 is configured for this test
 	if config.FilesType.GetString() != "s3" {
-		t.Skip("Skipping S3 integration tests - VIKUNJA_FILES_TYPE must be set to 's3'")
+		t.Skip("Skipping S3 integration tests - TASK64_FILES_TYPE must be set to 's3'")
 	}
 
 	// Validate S3 configuration is present
 	if config.FilesS3Endpoint.GetString() == "" {
-		t.Fatal("S3 integration test requires VIKUNJA_FILES_S3_ENDPOINT to be set")
+		t.Fatal("S3 integration test requires TASK64_FILES_S3_ENDPOINT to be set")
 	}
 
 	t.Run("Initialize file handler with s3", func(t *testing.T) {

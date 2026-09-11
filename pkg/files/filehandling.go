@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,10 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
@@ -214,7 +214,7 @@ func ValidateFileStorage(ctx context.Context) error {
 
 	diag := storageDiagSuffix(config.FilesBasePath.GetString())
 
-	filename := fmt.Sprintf(".vikunja-check-%d", time.Now().UnixNano())
+	filename := fmt.Sprintf(".task64-check-%d", time.Now().UnixNano())
 
 	write, remove := storage.Write, storage.Remove
 	if cs, ok := storage.(contextStorage); ok {

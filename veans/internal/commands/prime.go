@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"code.vikunja.io/veans/internal/config"
+	"github.com/OrnilioNeto/Task64/veans/internal/config"
 )
 
 //go:embed prompt.tmpl
@@ -51,7 +51,7 @@ func newPrimeCmd() *cobra.Command {
 		Long: `Renders the embedded prompt template against this repo's .veans.yml and
 prints it to stdout. Designed to be wired into Claude Code's SessionStart
 and PreCompact hooks (or the OpenCode equivalent) so coding agents always
-have an up-to-date Vikunja cheat sheet in context.
+have an up-to-date Task64 cheat sheet in context.
 
 If no .veans.yml is found upward from the current directory, prime exits
 silently with status 0 — that makes the hook safe to install globally.`,

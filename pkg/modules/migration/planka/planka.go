@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,9 @@ import (
 	"bytes"
 	"context"
 
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // Migrator imports projects, boards, cards and everything attached to them from a Planka v2 instance.
@@ -79,7 +79,7 @@ func (m *Migrator) connect(ctx context.Context) (*client, error) {
 	return c, nil
 }
 
-// Migrate gets all projects, boards and cards from planka for a user and puts them into vikunja.
+// Migrate gets all projects, boards and cards from planka for a user and puts them into task64.
 func (m *Migrator) Migrate(u *user.User) error {
 	log.Debugf("[Planka Migration] Starting migration for user %d", u.ID)
 
@@ -97,7 +97,7 @@ func (m *Migrator) Migrate(u *user.User) error {
 
 	log.Debugf("[Planka Migration] Fetched all planka data for user %d, converting", u.ID)
 
-	hierarchy, err := convertPlankaToVikunja(data, func(a *plankaAttachment) (*bytes.Buffer, error) {
+	hierarchy, err := convertPlankaToTask64(data, func(a *plankaAttachment) (*bytes.Buffer, error) {
 		return c.download(a.ID, a.Name)
 	})
 	if err != nil {

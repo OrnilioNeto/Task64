@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@ package cmd
 import (
 	"strings"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/initialize"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/mail"
-	"code.vikunja.io/api/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/initialize"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/mail"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
 	"github.com/spf13/cobra"
 )
 
@@ -44,11 +44,11 @@ var testmailCmd = &cobra.Command{
 	Run: func(_ *cobra.Command, args []string) {
 		log.Info("Sending testmail...")
 		message := notifications.NewMail().
-			From("Vikunja <"+config.MailerFromEmail.GetString()+">").
+			From("Task64 <"+config.MailerFromEmail.GetString()+">").
 			To(args[0]).
-			Subject("Test from Vikunja").
+			Subject("Test from Task64").
 			Line("This is a test mail!").
-			Line("If you received this, Vikunja is correctly set up to send emails.").
+			Line("If you received this, Task64 is correctly set up to send emails.").
 			Action("Go to your instance", config.ServicePublicURL.GetString())
 
 		opts, err := notifications.RenderMail(message, "en")

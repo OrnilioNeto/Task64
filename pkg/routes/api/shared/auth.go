@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,17 @@ package shared
 import (
 	"context"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/metrics"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/modules/auth/ldap"
-	"code.vikunja.io/api/pkg/modules/auth/openid"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/metrics"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/ldap"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/openid"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 
 	"xorm.io/xorm"
 )
@@ -38,7 +38,7 @@ import (
 // username, password and email (from APIUserPassword) plus the new user's
 // preferred language.
 type UserRegister struct {
-	// The language of the new user. Must be a valid IETF BCP 47 language code and exist in Vikunja.
+	// The language of the new user. Must be a valid IETF BCP 47 language code and exist in Task64.
 	Language string `json:"language" valid:"language" doc:"The language of the new user as an IETF BCP 47 code (e.g. en, de-DE)."`
 	user.APIUserPassword
 }

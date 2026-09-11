@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -26,12 +26,12 @@ import (
 	"strconv"
 	"strings"
 
-	"code.vikunja.io/api/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/db"
 
-	caldav2 "code.vikunja.io/api/pkg/caldav"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/user"
+	caldav2 "github.com/OrnilioNeto/Task64/pkg/caldav"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 	"github.com/labstack/echo/v5"
 	"github.com/samedi/caldav-go"
 	"github.com/samedi/caldav-go/data"
@@ -73,7 +73,7 @@ func ProjectHandler(c *echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error").Wrap(err)
 	}
 
-	storage := &VikunjaCaldavProjectStorage{
+	storage := &Task64CaldavProjectStorage{
 		project: project,
 		user:    u,
 	}
@@ -195,7 +195,7 @@ func TaskHandler(c *echo.Context) error {
 		return c.String(http.StatusNotFound, "Task not found")
 	}
 
-	storage := &VikunjaCaldavProjectStorage{
+	storage := &Task64CaldavProjectStorage{
 		project: project,
 		task:    &models.Task{UID: taskUID},
 		user:    u,
@@ -229,7 +229,7 @@ func PrincipalHandler(c *echo.Context) error {
 		return c.String(http.StatusNotFound, "Not found")
 	}
 
-	storage := &VikunjaCaldavProjectStorage{
+	storage := &Task64CaldavProjectStorage{
 		user:        u,
 		isPrincipal: true,
 	}
@@ -254,7 +254,7 @@ func EntryHandler(c *echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error").Wrap(err)
 	}
 
-	storage := &VikunjaCaldavProjectStorage{
+	storage := &Task64CaldavProjectStorage{
 		user:    u,
 		isEntry: true,
 	}

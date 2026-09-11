@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,8 @@ import (
 	"sync"
 	"testing"
 
-	"code.vikunja.io/veans/internal/client"
-	"code.vikunja.io/veans/internal/config"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/config"
 )
 
 func TestComposeDescription_FullReplace(t *testing.T) {
@@ -138,7 +138,7 @@ type recordedCall struct {
 }
 
 // startRecordingServer spins up an httptest.Server that answers every
-// Vikunja endpoint runUpdate touches with the minimum payload needed to
+// Task64 endpoint runUpdate touches with the minimum payload needed to
 // keep the call chain alive, while appending each (method, path) to the
 // returned slice. The server intentionally does NOT validate request
 // bodies — the goal here is to pin call ORDER, not wire shape (which the

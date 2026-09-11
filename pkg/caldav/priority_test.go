@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -77,8 +77,8 @@ func Test_parseVTODOPriority(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotVikunjaPriority := parseVTODOPriority(tt.priority); gotVikunjaPriority != tt.want {
-				t.Errorf("parseVTODOPriority() = %v, want %v", gotVikunjaPriority, tt.want)
+			if gotTask64Priority := parseVTODOPriority(tt.priority); gotTask64Priority != tt.want {
+				t.Errorf("parseVTODOPriority() = %v, want %v", gotTask64Priority, tt.want)
 			}
 		})
 	}

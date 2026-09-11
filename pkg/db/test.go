@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@ import (
 	"os"
 	"testing"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -39,7 +39,7 @@ func CreateTestEngine() (engine *xorm.Engine, err error) {
 		return x, nil
 	}
 
-	if os.Getenv("VIKUNJA_TESTS_USE_CONFIG") == "1" {
+	if os.Getenv("TASK64_TESTS_USE_CONFIG") == "1" {
 		config.InitConfig()
 		engine, err = CreateDBEngine()
 		if err != nil {

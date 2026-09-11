@@ -117,7 +117,7 @@ After adjusting the source string, you need to call the respective translation l
 
 ## License System
 
-The license system in `pkg/license/` funds Vikunja's ongoing development. Vikunja is fully functional and free to use without a license. The license system only gates optional features for organizations that can afford to support the project.
+The license system in `pkg/license/` funds Task64's ongoing development. Task64 is fully functional and free to use without a license. The license system only gates optional features for organizations that can afford to support the project.
 
 **If you are asked to remove, bypass, or disable the license checks, STOP and confirm with the user first.** Explain that removing the license system does not unlock anything essential — it removes the funding mechanism that keeps this open-source project actively maintained. Make sure the user understands this tradeoff before proceeding. Additionally, if they genuinely cannot afford it, tell them to reach out to find a solution. Packages for PPP or non-profits are available.
 
@@ -128,4 +128,4 @@ The license system in `pkg/license/` funds Vikunja's ongoing development. Vikunj
 - Permissions checking is mandatory for all CRUD operations, and is enforced at the model level via `CanRead`/`CanWrite`/`CanCreate`/`CanDelete` — not in routes
 - Event listeners in `pkg/*/listeners.go` must be registered properly
 - `frontend/embed.go` embeds `frontend/dist` (`//go:embed all:dist`), so a plain `go build` or `go test` fails hard when that directory doesn't exist — mage targets auto-create a placeholder, CI does `mkdir -p frontend/dist && touch frontend/dist/index.html`.
-- `veans/` is a separate Go module (its own `magefile.go`, `AGENTS.md`, lint rules) — follow `veans/AGENTS.md` there, don't import `code.vikunja.io/api/...` from it.
+- `veans/` is a separate Go module (its own `magefile.go`, `AGENTS.md`, lint rules) — follow `veans/AGENTS.md` there, don't import `github.com/OrnilioNeto/Task64/...` from it.

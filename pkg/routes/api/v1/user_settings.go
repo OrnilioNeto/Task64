@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/tkuchiki/go-timezone"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	user2 "code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	user2 "github.com/OrnilioNeto/Task64/pkg/user"
 )
 
 // UserAvatarProvider holds the user avatar provider type
@@ -173,8 +173,8 @@ func UpdateGeneralUserSettings(c *echo.Context) error {
 }
 
 // GetAvailableTimezones
-// @Summary Get all available time zones on this vikunja instance
-// @Description Because available time zones depend on the system Vikunja is running on, this endpoint returns a project of all valid time zones this particular Vikunja instance can handle. The project of time zones is not sorted, you should sort it on the client.
+// @Summary Get all available time zones on this task64 instance
+// @Description Because available time zones depend on the system Task64 is running on, this endpoint returns a project of all valid time zones this particular Task64 instance can handle. The project of time zones is not sorted, you should sort it on the client.
 // @tags user
 // @Accept json
 // @Produce json

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// @title Vikunja API
-// @description This is the documentation for the [Vikunja](https://vikunja.io) API. Vikunja is a cross-platform To-do-application with a lot of features, such as sharing projects with users or teams. <!-- ReDoc-Inject: <security-definitions> -->
+// @title Task64 API
+// @description This is the documentation for the [Task64](https://vikunja.io) API. Task64 is a cross-platform To-do-application with a lot of features, such as sharing projects with users or teams. <!-- ReDoc-Inject: <security-definitions> -->
 
 // @description # Pagination
 // @description Every endpoint capable of pagination will return two headers:
@@ -26,7 +26,7 @@
 // @description This can be used to show or hide ui elements based on the permissions the user has.
 // @description # Errors
 // @description All errors have an error code and a human-readable error message in addition to the http status code. You should always check for the status code in the response, not only the http status code.
-// @description Due to limitations in the swagger library we're using for this document, only one error per http status code is documented here. Make sure to check the [error docs](https://vikunja.io/docs/errors/) in Vikunja's documentation for a full list of available error codes.
+// @description Due to limitations in the swagger library we're using for this document, only one error per http status code is documented here. Make sure to check the [error docs](https://vikunja.io/docs/errors/) in Task64's documentation for a full list of available error codes.
 // @description # Authorization
 // @description **JWT-Auth:** Main authorization method, used for most of the requests. Needs `Authorization: Bearer <jwt-token>`-header to authenticate successfully.
 // @description
@@ -36,11 +36,11 @@
 // @description <!-- ReDoc-Inject: <security-definitions> -->
 // @BasePath /api/v1
 
-// @license.url https://code.vikunja.io/api/src/branch/main/LICENSE
+// @license.url https://github.com/OrnilioNeto/Task64/src/branch/main/LICENSE
 // @license.name AGPL-3.0-or-later
 
 // @contact.url https://vikunja.io/contact/
-// @contact.name General Vikunja contact
+// @contact.name General Task64 contact
 // @contact.email hello@vikunja.io
 
 // @securityDefinitions.basic BasicAuth
@@ -57,36 +57,36 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/license"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/modules/auth/oauth2server"
-	"code.vikunja.io/api/pkg/modules/auth/openid"
-	"code.vikunja.io/api/pkg/modules/background"
-	backgroundHandler "code.vikunja.io/api/pkg/modules/background/handler"
-	"code.vikunja.io/api/pkg/modules/background/unsplash"
-	"code.vikunja.io/api/pkg/modules/background/upload"
-	"code.vikunja.io/api/pkg/modules/migration"
-	csvmigrator "code.vikunja.io/api/pkg/modules/migration/csv"
-	migrationHandler "code.vikunja.io/api/pkg/modules/migration/handler"
-	microsofttodo "code.vikunja.io/api/pkg/modules/migration/microsoft-todo"
-	"code.vikunja.io/api/pkg/modules/migration/ticktick"
-	"code.vikunja.io/api/pkg/modules/migration/todoist"
-	"code.vikunja.io/api/pkg/modules/migration/trello"
-	vikunja_file "code.vikunja.io/api/pkg/modules/migration/vikunja-file"
-	"code.vikunja.io/api/pkg/modules/migration/wekan"
-	"code.vikunja.io/api/pkg/plugins"
-	apiv1 "code.vikunja.io/api/pkg/routes/api/v1"
-	adminapi "code.vikunja.io/api/pkg/routes/api/v1/admin"
-	apiv2 "code.vikunja.io/api/pkg/routes/api/v2"
-	"code.vikunja.io/api/pkg/routes/caldav"
-	"code.vikunja.io/api/pkg/routes/feeds"
-	vmiddleware "code.vikunja.io/api/pkg/routes/middleware"
-	"code.vikunja.io/api/pkg/version"
-	"code.vikunja.io/api/pkg/web/handler"
-	ws "code.vikunja.io/api/pkg/websocket"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/license"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/oauth2server"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/openid"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background"
+	backgroundHandler "github.com/OrnilioNeto/Task64/pkg/modules/background/handler"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background/unsplash"
+	"github.com/OrnilioNeto/Task64/pkg/modules/background/upload"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	csvmigrator "github.com/OrnilioNeto/Task64/pkg/modules/migration/csv"
+	migrationHandler "github.com/OrnilioNeto/Task64/pkg/modules/migration/handler"
+	microsofttodo "github.com/OrnilioNeto/Task64/pkg/modules/migration/microsoft-todo"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/ticktick"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/todoist"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/trello"
+	vikunja_file "github.com/OrnilioNeto/Task64/pkg/modules/migration/vikunja-file"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/wekan"
+	"github.com/OrnilioNeto/Task64/pkg/plugins"
+	apiv1 "github.com/OrnilioNeto/Task64/pkg/routes/api/v1"
+	adminapi "github.com/OrnilioNeto/Task64/pkg/routes/api/v1/admin"
+	apiv2 "github.com/OrnilioNeto/Task64/pkg/routes/api/v2"
+	"github.com/OrnilioNeto/Task64/pkg/routes/caldav"
+	"github.com/OrnilioNeto/Task64/pkg/routes/feeds"
+	vmiddleware "github.com/OrnilioNeto/Task64/pkg/routes/middleware"
+	"github.com/OrnilioNeto/Task64/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/web/handler"
+	ws "github.com/OrnilioNeto/Task64/pkg/websocket"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/labstack/echo/v5"
@@ -127,7 +127,7 @@ func NewEcho() *echo.Echo {
 	// This is needed because Echo v5 does not unescape path params by default.
 	// Without this, path parameters like usernames with spaces or apostrophes
 	// would remain URL-encoded (e.g., "John%20D%27Urso" instead of "John D'Urso").
-	// See https://kolaente.dev/vikunja/vikunja/issues/1224
+	// See https://kolaente.dev/vikunja/task64/issues/1224
 	e := echo.NewWithConfig(echo.Config{
 		Router: echo.NewRouter(echo.RouterConfig{
 			UnescapePathParamValues: true,
@@ -1014,13 +1014,13 @@ func registerMigrations(m *echo.Group) {
 		microsoftTodoMigrationHandler.RegisterMigrator(m)
 	}
 
-	// Vikunja File Migrator
-	vikunjaFileMigrationHandler := &migrationHandler.FileMigratorWeb{
+	// Task64 File Migrator
+	task64FileMigrationHandler := &migrationHandler.FileMigratorWeb{
 		MigrationStruct: func() migration.FileMigrator {
 			return &vikunja_file.FileMigrator{}
 		},
 	}
-	vikunjaFileMigrationHandler.RegisterRoutes(m)
+	task64FileMigrationHandler.RegisterRoutes(m)
 
 	// TickTick File Migrator
 	tickTickFileMigrator := migrationHandler.FileMigratorWeb{

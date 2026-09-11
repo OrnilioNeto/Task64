@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"code.vikunja.io/veans/internal/client"
-	"code.vikunja.io/veans/internal/output"
-	"code.vikunja.io/veans/internal/status"
+	"github.com/OrnilioNeto/Task64/veans/internal/client"
+	"github.com/OrnilioNeto/Task64/veans/internal/output"
+	"github.com/OrnilioNeto/Task64/veans/internal/status"
 )
 
 type listFlags struct {
@@ -50,7 +50,7 @@ Filters can be combined; they're AND-ed together:
   --mine           only tasks assigned to the veans bot
   --branch [name]  only tasks tagged 'veans:branch:<name>' (defaults to the
                    current git branch when used without a value)
-  --filter <expr>  raw Vikunja filter expression (see Vikunja docs); applied
+  --filter <expr>  raw Task64 filter expression (see Task64 docs); applied
                    server-side
   --status <s>     filter by status (todo|in-progress|in-review|completed|scrapped),
                    may be repeated`,
@@ -70,7 +70,7 @@ Filters can be combined; they're AND-ed together:
 	cmd.Flags().BoolVar(&f.mine, "mine", false, "only tasks assigned to the veans bot")
 	cmd.Flags().StringVar(&f.branch, "branch", "", "only tasks tagged 'veans:branch:<name>' (omit value for current branch)")
 	cmd.Flags().Lookup("branch").NoOptDefVal = "__auto__"
-	cmd.Flags().StringVar(&f.filter, "filter", "", "raw Vikunja filter expression, applied server-side")
+	cmd.Flags().StringVar(&f.filter, "filter", "", "raw Task64 filter expression, applied server-side")
 	cmd.Flags().StringSliceVar(&f.statuses, "status", nil, "filter by status (repeatable)")
 	return cmd
 }

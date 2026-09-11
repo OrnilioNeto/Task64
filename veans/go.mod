@@ -1,4 +1,4 @@
-module code.vikunja.io/veans
+module github.com/OrnilioNeto/Task64/veans
 
 go 1.27.0
 

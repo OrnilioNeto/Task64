@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,12 @@ import (
 	"context"
 	"net/http"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/modules/migration"
-	migrationHandler "code.vikunja.io/api/pkg/modules/migration/handler"
-	microsofttodo "code.vikunja.io/api/pkg/modules/migration/microsoft-todo"
-	"code.vikunja.io/api/pkg/modules/migration/todoist"
-	"code.vikunja.io/api/pkg/modules/migration/trello"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	migrationHandler "github.com/OrnilioNeto/Task64/pkg/modules/migration/handler"
+	microsofttodo "github.com/OrnilioNeto/Task64/pkg/modules/migration/microsoft-todo"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/todoist"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration/trello"
 
 	"github.com/danielgtaylor/huma/v2"
 )
@@ -79,6 +79,6 @@ func registerOAuthMigrator(api huma.API, enabled bool, factory func() migration.
 
 	registerMigrationStatus(api, name, tags, factory)
 	registerMigrationMigrate[migrationMigrateBody](api, name, tags,
-		"Starts a migration of the authenticated user's data from this service into Vikunja. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.",
+		"Starts a migration of the authenticated user's data from this service into Task64. The migration runs asynchronously; this returns once it has been queued. Refuses with 412 if a migration for this service is already running.",
 		factory)
 }

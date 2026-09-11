@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -41,19 +41,19 @@ import (
 	"syscall"
 	"time"
 
-	apiv2 "code.vikunja.io/api/pkg/routes/api/v2"
+	apiv2 "github.com/OrnilioNeto/Task64/pkg/routes/api/v2"
 
 	"github.com/iancoleman/strcase"
 	"github.com/magefile/mage/mg"
 )
 
 const (
-	PACKAGE = `code.vikunja.io/api`
+	PACKAGE = `github.com/OrnilioNeto/Task64`
 	DIST    = `dist`
 )
 
 var (
-	Executable    = "vikunja"
+	Executable    = "task64"
 	Ldflags       = ""
 	Tags          = ""
 	VersionNumber = "dev"
@@ -490,25 +490,25 @@ func (Test) E2EApi(ctx context.Context) error {
 //	mage test:e2e "--headed tests/e2e/misc/menu.spec.ts" # combine flags
 //
 // Environment variable overrides:
-//   - VIKUNJA_E2E_API_PORT: API port (default: random)
-//   - VIKUNJA_E2E_FRONTEND_PORT: Frontend port (default: random)
-//   - VIKUNJA_E2E_TESTING_TOKEN: Testing token for seed endpoints (default: random)
-//   - VIKUNJA_E2E_SKIP_BUILD: Set to "true" to skip rebuilding the API binary (default: false)
+//   - TASK64_E2E_API_PORT: API port (default: random)
+//   - TASK64_E2E_FRONTEND_PORT: Frontend port (default: random)
+//   - TASK64_E2E_TESTING_TOKEN: Testing token for seed endpoints (default: random)
+//   - TASK64_E2E_SKIP_BUILD: Set to "true" to skip rebuilding the API binary (default: false)
 func (Test) E2E(ctx context.Context, args string) error {
 	mg.Deps(initVars)
 
 	// Determine ports
-	apiPort, err := getE2EPort(ctx, "VIKUNJA_E2E_API_PORT")
+	apiPort, err := getE2EPort(ctx, "TASK64_E2E_API_PORT")
 	if err != nil {
 		return fmt.Errorf("could not get API port: %w", err)
 	}
-	frontendPort, err := getE2EPort(ctx, "VIKUNJA_E2E_FRONTEND_PORT")
+	frontendPort, err := getE2EPort(ctx, "TASK64_E2E_FRONTEND_PORT")
 	if err != nil {
 		return fmt.Errorf("could not get frontend port: %w", err)
 	}
 
 	// Generate a random testing token
-	testingToken := os.Getenv("VIKUNJA_E2E_TESTING_TOKEN")
+	testingToken := os.Getenv("TASK64_E2E_TESTING_TOKEN")
 	if testingToken == "" {
 		testingToken = fmt.Sprintf("e2e-test-token-%d", time.Now().UnixNano())
 	}
@@ -519,7 +519,7 @@ func (Test) E2E(ctx context.Context, args string) error {
 	fmt.Printf("  Testing token: %s\n", testingToken)
 
 	// Build the API binary (unless skipped)
-	if os.Getenv("VIKUNJA_E2E_SKIP_BUILD") != "true" {
+	if os.Getenv("TASK64_E2E_SKIP_BUILD") != "true" {
 		fmt.Println("\n--- Building API binary ---")
 		if err := (Build{}).Build(ctx); err != nil {
 			return fmt.Errorf("failed to build API: %w", err)
@@ -527,7 +527,7 @@ func (Test) E2E(ctx context.Context, args string) error {
 	}
 
 	// Create temp directory for file uploads and rootpath
-	tmpDir, err := os.MkdirTemp("", "vikunja-e2e-*")
+	tmpDir, err := os.MkdirTemp("", "task64-e2e-*")
 	if err != nil {
 		return fmt.Errorf("failed to create temp dir: %w", err)
 	}
@@ -543,20 +543,20 @@ func (Test) E2E(ctx context.Context, args string) error {
 	// Start the API server — all config via env vars, no config file
 	// Uses in-memory SQLite (no DB file on disk)
 	fmt.Println("\n--- Starting API server ---")
-	apiCmd := exec.CommandContext(ctx, "./vikunja", "web")
+	apiCmd := exec.CommandContext(ctx, "./task64", "web")
 	apiCmd.Env = append(os.Environ(),
-		fmt.Sprintf("VIKUNJA_SERVICE_INTERFACE=:%d", apiPort),
-		fmt.Sprintf("VIKUNJA_SERVICE_PUBLICURL=http://127.0.0.1:%d/", apiPort),
-		fmt.Sprintf("VIKUNJA_SERVICE_TESTINGTOKEN=%s", testingToken),
-		fmt.Sprintf("VIKUNJA_SERVICE_ROOTPATH=%s", tmpDir),
-		"VIKUNJA_SERVICE_JWTSECRET=e2e-test-jwt-secret-do-not-use-in-production",
-		"VIKUNJA_DATABASE_TYPE=sqlite",
-		"VIKUNJA_DATABASE_PATH=memory",
-		fmt.Sprintf("VIKUNJA_FILES_BASEPATH=%s", filepath.Join(tmpDir, "files")),
-		"VIKUNJA_LOG_LEVEL=WARNING",
-		"VIKUNJA_MAILER_ENABLED=false",
-		"VIKUNJA_REDIS_ENABLED=false",
-		"VIKUNJA_RATELIMIT_NOAUTHLIMIT=1000",
+		fmt.Sprintf("TASK64_SERVICE_INTERFACE=:%d", apiPort),
+		fmt.Sprintf("TASK64_SERVICE_PUBLICURL=http://127.0.0.1:%d/", apiPort),
+		fmt.Sprintf("TASK64_SERVICE_TESTINGTOKEN=%s", testingToken),
+		fmt.Sprintf("TASK64_SERVICE_ROOTPATH=%s", tmpDir),
+		"TASK64_SERVICE_JWTSECRET=e2e-test-jwt-secret-do-not-use-in-production",
+		"TASK64_DATABASE_TYPE=sqlite",
+		"TASK64_DATABASE_PATH=memory",
+		fmt.Sprintf("TASK64_FILES_BASEPATH=%s", filepath.Join(tmpDir, "files")),
+		"TASK64_LOG_LEVEL=WARNING",
+		"TASK64_MAILER_ENABLED=false",
+		"TASK64_REDIS_ENABLED=false",
+		"TASK64_RATELIMIT_NOAUTHLIMIT=1000",
 	)
 	apiCmd.Stdout = os.Stdout
 	apiCmd.Stderr = os.Stderr
@@ -626,7 +626,7 @@ func (Test) E2E(ctx context.Context, args string) error {
 	playwrightCmd.Env = append(os.Environ(),
 		fmt.Sprintf("API_URL=%s/", apiBase),
 		fmt.Sprintf("BASE_URL=%s", frontendBase),
-		fmt.Sprintf("VIKUNJA_SERVICE_TESTINGTOKEN=%s", testingToken),
+		fmt.Sprintf("TASK64_SERVICE_TESTINGTOKEN=%s", testingToken),
 		fmt.Sprintf("TEST_SECRET=%s", testingToken),
 	)
 	playwrightCmd.Stdout = os.Stdout
@@ -1256,7 +1256,7 @@ func (Build) Clean(ctx context.Context) error {
 	return nil
 }
 
-// Build builds a vikunja binary, ready to run
+// Build builds a task64 binary, ready to run
 func (Build) Build(ctx context.Context) error {
 	mg.Deps(initVars, ensureFrontendDistExists)
 	return runAndStreamOutput(ctx, "go", "build", goDetectVerboseFlag(), "-tags", Tags, "-ldflags", "-s -w "+Ldflags, "-o", Executable)
@@ -1297,7 +1297,7 @@ func (Dev) MakeMigration(name string) error {
 
 	date := time.Now().Format("20060102150405")
 
-	migration := `// Vikunja is a to-do list application to facilitate your life.
+	migration := `// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -1525,7 +1525,7 @@ func (Generate) FrontendClient(ctx context.Context) error {
 		return err
 	}
 
-	spec, err := os.CreateTemp("", "vikunja-openapi-*.json")
+	spec, err := os.CreateTemp("", "task64-openapi-*.json")
 	if err != nil {
 		return fmt.Errorf("create temporary OpenAPI document: %w", err)
 	}
@@ -1542,7 +1542,7 @@ func (Generate) FrontendClient(ctx context.Context) error {
 
 	cmd := exec.CommandContext(ctx, "pnpm", "run", "generate:api-client")
 	cmd.Dir = "frontend"
-	cmd.Env = append(os.Environ(), "VIKUNJA_OPENAPI_INPUT="+specPath)
+	cmd.Env = append(os.Environ(), "TASK64_OPENAPI_INPUT="+specPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -1569,13 +1569,13 @@ var yaegiSymbolPackages = []struct {
 	importPath string
 	outFile    string
 }{
-	{"code.vikunja.io/api/pkg/config", "vikunja_config.go"},
-	{"code.vikunja.io/api/pkg/db", "vikunja_db.go"},
-	{"code.vikunja.io/api/pkg/events", "vikunja_events.go"},
-	{"code.vikunja.io/api/pkg/log", "vikunja_log.go"},
-	{"code.vikunja.io/api/pkg/models", "vikunja_models.go"},
-	{"code.vikunja.io/api/pkg/plugins", "vikunja_plugins.go"},
-	{"code.vikunja.io/api/pkg/user", "vikunja_user.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/config", "task64_config.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/db", "task64_db.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/events", "task64_events.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/log", "task64_log.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/models", "task64_models.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/plugins", "task64_plugins.go"},
+	{"github.com/OrnilioNeto/Task64/pkg/user", "task64_user.go"},
 	{"github.com/labstack/echo/v5", "echo.go"},
 	{"github.com/ThreeDotsLabs/watermill/message", "watermill.go"},
 	{"github.com/spf13/viper", "viper.go"},

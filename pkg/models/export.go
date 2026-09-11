@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -24,21 +24,21 @@ import (
 	"os"
 	"time"
 
-	"code.vikunja.io/api/pkg/cron"
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/notifications"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
-	"code.vikunja.io/api/pkg/version"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/cron"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/notifications"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"xorm.io/xorm"
 )
 
 func ExportUserData(s *xorm.Session, u *user.User) (err error) {
-	dumpFile, err := os.CreateTemp("", "vikunja-export-*.zip")
+	dumpFile, err := os.CreateTemp("", "task64-export-*.zip")
 	if err != nil {
 		return fmt.Errorf("error creating temp file: %w", err)
 	}
@@ -68,13 +68,13 @@ func ExportUserData(s *xorm.Session, u *user.User) (err error) {
 	if err != nil {
 		return err
 	}
-	// Vikunja Version
+	// Task64 Version
 	err = utils.WriteBytesToZip("VERSION", []byte(version.Version), dumpWriter)
 	if err != nil {
 		return err
 	}
 
-	// If we reuse the same file again, saving it as a file in Vikunja will save it as a file with 0 bytes in size.
+	// If we reuse the same file again, saving it as a file in Task64 will save it as a file with 0 bytes in size.
 	// Closing and reopening does work.
 	dumpWriter.Close()
 	dumpFile.Close()

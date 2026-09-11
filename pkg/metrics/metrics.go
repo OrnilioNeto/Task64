@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,9 @@ package metrics
 import (
 	"time"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/modules/keyvalue"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/modules/keyvalue"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
@@ -67,7 +67,7 @@ func GetRegistry() *prometheus.Registry {
 
 func registerPromMetric(key, description string) {
 	err := registry.Register(promauto.NewGaugeFunc(prometheus.GaugeOpts{
-		Name: "vikunja_" + key,
+		Name: "task64_" + key,
 		Help: description,
 	}, func() float64 {
 		count, err := GetCount(key)
@@ -92,8 +92,8 @@ func InitMetrics() {
 	registerPromMetric(FilesCountKey, "The total number of files on this instance")
 	registerPromMetric(AttachmentsCountKey, "The total number of attachments on this instance")
 
-	registerActiveMetric("vikunja_active_users", "The number of users active within the last 30 seconds", activeUsersKeyPrefix)
-	registerActiveMetric("vikunja_active_link_shares", "The number of link shares active within the last 30 seconds. Similar to vikunja_active_users.", activeLinkSharesKeyPrefix)
+	registerActiveMetric("task64_active_users", "The number of users active within the last 30 seconds", activeUsersKeyPrefix)
+	registerActiveMetric("task64_active_link_shares", "The number of link shares active within the last 30 seconds. Similar to task64_active_users.", activeLinkSharesKeyPrefix)
 
 	db.RegisterConnectionPoolMetrics(registry)
 }

@@ -1,8 +1,8 @@
-# Vikunja desktop
+# Task64 desktop
 
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](LICENSE)
 
-The Vikunja frontend all repackaged as an electron app to run as a desktop app!
+The Task64 frontend all repackaged as an electron app to run as a desktop app!
 
 ## Dev
 
@@ -22,7 +22,7 @@ Then, copy the frontend to this directory:
 ```
 cd desktop
 cp -r ../frontend/dist frontend/
-sed -i 's/\/api\/v1//g' frontend/index.html # Make sure to trigger the "enter the Vikunja url" prompt
+sed -i 's/\/api\/v1//g' frontend/index.html # Make sure to trigger the "enter the Task64 url" prompt
 ```
 
 Then you can run the desktop app like this:

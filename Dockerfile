@@ -19,7 +19,7 @@ FROM --platform=$BUILDPLATFORM ghcr.io/techknowlogick/xgo:go-1.27.x@sha256:8cc74
 RUN go install github.com/magefile/mage@latest && \
     mv /go/bin/mage /usr/local/go/bin
 
-WORKDIR /go/src/code.vikunja.io/api
+WORKDIR /go/src/github.com/OrnilioNeto/Task64
 COPY . ./
 COPY --from=frontendbuilder /build/dist ./frontend/dist
 
@@ -28,7 +28,7 @@ ENV RELEASE_VERSION=$RELEASE_VERSION
 
 RUN export PATH=$PATH:$GOPATH/bin && \
 	mage build:clean && \
-    (cd build && mage release:xgo vikunja "${TARGETOS}/${TARGETARCH}/${TARGETVARIANT}")
+    (cd build && mage release:xgo task64 "${TARGETOS}/${TARGETARCH}/${TARGETVARIANT}")
 
 RUN mkdir -p /tmp && chmod 1777 /tmp
 
@@ -42,20 +42,20 @@ FROM scratch
 LABEL org.opencontainers.image.authors='maintainers@vikunja.io'
 LABEL org.opencontainers.image.url='https://vikunja.io'
 LABEL org.opencontainers.image.documentation='https://vikunja.io/docs'
-LABEL org.opencontainers.image.source='https://code.vikunja.io/vikunja'
+LABEL org.opencontainers.image.source='https://github.com/OrnilioNeto/Task64'
 LABEL org.opencontainers.image.licenses='AGPLv3'
-LABEL org.opencontainers.image.title='Vikunja'
+LABEL org.opencontainers.image.title='Task64'
 
-WORKDIR /app/vikunja
-ENTRYPOINT [ "/app/vikunja/vikunja" ]
+WORKDIR /app/task64
+ENTRYPOINT [ "/app/task64/task64" ]
 EXPOSE 3456
 
 COPY --from=apibuilder --chown=1000:1000 --chmod=1777 /tmp /tmp
 
 USER 1000
 
-ENV VIKUNJA_SERVICE_ROOTPATH=/app/vikunja/
-ENV VIKUNJA_DATABASE_PATH=/db/vikunja.db
+ENV TASK64_SERVICE_ROOTPATH=/app/task64/
+ENV TASK64_DATABASE_PATH=/db/task64.db
 
-COPY --from=apibuilder /build/vikunja-* vikunja
+COPY --from=apibuilder /build/task64-* task64
 COPY --from=apibuilder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/

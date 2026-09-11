@@ -54,7 +54,7 @@
     "attachments": [
       {"id": "3000", "type": "file", "name": "cover.png", "cardId": "2000", "creatorUserId": "1", "createdAt": "2024-01-03T00:00:00.000Z", "data": {"mimeType": "image/png", "size": 4, "encoding": null, "image": {"width": 1, "height": 1}, "url": "http://planka.local/attachments/3000/download/cover.png"}},
       {"id": "3001", "type": "file", "name": "broken.txt", "cardId": "2000", "creatorUserId": "1", "createdAt": "2024-01-03T00:00:00.000Z", "data": {"mimeType": "text/plain", "size": 4, "encoding": null, "image": null, "url": "http://planka.local/attachments/3001/download/broken.txt"}},
-      {"id": "3002", "type": "link", "name": "Vikunja", "cardId": "2000", "creatorUserId": "1", "createdAt": "2024-01-03T00:00:00.000Z", "data": {"url": "https://vikunja.io", "faviconUrl": null}}
+      {"id": "3002", "type": "link", "name": "Task64", "cardId": "2000", "creatorUserId": "1", "createdAt": "2024-01-03T00:00:00.000Z", "data": {"url": "https://vikunja.io", "faviconUrl": null}}
     ]
   }
 }

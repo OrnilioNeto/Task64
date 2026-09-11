@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"os"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/doctor"
-	"code.vikunja.io/api/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/doctor"
+	"github.com/OrnilioNeto/Task64/pkg/log"
 
 	"github.com/spf13/cobra"
 )
@@ -33,9 +33,9 @@ func init() {
 
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
-	Short: "Run diagnostic checks on your Vikunja installation",
+	Short: "Run diagnostic checks on your Task64 installation",
 	Long: `The doctor command runs a series of diagnostic checks to help troubleshoot
-issues with your Vikunja installation. It checks:
+issues with your Task64 installation. It checks:
 
 - System information (version, user, working directory)
 - Configuration (config file, public URL, JWT secret, CORS)

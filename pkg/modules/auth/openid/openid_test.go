@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/models"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/user"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/pquerna/otp/totp"
 	"github.com/stretchr/testify/assert"
@@ -127,7 +127,7 @@ func TestGetOrCreateUser(t *testing.T) {
 			},
 		}
 
-		provider := &Provider{Name: "Vikunja Login"}
+		provider := &Provider{Name: "Task64 Login"}
 		idToken := &oidc.IDToken{Issuer: "https://some.service.com", Subject: "12345"}
 
 		u, err := getOrCreateUser(s, cl, provider, idToken)
@@ -164,7 +164,7 @@ func TestGetOrCreateUser(t *testing.T) {
 			},
 		}
 
-		provider := &Provider{Name: "Vikunja Login"}
+		provider := &Provider{Name: "Task64 Login"}
 		idToken := &oidc.IDToken{Issuer: "https://some.service.com", Subject: "12345"}
 
 		u, err := getOrCreateUser(s, cl, provider, idToken)
@@ -198,7 +198,7 @@ func TestGetOrCreateUser(t *testing.T) {
 
 		u := &user.User{ID: 10}
 		teamData := getTeamDataFromToken(cl.VikunjaGroups, nil)
-		err := models.SyncExternalTeamsForUser(s, u, teamData, "https://some.issuer", "Vikunja Login")
+		err := models.SyncExternalTeamsForUser(s, u, teamData, "https://some.issuer", "Task64 Login")
 		require.NoError(t, err)
 		err = s.Commit()
 		require.NoError(t, err)
@@ -219,7 +219,7 @@ func TestGetOrCreateUser(t *testing.T) {
 
 		u := &user.User{ID: 10}
 		teamData := getTeamDataFromToken(cl.VikunjaGroups, nil)
-		err := models.SyncExternalTeamsForUser(s, u, teamData, "https://some.issuer", "Vikunja Login")
+		err := models.SyncExternalTeamsForUser(s, u, teamData, "https://some.issuer", "Task64 Login")
 		require.NoError(t, err)
 		err = s.Commit()
 		require.NoError(t, err)

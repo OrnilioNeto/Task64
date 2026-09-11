@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/files"
-	"code.vikunja.io/api/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/files"
+	"github.com/OrnilioNeto/Task64/pkg/models"
 
 	"github.com/adlio/trello"
 	"github.com/d4l3k/messagediff"
@@ -235,7 +235,7 @@ func getTestBoard(t *testing.T) ([]*trello.Board, time.Time) {
 	return trelloData, time1
 }
 
-func TestConvertTrelloToVikunja(t *testing.T) {
+func TestConvertTrelloToTask64(t *testing.T) {
 	trelloData, time1 := getTestBoard(t)
 
 	exampleFile, err := os.ReadFile("../testimage.jpg")
@@ -477,7 +477,7 @@ func TestConvertTrelloToVikunja(t *testing.T) {
 
 	organizationMap := getTrelloOrganizationsWithBoards(trelloData)
 	for organizationID, boards := range organizationMap {
-		hierarchy, err := convertTrelloDataToVikunja(organizationID, boards, &trello.Client{}, nil)
+		hierarchy, err := convertTrelloDataToTask64(organizationID, boards, &trello.Client{}, nil)
 
 		require.NoError(t, err)
 		assert.NotNil(t, hierarchy)

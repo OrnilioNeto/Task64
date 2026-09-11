@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,13 +25,13 @@ import (
 	"net/http"
 	"strconv"
 
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 )
 
 // AttachmentUploadError is a per-file upload failure.
 type AttachmentUploadError struct {
-	Code    int    `json:"code,omitempty" doc:"Vikunja numeric error code, when the failure carries one."`
+	Code    int    `json:"code,omitempty" doc:"Task64 numeric error code, when the failure carries one."`
 	Message string `json:"message" doc:"A human-readable description of why this file failed."`
 }
 

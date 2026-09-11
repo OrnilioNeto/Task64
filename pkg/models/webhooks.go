@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -32,13 +32,13 @@ import (
 	"sync"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/events"
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
-	"code.vikunja.io/api/pkg/version"
-	"code.vikunja.io/api/pkg/web"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/events"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/version"
+	"github.com/OrnilioNeto/Task64/pkg/web"
 
 	"xorm.io/builder"
 	"xorm.io/xorm"
@@ -359,14 +359,14 @@ func (w *Webhook) sendWebhookPayload(p *WebhookPayload) (err error) {
 			log.Errorf("Could not generate webhook signature for Webhook %d: %s", w.ID, err)
 		}
 		signature := hex.EncodeToString(sig256.Sum(nil))
-		req.Header.Add("X-Vikunja-Signature", signature)
+		req.Header.Add("X-Task64-Signature", signature)
 	}
 
 	if len(w.BasicAuthUser) > 0 && len(w.BasicAuthPassword) > 0 {
 		req.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(w.BasicAuthUser+":"+w.BasicAuthPassword)))
 	}
 
-	req.Header.Add("User-Agent", "Vikunja/"+version.Version)
+	req.Header.Add("User-Agent", "Task64/"+version.Version)
 	req.Header.Add("Content-Type", "application/json")
 
 	client := getWebhookHTTPClient()

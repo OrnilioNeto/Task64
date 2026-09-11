@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,11 +27,11 @@ import (
 	"strings"
 	"time"
 
-	"code.vikunja.io/api/pkg/config"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/migration"
-	"code.vikunja.io/api/pkg/user"
-	"code.vikunja.io/api/pkg/utils"
+	"github.com/OrnilioNeto/Task64/pkg/config"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/migration"
+	"github.com/OrnilioNeto/Task64/pkg/user"
+	"github.com/OrnilioNeto/Task64/pkg/utils"
 
 	"github.com/gocarina/gocsv"
 )
@@ -101,7 +101,7 @@ func (n *tickTickNumber) UnmarshalCSV(csv string) error {
 // priority either as a plain number (0, 1, 3, 5) or, in some exports, prefixed
 // with "p" (p1, p2, p3). We accept both forms and fall back to 0 (no priority)
 // for anything we cannot parse, so a stray value never fails the whole import
-// (go-vikunja/vikunja#2822). Vikunja's task priority is a free-form sortable
+// (go-vikunja/vikunja#2822). Task64's task priority is a free-form sortable
 // integer, so the parsed value is carried over as-is.
 type tickTickPriority int64
 
@@ -187,7 +187,7 @@ func sortParentsBeforeChildren(tasks []*tickTickTask) []*tickTickTask {
 	return result
 }
 
-func convertTickTickToVikunja(tasks []*tickTickTask) (result []*models.ProjectWithTasksAndBuckets) {
+func convertTickTickToTask64(tasks []*tickTickTask) (result []*models.ProjectWithTasksAndBuckets) {
 	// Sort tasks so that parent tasks always come before their children.
 	// Without this, create_from_structure.go would try to create a
 	// placeholder for a not-yet-seen parent, which fails because the
@@ -403,9 +403,9 @@ func linesToSkipBeforeHeader(file io.ReaderAt, size int64) (int, error) {
 	return lines, nil
 }
 
-// Migrate takes a ticktick export, parses it and imports everything in it into Vikunja.
+// Migrate takes a ticktick export, parses it and imports everything in it into Task64.
 // @Summary Import all projects, tasks etc. from a TickTick backup export
-// @Description Imports all projects, tasks, notes, reminders, subtasks and files from a TickTick backup export into Vikunja.
+// @Description Imports all projects, tasks, notes, reminders, subtasks and files from a TickTick backup export into Task64.
 // @tags migration
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -476,9 +476,9 @@ func (m *Migrator) Migrate(user *user.User, file io.ReaderAt, size int64) error 
 		task.Tags = strings.Split(task.TagsList, ", ")
 	}
 
-	vikunjaTasks := convertTickTickToVikunja(allTasks)
+	task64Tasks := convertTickTickToTask64(allTasks)
 
-	return migration.InsertFromStructure(vikunjaTasks, user)
+	return migration.InsertFromStructure(task64Tasks, user)
 }
 
 // isValidCSV performs a basic check to determine if the content looks like a CSV file

@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import (
 	"testing"
 	"time"
 
-	"code.vikunja.io/api/pkg/db"
-	"code.vikunja.io/api/pkg/models"
-	"code.vikunja.io/api/pkg/modules/auth"
-	"code.vikunja.io/api/pkg/modules/auth/oauth2server"
+	"github.com/OrnilioNeto/Task64/pkg/db"
+	"github.com/OrnilioNeto/Task64/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth"
+	"github.com/OrnilioNeto/Task64/pkg/modules/auth/oauth2server"
 
 	"github.com/labstack/echo/v5"
 	"github.com/stretchr/testify/assert"
@@ -104,7 +104,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		e, err := setupTestEnv()
 		require.NoError(t, err)
 
-		body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", "abc123", "S256", "teststate")
+		body := authorizeRequestBody("code", "task64", "task64-flutter://callback", "abc123", "S256", "teststate")
 		rec := httptest.NewRecorder()
 		req := httptest.NewRequest(http.MethodPost, "/api/v1/oauth/authorize", bytes.NewReader(body))
 		req.Header.Set("Content-Type", "application/json")
@@ -119,7 +119,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		token, err := auth.NewUserJWTAuthtoken(&testuser1, "test-session-id")
 		require.NoError(t, err)
 
-		body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "S256", "teststate")
+		body := authorizeRequestBody("code", "task64", "task64-flutter://callback", "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM", "S256", "teststate")
 		rec := doAuthorize(e, token, body)
 
 		require.Equal(t, http.StatusOK, rec.Code)
@@ -128,7 +128,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		err = json.Unmarshal(rec.Body.Bytes(), &resp)
 		require.NoError(t, err)
 		assert.NotEmpty(t, resp.Code)
-		assert.Equal(t, "vikunja-flutter://callback", resp.RedirectURI)
+		assert.Equal(t, "task64-flutter://callback", resp.RedirectURI)
 		assert.Equal(t, "teststate", resp.State)
 	})
 
@@ -139,7 +139,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		token, err := auth.NewUserJWTAuthtoken(&testuser1, "test-session-id")
 		require.NoError(t, err)
 
-		body := authorizeRequestBody("code", "vikunja", "https://evil.com/callback", "test", "S256", "")
+		body := authorizeRequestBody("code", "task64", "https://evil.com/callback", "test", "S256", "")
 		rec := doAuthorize(e, token, body)
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 	})
@@ -151,7 +151,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		token, err := auth.NewUserJWTAuthtoken(&testuser1, "test-session-id")
 		require.NoError(t, err)
 
-		body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", "", "", "")
+		body := authorizeRequestBody("code", "task64", "task64-flutter://callback", "", "", "")
 		rec := doAuthorize(e, token, body)
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 	})
@@ -164,7 +164,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 
 		apiToken := insertLegacyOAuthScopedToken(t)
 
-		body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", "abc123", "S256", "")
+		body := authorizeRequestBody("code", "task64", "task64-flutter://callback", "abc123", "S256", "")
 		rec := doAuthorize(e, apiToken, body)
 		assert.Equal(t, http.StatusUnauthorized, rec.Code)
 		assert.NotContains(t, rec.Body.String(), `"code":"`)
@@ -174,7 +174,7 @@ func TestOAuth2AuthorizeEndpoint(t *testing.T) {
 		e, err := setupTestEnv()
 		require.NoError(t, err)
 
-		body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", "abc123", "S256", "")
+		body := authorizeRequestBody("code", "task64", "task64-flutter://callback", "abc123", "S256", "")
 		req := httptest.NewRequest(http.MethodPost, "/api/v1/oauth/authorize", bytes.NewReader(body))
 		req.Header.Set("Content-Type", "application/json")
 		c := e.NewContext(req, httptest.NewRecorder())
@@ -202,7 +202,7 @@ func getAuthorizationCode(t *testing.T, e http.Handler, codeChallenge, state str
 	token, err := auth.NewUserJWTAuthtoken(&testuser1, "test-session-id")
 	require.NoError(t, err)
 
-	body := authorizeRequestBody("code", "vikunja", "vikunja-flutter://callback", codeChallenge, "S256", state)
+	body := authorizeRequestBody("code", "task64", "task64-flutter://callback", codeChallenge, "S256", state)
 	rec := doAuthorize(e, token, body)
 	require.Equal(t, http.StatusOK, rec.Code)
 
@@ -228,8 +228,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		rec := doTokenRequest(e, map[string]string{
 			"grant_type":    "authorization_code",
 			"code":          code,
-			"client_id":     "vikunja",
-			"redirect_uri":  "vikunja-flutter://callback",
+			"client_id":     "task64",
+			"redirect_uri":  "task64-flutter://callback",
 			"code_verifier": codeVerifier,
 		})
 
@@ -257,8 +257,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		tokenParams := map[string]string{
 			"grant_type":    "authorization_code",
 			"code":          code,
-			"client_id":     "vikunja",
-			"redirect_uri":  "vikunja-flutter://callback",
+			"client_id":     "task64",
+			"redirect_uri":  "task64-flutter://callback",
 			"code_verifier": codeVerifier,
 		}
 
@@ -285,8 +285,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		rec := doTokenRequest(e, map[string]string{
 			"grant_type":    "authorization_code",
 			"code":          code,
-			"client_id":     "vikunja",
-			"redirect_uri":  "vikunja-flutter://callback",
+			"client_id":     "task64",
+			"redirect_uri":  "task64-flutter://callback",
 			"code_verifier": "wrong-verifier",
 		})
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
@@ -298,7 +298,7 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 
 		rec := doTokenRequest(e, map[string]string{
 			"grant_type": "password",
-			"client_id":  "vikunja",
+			"client_id":  "task64",
 		})
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 	})
@@ -316,8 +316,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		rec := doTokenRequest(e, map[string]string{
 			"grant_type":    "authorization_code",
 			"code":          code,
-			"client_id":     "vikunja",
-			"redirect_uri":  "vikunja-flutter://callback",
+			"client_id":     "task64",
+			"redirect_uri":  "task64-flutter://callback",
 			"code_verifier": codeVerifier,
 		})
 		require.Equal(t, http.StatusOK, rec.Code)
@@ -329,7 +329,7 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		rec2 := doTokenRequest(e, map[string]string{
 			"grant_type":    "refresh_token",
 			"refresh_token": tokenResp.RefreshToken,
-			"client_id":     "vikunja",
+			"client_id":     "task64",
 		})
 
 		require.Equal(t, http.StatusOK, rec2.Code)
@@ -357,12 +357,12 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		}{
 			{
 				name:        "wrong client_id",
-				tamper:      func(p map[string]string) { p["client_id"] = "not-vikunja" },
+				tamper:      func(p map[string]string) { p["client_id"] = "not-task64" },
 				wantErrCode: models.ErrCodeOAuthClientNotFound,
 			},
 			{
 				name:        "wrong redirect_uri",
-				tamper:      func(p map[string]string) { p["redirect_uri"] = "vikunja-flutter://attacker" },
+				tamper:      func(p map[string]string) { p["redirect_uri"] = "task64-flutter://attacker" },
 				wantErrCode: models.ErrCodeOAuthInvalidRedirectURI,
 			},
 			{
@@ -382,8 +382,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 				validParams := map[string]string{
 					"grant_type":    "authorization_code",
 					"code":          code,
-					"client_id":     "vikunja",
-					"redirect_uri":  "vikunja-flutter://callback",
+					"client_id":     "task64",
+					"redirect_uri":  "task64-flutter://callback",
 					"code_verifier": codeVerifier,
 				}
 
@@ -415,8 +415,8 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		rec := doTokenRequest(e, map[string]string{
 			"grant_type":    "authorization_code",
 			"code":          code,
-			"client_id":     "vikunja",
-			"redirect_uri":  "vikunja-flutter://callback",
+			"client_id":     "task64",
+			"redirect_uri":  "task64-flutter://callback",
 			"code_verifier": codeVerifier,
 		})
 
@@ -427,7 +427,7 @@ func TestOAuth2TokenEndpoint(t *testing.T) {
 		refreshParams := map[string]string{
 			"grant_type":    "refresh_token",
 			"refresh_token": oldRefreshToken,
-			"client_id":     "vikunja",
+			"client_id":     "task64",
 		}
 
 		// First refresh succeeds

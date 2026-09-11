@@ -1,4 +1,4 @@
-// Vikunja is a to-do list application to facilitate your life.
+// Task64 is a to-do list application to facilitate your life.
 // Copyright 2018-present Vikunja and contributors. All rights reserved.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@ import (
 	"os"
 	"testing"
 
-	"code.vikunja.io/api/pkg/log"
-	"code.vikunja.io/api/pkg/models"
+	"github.com/OrnilioNeto/Task64/pkg/log"
+	"github.com/OrnilioNeto/Task64/pkg/models"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/stretchr/testify/assert"
@@ -48,7 +48,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 
 	t.Run("Error500InternalServerError drops the wrapped detail", func(t *testing.T) {
 		se := huma.Error500InternalServerError("Internal server error", secret)
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		assert.Empty(t, vm.Errors, "server errors must not expose internal detail")
 		assert.Equal(t, "Internal server error", vm.Detail)
@@ -60,7 +60,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 
 	t.Run("Error503ServiceUnavailable drops the wrapped detail", func(t *testing.T) {
 		se := huma.Error503ServiceUnavailable("service unavailable", secret)
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		assert.Empty(t, vm.Errors)
 	})
@@ -68,7 +68,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 	t.Run("NewErrorWithContext drops the wrapped detail", func(t *testing.T) {
 		// Huma's handler-error path funnels raw errors through here at 500.
 		se := huma.NewErrorWithContext(nil, 500, "unexpected error occurred", secret)
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		assert.Empty(t, vm.Errors, "server errors must not expose internal detail")
 		assert.Equal(t, "unexpected error occurred", vm.Detail)
@@ -76,7 +76,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 
 	t.Run("4xx keeps the detail", func(t *testing.T) {
 		se := huma.NewErrorWithContext(nil, 422, "validation failed", secret)
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		require.Len(t, vm.Errors, 1, "client errors keep their detail")
 		assert.Equal(t, secret.Error(), vm.Errors[0].Message)
@@ -84,7 +84,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 
 	t.Run("4xx keeps ErrorDetailer locations", func(t *testing.T) {
 		se := huma.Error422UnprocessableEntity("validation failed", &huma.ErrorDetail{Location: "body.title", Message: "cannot be empty"})
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		require.Len(t, vm.Errors, 1)
 		assert.Equal(t, "body.title", vm.Errors[0].Location)
@@ -94,10 +94,10 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 	t.Run("domain error code survives", func(t *testing.T) {
 		// translateDomainError sets Code/I18nParams on the model NewError builds.
 		se := translateDomainError(models.ErrLabelDoesNotExist{LabelID: 42})
-		vm, ok := se.(*vikunjaErrorModel)
+		vm, ok := se.(*task64ErrorModel)
 		require.True(t, ok)
 		assert.Equal(t, http.StatusNotFound, vm.Status)
-		assert.NotZero(t, vm.Code, "the Vikunja numeric error code must stay on the body")
+		assert.NotZero(t, vm.Code, "the Task64 numeric error code must stay on the body")
 	})
 }
 
@@ -105,7 +105,7 @@ func TestNewError_StripsServerErrorDetail(t *testing.T) {
 // the 5xx strip must not alter it.
 func TestNewError_SchemaProbeUnaffected(t *testing.T) {
 	se := huma.NewError(0, "")
-	vm, ok := se.(*vikunjaErrorModel)
+	vm, ok := se.(*task64ErrorModel)
 	require.True(t, ok)
 	assert.Empty(t, vm.Errors)
 	assert.Equal(t, 0, vm.Status)

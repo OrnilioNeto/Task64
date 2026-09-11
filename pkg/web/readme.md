@@ -1,9 +1,9 @@
-# Vikunja Web Handler
+# Task64 Web Handler
 
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/code.vikunja.io/web)](https://goreportcard.com/report/code.vikunja.io/web)
 
-> When I started Vikunja, I started like everyone else, by writing a bunch of functions to do the logic and then a bunch of
+> When I started Task64, I started like everyone else, by writing a bunch of functions to do the logic and then a bunch of
 handler functions to parse the request data and call the implemented functions to do the logic and eventually return a dataset.
 After I implemented some functions, I've decided to save me a lot of hassle and put most of that "parse the request and call a 
 processing function"-logic to a general interface to facilitate development and not having to have a lot of similar code all over the place.
@@ -39,7 +39,7 @@ other handler implementations, enabling a lot of flexibility while developing.
 
 ### TODOs
 
-* [x] Improve docs/Merge with the ones of Vikunja
+* [x] Improve docs/Merge with the ones of Task64
 * [x] Description of web.HTTPError
 * [x] Permissions methods should return errors (I know, this will break a lot of existing stuff)
 * [ ] optional Before- and after-{load|update|create} methods which do some preprocessing/after processing like making human-readable names from automatically up counting consts
@@ -242,7 +242,7 @@ type HTTPError struct {
 }
 ```
 
-You can learn more about how exactly custom error types are created in the [vikunja docs](https://vikunja.io/docs/custom-errors/).
+You can learn more about how exactly custom error types are created in the [task64 docs](https://vikunja.io/docs/custom-errors/).
 
 ## How the url param binder works
 
